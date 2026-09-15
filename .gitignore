@@ -3,6 +3,7 @@ node_modules/
 out/
 research/
 *.pdf
+!public/resume.pdf
 .env
 .env.local
 .env*.local

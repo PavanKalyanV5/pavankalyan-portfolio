@@ -17,6 +17,7 @@ import { getLayerGraph } from "@/lib/mesh/layers";
 import { LAYER_ORDER, type LayerId } from "@/lib/mesh/types";
 import { LayerIntro } from "./LayerIntro";
 import { BootSequence } from "./BootSequence";
+import { ExperienceBoundary } from "./ExperienceBoundary";
 import styles from "./Portfolio.module.css";
 
 /** Overview hub node ids encode the layer they navigate to: "hub-experience" -> "experience". */
@@ -102,7 +103,7 @@ export function Portfolio() {
   const cursorNode = hoveredNode ?? null;
 
   return (
-    <>
+    <ExperienceBoundary fallback={<StaticPortfolio />}>
       <CustomCursor />
       <TopBar />
 
@@ -133,6 +134,6 @@ export function Portfolio() {
       <DetailPanel node={selectedNode} onClose={closePanel} />
       {layer === "contact" && <ContactPanel hidden={selectedNode !== null} />}
       {!booted && <BootSequence onComplete={() => setBooted(true)} />}
-    </>
+    </ExperienceBoundary>
   );
 }

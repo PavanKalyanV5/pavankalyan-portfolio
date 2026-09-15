@@ -13,7 +13,7 @@ interface ColorModeContextValue {
 
 const ColorModeContext = createContext<ColorModeContextValue | null>(null);
 
-const STORAGE_KEY = "portfolio-color-mode";
+export const STORAGE_KEY = "portfolio-color-mode";
 
 export function useColorMode(): ColorModeContextValue {
   const context = useContext(ColorModeContext);

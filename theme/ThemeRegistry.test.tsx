@@ -1,13 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { ThemeRegistry, useColorMode } from "./ThemeRegistry";
+import { ThemeRegistry, useColorMode, STORAGE_KEY } from "./ThemeRegistry";
 
 function ToggleButton() {
   const { mode, toggleMode } = useColorMode();
   return <button onClick={toggleMode}>mode: {mode}</button>;
 }
-
-const STORAGE_KEY = "portfolio-color-mode";
 
 describe("ThemeRegistry", () => {
   beforeEach(() => {

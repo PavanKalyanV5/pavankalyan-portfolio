@@ -18,7 +18,7 @@ export function IconBadge({ seed, size = 48, children }: IconBadgeProps) {
       height={size}
       viewBox="0 0 48 48"
       style={{ transform: `rotate(${rotation}deg)` }}
-      role="img"
+      aria-hidden="true"
     >
       {shape === "circle" && (
         <circle cx="24" cy="24" r="22" fill={accentColor} fillOpacity="0.16" stroke={accentColor} strokeWidth="1.5" />

@@ -1,0 +1,27 @@
+.labelContainer {
+  pointer-events: none;
+  user-select: none;
+}
+
+.label {
+  background: rgb(5 7 14 / 0.55);
+  padding: 3px 8px;
+  border-radius: var(--r-tooltip);
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+}
+
+.labelText {
+  font-family: var(--font-sans);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--text-high);
+  white-space: nowrap;
+}
+
+.meta {
+  font-family: var(--font-code);
+  font-size: var(--t-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}

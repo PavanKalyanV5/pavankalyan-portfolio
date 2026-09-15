@@ -3,11 +3,14 @@
 import { useMemo } from "react";
 import type { LayerGraph, MeshNode } from "@/lib/mesh/types";
 import { EDGE_DIM, EDGE_ACTIVE } from "@/lib/mesh/nodeStyle";
+import { edgeControlPoint, pointOnEdge } from "@/lib/mesh/curve";
 
 export interface MeshEdgesProps {
   graph: LayerGraph;
   activeId: string | null;
 }
+
+const SEGMENTS = 14;
 
 export function MeshEdges(props: MeshEdgesProps) {
   const { graph, activeId } = props;
@@ -21,7 +24,7 @@ export function MeshEdges(props: MeshEdgesProps) {
     return map;
   }, [graph.nodes]);
 
-  // Dim set: all edges
+  // Dim set: all edges with curved path
   const dimPositions = useMemo(() => {
     const positions: number[] = [];
     for (const edge of graph.edges) {
@@ -29,12 +32,21 @@ export function MeshEdges(props: MeshEdgesProps) {
       const toNode = nodeMap.get(edge.to);
       if (!fromNode || !toNode) continue;
 
-      positions.push(...fromNode.position, ...toNode.position);
+      const from = fromNode.position;
+      const to = toNode.position;
+      const control = edgeControlPoint(from, to);
+
+      // Emit SEGMENTS consecutive line segments
+      for (let k = 0; k < SEGMENTS; k++) {
+        const p1 = pointOnEdge(from, control, to, k / SEGMENTS);
+        const p2 = pointOnEdge(from, control, to, (k + 1) / SEGMENTS);
+        positions.push(...p1, ...p2);
+      }
     }
     return new Float32Array(positions);
   }, [graph.edges, nodeMap]);
 
-  // Active set: only edges connected to activeId
+  // Active set: only edges connected to activeId with curved path
   const activePositions = useMemo(() => {
     if (!activeId) return null;
 
@@ -46,7 +58,16 @@ export function MeshEdges(props: MeshEdgesProps) {
       const toNode = nodeMap.get(edge.to);
       if (!fromNode || !toNode) continue;
 
-      positions.push(...fromNode.position, ...toNode.position);
+      const from = fromNode.position;
+      const to = toNode.position;
+      const control = edgeControlPoint(from, to);
+
+      // Emit SEGMENTS consecutive line segments
+      for (let k = 0; k < SEGMENTS; k++) {
+        const p1 = pointOnEdge(from, control, to, k / SEGMENTS);
+        const p2 = pointOnEdge(from, control, to, (k + 1) / SEGMENTS);
+        positions.push(...p1, ...p2);
+      }
     }
 
     return positions.length > 0 ? new Float32Array(positions) : null;

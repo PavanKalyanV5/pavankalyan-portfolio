@@ -58,18 +58,20 @@ function buildOverviewLayer(): LayerGraph {
     },
   });
 
-  // Five hub nodes for each layer
+  // Six hub nodes for each content layer
   const hubIds = [
     "hub-experience",
     "hub-projects",
-    "hub-credentials",
+    "hub-education",
+    "hub-certifications",
     "hub-skills",
     "hub-contact",
   ];
   const hubLabels = [
     "Experience",
-    "Projects",
-    "Credentials",
+    "Personal Projects",
+    "Education",
+    "Certifications & Licenses",
     "Skills",
     "Contact",
   ];
@@ -77,13 +79,14 @@ function buildOverviewLayer(): LayerGraph {
   const hubSubtitles = [
     "7 roles",
     "9 projects",
-    "24 certifications",
+    "5 schools",
+    "15 issuers",
     "8 domains",
     "7 profiles",
   ];
 
-  for (let i = 0; i < 5; i++) {
-    const angle = (i / 5) * 2 * Math.PI - Math.PI / 2;
+  for (let i = 0; i < 6; i++) {
+    const angle = (i / 6) * 2 * Math.PI - Math.PI / 2;
     const x = round3(Math.cos(angle) * 6.5);
     const y = round3(Math.sin(angle) * 4.2);
     const z = round3(Math.sin(angle * 2) * 1.5);
@@ -328,7 +331,7 @@ function buildProjectsLayer(): LayerGraph {
 
   return {
     id: "projects",
-    label: "Projects",
+    label: "Personal Projects",
     caption: "Personal and production systems. The inner ring is the flagship work.",
     nodes,
     edges,
@@ -337,44 +340,71 @@ function buildProjectsLayer(): LayerGraph {
 }
 
 // ============================================================================
-// Layer 4: Credentials
+// Layer 4: Education
 // ============================================================================
 
-function buildCredentialsLayer(): LayerGraph {
+function buildEducationLayer(): LayerGraph {
   const nodes: MeshNode[] = [];
   const edges: MeshEdge[] = [];
 
-  // Education nodes (top row)
+  // One node per education entry in chronological order
   for (let i = 0; i < education.length; i++) {
     const entry = education[i];
-    const x = round3(-3 + i * 6);
-    const y = round3(3.2);
-    const z = round3(0);
+    const x = round3(-6 + i * 3);
+    const y = round3(i % 2 === 0 ? -1.1 : 1.1);
+    const z = round3(i % 3 === 0 ? -0.7 : i % 3 === 1 ? 0.7 : 0);
+
+    let emphasis: NodeEmphasis;
+    if (entry.id === "gvp-btech") {
+      emphasis = "primary";
+    } else if (entry.id === "sri-chaitanya-intermediate") {
+      emphasis = "normal";
+    } else {
+      emphasis = "muted";
+    }
 
     nodes.push({
       id: entry.id,
-      layer: "credentials",
+      layer: "education",
       kind: "education",
-      emphasis: "primary",
+      emphasis,
       label: entry.credential,
       title: entry.credential,
       subtitle: entry.institution,
       meta: entry.dateLabel,
       position: [x, y, z],
       detail: {
-        note: entry.grade,
+        note: entry.grade !== undefined ? entry.grade : undefined,
       },
     });
   }
 
-  // Add temporal edge between the two education nodes
-  if (education.length >= 2) {
+  // Create temporal edges connecting each node to the next
+  for (let i = 0; i < nodes.length - 1; i++) {
     edges.push({
-      from: education[0].id,
-      to: education[1].id,
+      from: nodes[i].id,
+      to: nodes[i + 1].id,
       kind: "temporal",
     });
   }
+
+  return {
+    id: "education",
+    label: "Education",
+    caption: "Every school and degree, oldest first.",
+    nodes,
+    edges,
+    cameraHome: [0, 2, 17],
+  };
+}
+
+// ============================================================================
+// Layer 5: Certifications
+// ============================================================================
+
+function buildCertificationsLayer(): LayerGraph {
+  const nodes: MeshNode[] = [];
+  const edges: MeshEdge[] = [];
 
   // Group certifications by issuer (preserving first-appearance order)
   const issuerGroups: Record<string, typeof certifications> = {};
@@ -388,6 +418,26 @@ function buildCredentialsLayer(): LayerGraph {
     issuerGroups[cert.issuer].push(cert);
   }
 
+  // Calculate totals for hub
+  const issuerCount = issuerOrder.length;
+  const totalCertificateCount = certifications.length;
+
+  // Center hub
+  nodes.push({
+    id: "certs-core",
+    layer: "certifications",
+    kind: "hub",
+    emphasis: "primary",
+    // Deliberately not the same string as the layer heading — the fallback
+    // renders both, and identical titles read as a duplication bug.
+    label: "All credentials",
+    title: "All credentials",
+    subtitle: `${issuerCount} issuers`,
+    meta: `${totalCertificateCount} credentials`,
+    position: [0, 0, 0],
+    detail: {},
+  });
+
   // Create one node per issuer
   const issuerNodeIds: string[] = [];
 
@@ -397,19 +447,21 @@ function buildCredentialsLayer(): LayerGraph {
     const issuerNodeId = "issuer-" + slugify(issuer);
     issuerNodeIds.push(issuerNodeId);
 
-    const angle = (j / issuerOrder.length) * 2 * Math.PI;
-    const x = round3(Math.cos(angle) * 7.5);
-    const y = round3(Math.sin(angle) * 3.4 - 1.5);
+    const angle = (j / issuerOrder.length) * 2 * Math.PI - Math.PI / 2;
+    const x = round3(Math.cos(angle) * 7);
+    const y = round3(Math.sin(angle) * 3.8);
     const z = round3(Math.sin(angle * 2) * 2);
 
     const count = issuerCerts.length;
     const countStr = count === 1 ? "1 credential" : `${count} credentials`;
 
+    const emphasis: NodeEmphasis = count >= 2 ? "primary" : "normal";
+
     nodes.push({
       id: issuerNodeId,
-      layer: "credentials",
+      layer: "certifications",
       kind: "certification",
-      emphasis: "normal",
+      emphasis,
       label: issuer,
       title: issuer,
       subtitle: "Certifications",
@@ -425,23 +477,19 @@ function buildCredentialsLayer(): LayerGraph {
           })),
       },
     });
-  }
 
-  // Add membership edges in a closed ring
-  for (let j = 0; j < issuerNodeIds.length; j++) {
-    const from = issuerNodeIds[j];
-    const to = issuerNodeIds[(j + 1) % issuerNodeIds.length];
+    // Add membership edge from hub to issuer
     edges.push({
-      from,
-      to,
+      from: "certs-core",
+      to: issuerNodeId,
       kind: "membership",
     });
   }
 
   return {
-    id: "credentials",
+    id: "certifications",
     label: "Certifications & Licenses",
-    caption: "Degrees, and certifications grouped by the body that issued them.",
+    caption: "Credentials grouped by the body that issued them.",
     nodes,
     edges,
     cameraHome: [0, 2, 17],
@@ -449,7 +497,7 @@ function buildCredentialsLayer(): LayerGraph {
 }
 
 // ============================================================================
-// Layer 5: Skills
+// Layer 6: Skills
 // ============================================================================
 
 function buildSkillsLayer(): LayerGraph {
@@ -522,7 +570,7 @@ function buildSkillsLayer(): LayerGraph {
 }
 
 // ============================================================================
-// Layer 6: Contact
+// Layer 7: Contact
 // ============================================================================
 
 function buildContactLayer(): LayerGraph {
@@ -601,7 +649,8 @@ export const LAYER_GRAPHS: Record<LayerId, LayerGraph> = {
   overview: buildOverviewLayer(),
   experience: buildExperienceLayer(),
   projects: buildProjectsLayer(),
-  credentials: buildCredentialsLayer(),
+  education: buildEducationLayer(),
+  certifications: buildCertificationsLayer(),
   skills: buildSkillsLayer(),
   contact: buildContactLayer(),
 };

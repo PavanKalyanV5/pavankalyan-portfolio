@@ -67,6 +67,7 @@ export function MeshCanvas({
         frameloop="always"
       >
         <color attach="background" args={["#05070E"]} />
+        <fogExp2 attach="fog" args={["#05070E", 0.028]} />
         {children}
         <PerformanceMonitor
           onDecline={() => setDegraded(true)}

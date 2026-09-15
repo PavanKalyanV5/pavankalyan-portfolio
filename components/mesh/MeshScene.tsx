@@ -4,6 +4,7 @@ import type { LayerGraph } from "@/lib/mesh/types";
 import { MeshNodeObject } from "./MeshNodeObject";
 import { MeshEdges } from "./MeshEdges";
 import { FlowParticles } from "./FlowParticles";
+import { NodeLabel } from "./NodeLabel";
 
 export interface MeshSceneProps {
   graph: LayerGraph;
@@ -56,6 +57,33 @@ export function MeshScene(props: MeshSceneProps) {
             still={still}
           />
         );
+      })}
+
+      {/* Labels: hubs always with soft emphasis, hovered/selected with strong emphasis */}
+      {graph.nodes.map((node) => {
+        const isHub = node.kind === "hub";
+        const isHovered = hoveredId === node.id;
+        const isSelected = selectedId === node.id;
+
+        // Show label if: hub (soft) OR (hovered/selected and not a hub) (strong)
+        if (isHub) {
+          return (
+            <NodeLabel
+              key={`label-${node.id}`}
+              node={node}
+              emphasis="soft"
+            />
+          );
+        } else if (isHovered || isSelected) {
+          return (
+            <NodeLabel
+              key={`label-${node.id}`}
+              node={node}
+              emphasis="strong"
+            />
+          );
+        }
+        return null;
       })}
     </group>
   );

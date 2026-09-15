@@ -8,7 +8,8 @@ export type LayerId =
   | "overview"
   | "experience"
   | "projects"
-  | "credentials"
+  | "education"
+  | "certifications"
   | "skills"
   | "contact";
 
@@ -33,6 +34,14 @@ export type NodeEmphasis = "live" | "primary" | "normal" | "muted";
 export interface NodeLink {
   label: string;
   url: string;
+}
+
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  credential: string;
+  grade?: string;
+  dateLabel: string;
 }
 
 export interface NodeDetail {
@@ -97,7 +106,8 @@ export const LAYER_ORDER: LayerId[] = [
   "overview",
   "experience",
   "projects",
-  "credentials",
+  "education",
+  "certifications",
   "skills",
   "contact",
 ];

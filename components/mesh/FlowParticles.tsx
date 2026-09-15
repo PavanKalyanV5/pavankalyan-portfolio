@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { LayerGraph } from "@/lib/mesh/types";
 import { PARTICLE_COLOR } from "@/lib/mesh/nodeStyle";
+import { edgeControlPoint, pointOnEdge } from "@/lib/mesh/curve";
 
 const PER_EDGE = 5;
 
@@ -16,11 +17,12 @@ export function FlowParticles(props: FlowParticlesProps) {
   const { graph } = props;
   const geometryRef = useRef<THREE.BufferGeometry>(null);
 
-  // Precompute particle data
+  // Precompute particle data with curve control points
   const { particleData, totalCount } = useMemo(() => {
     const data: Array<{
       startPos: [number, number, number];
       endPos: [number, number, number];
+      control: [number, number, number];
       phase: number;
     }> = [];
 
@@ -31,12 +33,15 @@ export function FlowParticles(props: FlowParticlesProps) {
 
       if (!fromNode || !toNode) continue;
 
+      const control = edgeControlPoint(fromNode.position, toNode.position);
+
       for (let particleIdx = 0; particleIdx < PER_EDGE; particleIdx++) {
         const phase =
           edgeIdx * 0.07 + particleIdx * 0.2;
         data.push({
           startPos: fromNode.position,
           endPos: toNode.position,
+          control,
           phase,
         });
       }
@@ -65,12 +70,13 @@ export function FlowParticles(props: FlowParticlesProps) {
     const buffer = attribute.array as Float32Array;
 
     for (let i = 0; i < particleData.length; i++) {
-      const { startPos, endPos, phase } = particleData[i];
+      const { startPos, endPos, control, phase } = particleData[i];
       const t = (clock.elapsedTime * 0.18 + phase) % 1;
 
-      buffer[i * 3] = startPos[0] + (endPos[0] - startPos[0]) * t;
-      buffer[i * 3 + 1] = startPos[1] + (endPos[1] - startPos[1]) * t;
-      buffer[i * 3 + 2] = startPos[2] + (endPos[2] - startPos[2]) * t;
+      const pos = pointOnEdge(startPos, control, endPos, t);
+      buffer[i * 3] = pos[0];
+      buffer[i * 3 + 1] = pos[1];
+      buffer[i * 3 + 2] = pos[2];
     }
 
     attribute.needsUpdate = true;

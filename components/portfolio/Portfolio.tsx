@@ -9,7 +9,7 @@ import { Effects } from "@/components/mesh/Effects";
 import { TopBar } from "@/components/overlay/TopBar";
 import { NavRail } from "@/components/overlay/NavRail";
 import { DetailPanel } from "@/components/overlay/DetailPanel";
-import { ContactPanel } from "@/components/overlay/ContactPanel";
+import { ContactLauncher } from "@/components/overlay/ContactLauncher";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { StaticPortfolio } from "@/components/fallback/StaticPortfolio";
 import { useCapabilities, shouldRender3D } from "@/lib/mesh/useCapabilities";
@@ -142,15 +142,13 @@ export function Portfolio() {
       </div>
 
       {/* Mounted only after the boot trace clears, so the name reveal lands on an
-          empty stage rather than animating unseen behind the overlay. Suppressed
-          on the contact layer, where the contact form occupies the same left
-          slot and carries its own heading. */}
-      {booted && layer !== "contact" && (
-        <LayerIntro graph={graph} dimmed={selectedNode !== null} />
-      )}
+          empty stage rather than animating unseen behind the overlay. */}
+      {booted && <LayerIntro graph={graph} dimmed={selectedNode !== null} />}
       <NavRail active={layer} onSelect={changeLayer} />
       <DetailPanel node={selectedNode} onClose={closePanel} />
-      {layer === "contact" && <ContactPanel hidden={selectedNode !== null} />}
+      {/* Collapsed by default and present on every layer, so the graph is never
+          covered and the form is always one click away. */}
+      <ContactLauncher />
       {!booted && <BootSequence onComplete={() => setBooted(true)} />}
     </ExperienceBoundary>
   );

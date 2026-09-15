@@ -59,13 +59,15 @@ export function MeshScene(props: MeshSceneProps) {
         );
       })}
 
-      {/* Labels: hubs always with soft emphasis, hovered/selected with strong emphasis */}
+      {/* Labels: navigation nodes always, hovered/selected with stronger emphasis */}
       {graph.nodes.map((node) => {
-        const isHub = node.kind === "hub";
+        // Hubs and the direct profile shortcuts are the navigable nodes, so they
+        // carry permanent labels — an unlabelled node looks inert and gives the
+        // visitor no reason to click it.
+        const isHub = node.kind === "hub" || node.id.startsWith("link-");
         const isHovered = hoveredId === node.id;
         const isSelected = selectedId === node.id;
 
-        // Show label if: hub (soft) OR (hovered/selected and not a hub) (strong)
         if (isHub) {
           return (
             <NodeLabel

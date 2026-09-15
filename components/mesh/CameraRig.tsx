@@ -16,9 +16,23 @@ interface CameraRigProps {
 // Frame-rate independent smooth constant
 const SMOOTH = 0.0015;
 
+/**
+ * How far to push the graph right of centre, so it clears the hero copy and the
+ * detail panel that both occupy the left side on wide screens. Implemented by
+ * translating the camera left rather than moving the nodes, so the positions in
+ * the layer data stay the single source of truth for the fly-to animation.
+ */
+function centreShift(viewportWidth: number): number {
+  if (viewportWidth >= 1400) return 5;
+  if (viewportWidth >= 1100) return 3.5;
+  // Below this the hero becomes a full-width block at the bottom, so a centred
+  // graph is correct.
+  return 0;
+}
+
 export function CameraRig(props: CameraRigProps) {
   const { home, focus, still = false } = props;
-  const { camera, pointer, clock } = useThree();
+  const { camera, pointer, clock, size } = useThree();
 
   // Persistent refs for lerped camera position and look target
   const targetPos = useRef(new THREE.Vector3(...home));
@@ -28,6 +42,7 @@ export function CameraRig(props: CameraRigProps) {
   useFrame((state, delta) => {
     // Compute frame-rate-independent lerp factor
     const k = 1 - Math.pow(SMOOTH, delta);
+    const shift = centreShift(size.width);
 
     if (still) {
       // Still mode: snap directly without lerping
@@ -40,9 +55,9 @@ export function CameraRig(props: CameraRigProps) {
         );
         currentLook.current.set(focus[0], focus[1], focus[2]);
       } else {
-        // Home position
-        camera.position.set(home[0], home[1], home[2]);
-        currentLook.current.set(0, 0, 0);
+        // Home position, translated left so the graph reads right of centre
+        camera.position.set(home[0] - shift, home[1], home[2]);
+        currentLook.current.set(-shift, 0, 0);
       }
       camera.lookAt(currentLook.current);
       return;
@@ -58,11 +73,11 @@ export function CameraRig(props: CameraRigProps) {
       const parallaxY = pointer.y * 0.9;
 
       targetPos.current.set(
-        home[0] + driftX + parallaxX,
+        home[0] - shift + driftX + parallaxX,
         home[1] + driftY + parallaxY,
         home[2]
       );
-      targetLook.current.set(0, 0, 0);
+      targetLook.current.set(-shift, 0, 0);
     } else {
       // Focused: position offset with reduced parallax, no drift
       const parallaxX = pointer.x * 0.45;

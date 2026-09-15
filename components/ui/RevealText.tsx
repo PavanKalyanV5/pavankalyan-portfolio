@@ -35,22 +35,27 @@ export function RevealText({
   return (
     <Component ref={ref} className={className}>
       {words.map((word, idx) => (
-        <span key={idx} className={styles.wordContainer}>
-          <motion.span
-            className={styles.word}
-            initial={{ y: "110%" }}
-            animate={isInView ? { y: "0%" } : { y: "110%" }}
-            transition={{
-              duration: 0.7,
-              ease: [0.16, 1, 0.3, 1],
-              delay: delay + idx * 0.055,
-            }}
-            style={{ display: "inline-block" }}
-          >
-            {word}
-          </motion.span>
-          {idx < words.length - 1 && " "}
-        </span>
+        // The separating space must sit OUTSIDE the mask container: the mask is
+        // an overflow-hidden inline-block, and trailing whitespace inside such a
+        // box is trimmed, which silently ran every word together.
+        <React.Fragment key={idx}>
+          <span className={styles.wordContainer}>
+            <motion.span
+              className={styles.word}
+              initial={{ y: "110%" }}
+              animate={isInView ? { y: "0%" } : { y: "110%" }}
+              transition={{
+                duration: 0.7,
+                ease: [0.16, 1, 0.3, 1],
+                delay: delay + idx * 0.055,
+              }}
+              style={{ display: "inline-block" }}
+            >
+              {word}
+            </motion.span>
+          </span>
+          {idx < words.length - 1 ? " " : null}
+        </React.Fragment>
       ))}
     </Component>
   );

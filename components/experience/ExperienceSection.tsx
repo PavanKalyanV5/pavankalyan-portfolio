@@ -3,7 +3,7 @@ import { Timeline, type TimelineItemData } from "@/components/timeline/Timeline"
 import { experience } from "@/content/experience";
 
 export function ExperienceSection() {
-  const items: TimelineItemData[] = experience.map((entry) => ({
+  const items: TimelineItemData[] = [...experience].reverse().map((entry) => ({
     id: entry.id,
     title: entry.role,
     subtitle: `${entry.organization} · ${entry.location}`,

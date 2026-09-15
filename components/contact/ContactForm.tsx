@@ -7,6 +7,7 @@ export function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [website, setWebsite] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
 
@@ -27,7 +28,7 @@ export function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, website }),
       });
 
       if (!response.ok) {
@@ -48,6 +49,16 @@ export function ContactForm() {
   return (
     <Stack component="form" onSubmit={handleSubmit} spacing={2} maxWidth={480}>
       {error && <Alert severity="error">{error}</Alert>}
+      <TextField
+        label="Leave this field blank"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        sx={{ position: "absolute", left: "-9999px" }}
+        aria-hidden="true"
+      />
       <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} />
       <TextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <TextField

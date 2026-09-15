@@ -21,5 +21,8 @@ describe("HomePage", () => {
     expect(screen.getByRole("heading", { name: "Certifications" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Socials/ })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "vetlapavankalyan5@gmail.com" })
+    ).toHaveAttribute("href", "mailto:vetlapavankalyan5@gmail.com");
   });
 });

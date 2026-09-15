@@ -4,7 +4,7 @@ import { GeneratedIcon } from "@/components/icons/GeneratedIcon";
 import { projects } from "@/content/projects";
 
 export function ProjectsSection() {
-  const items: TimelineItemData[] = projects.map((project) => ({
+  const items: TimelineItemData[] = [...projects].reverse().map((project) => ({
     id: project.id,
     title: project.name,
     subtitle: project.techStack.join(" · "),

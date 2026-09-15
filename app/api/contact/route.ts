@@ -48,8 +48,12 @@ export async function POST(request: Request) {
   }
 
   const resend = new Resend(apiKey);
+  const fromAddress =
+    process.env.CONTACT_FROM_EMAIL?.trim() ||
+    "Portfolio Contact Form <onboarding@resend.dev>";
+
   const { error } = await resend.emails.send({
-    from: "Portfolio Contact Form <onboarding@resend.dev>",
+    from: fromAddress,
     to: toEmail,
     replyTo: payload.email,
     subject: `New portfolio message from ${payload.name ?? "a visitor"}`,
@@ -57,6 +61,11 @@ export async function POST(request: Request) {
   });
 
   if (error) {
+    // The provider's reason is the only way to tell a rejected sender from a bad
+    // key or a rate limit, and it is invisible unless logged. Server-side only:
+    // the visitor gets a generic message, since provider detail is not theirs to
+    // debug and could leak configuration.
+    console.error("Resend rejected the message:", error);
     return Response.json({ error: "Failed to send message." }, { status: 502 });
   }
 

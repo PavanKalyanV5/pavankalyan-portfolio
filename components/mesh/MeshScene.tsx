@@ -11,10 +11,15 @@ export interface MeshSceneProps {
   selectedId: string | null;
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
+  /**
+   * Hold the scene still for visitors who asked for reduced motion: no particle
+   * flow, no node bob. The topology is still fully visible and interactive.
+   */
+  still?: boolean;
 }
 
 export function MeshScene(props: MeshSceneProps) {
-  const { graph, hoveredId, selectedId, onHover, onSelect } = props;
+  const { graph, hoveredId, selectedId, onHover, onSelect, still = false } = props;
 
   return (
     <group>
@@ -26,7 +31,7 @@ export function MeshScene(props: MeshSceneProps) {
 
       {/* Edges and particles */}
       <MeshEdges graph={graph} activeId={hoveredId ?? selectedId} />
-      <FlowParticles graph={graph} />
+      {!still && <FlowParticles graph={graph} />}
 
       {/* Nodes */}
       {graph.nodes.map((node) => {
@@ -48,6 +53,7 @@ export function MeshScene(props: MeshSceneProps) {
             state={state}
             onHover={onHover}
             onSelect={onSelect}
+            still={still}
           />
         );
       })}

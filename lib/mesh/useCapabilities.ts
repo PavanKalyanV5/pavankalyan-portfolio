@@ -147,7 +147,14 @@ export function useCapabilities(): Capabilities {
 
 /**
  * Determines whether the 3D experience should render or fall back to DOM.
+ *
+ * Reduced motion deliberately does NOT disqualify the 3D view: a large share of
+ * desktop users have OS animation effects switched off and still expect to see
+ * the actual site. Those users get the scene rendered *still* instead — no
+ * camera flight, drift, parallax or particle flow — which is handled by the
+ * `still` props threaded through the scene, not by swapping in the DOM version.
+ * The DOM fallback is reserved for devices that genuinely cannot run WebGL.
  */
 export function shouldRender3D(c: Capabilities): boolean {
-  return c.ready && c.webgl && !c.reducedMotion;
+  return c.ready && c.webgl;
 }

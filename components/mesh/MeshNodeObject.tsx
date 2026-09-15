@@ -11,12 +11,14 @@ export interface MeshNodeObjectProps {
   state: "idle" | "hovered" | "selected" | "dimmed";
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
+  /** Snap to state instead of easing, and stop the ambient bob/spin. */
+  still?: boolean;
 }
 
 const LERP_FACTOR = (delta: number) => 1 - Math.pow(0.001, delta);
 
 export function MeshNodeObject(props: MeshNodeObjectProps) {
-  const { node, state, onHover, onSelect } = props;
+  const { node, state, onHover, onSelect, still = false } = props;
   const style = styleFor(node.emphasis);
 
   const groupRef = useRef<Group>(null);
@@ -64,6 +66,16 @@ export function MeshNodeObject(props: MeshNodeObjectProps) {
 
   useFrame(({ clock }, delta) => {
     if (!groupRef.current || !coreMaterialRef.current || !shellMaterialRef.current) {
+      return;
+    }
+
+    // Reduced motion: land on the target state immediately and skip all ambient
+    // movement, keeping the topology readable but static.
+    if (still) {
+      coreMaterialRef.current.emissiveIntensity = targets.coreEmissiveIntensity;
+      coreMaterialRef.current.opacity = targets.coreOpacity;
+      shellMaterialRef.current.opacity = targets.shellOpacity;
+      groupRef.current.position.y = node.position[1];
       return;
     }
 

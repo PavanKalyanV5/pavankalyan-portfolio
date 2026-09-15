@@ -95,15 +95,28 @@ export function Portfolio() {
   }
 
   if (!shouldRender3D(capabilities)) {
-    return <StaticPortfolio />;
+    // data-* attributes make it possible to confirm *why* the fallback rendered
+    // by inspecting the element, rather than guessing.
+    return (
+      <div data-fallback-reason="no-webgl" data-webgl="false">
+        <StaticPortfolio />
+      </div>
+    );
   }
 
+  const still = capabilities.reducedMotion;
   const quality = capabilities.lowPower ? "low" : "high";
   const focus = selectedNode?.position ?? null;
   const cursorNode = hoveredNode ?? null;
 
   return (
-    <ExperienceBoundary fallback={<StaticPortfolio />}>
+    <ExperienceBoundary
+      fallback={
+        <div data-fallback-reason="runtime-error">
+          <StaticPortfolio />
+        </div>
+      }
+    >
       <CustomCursor />
       <TopBar />
 
@@ -113,14 +126,15 @@ export function Portfolio() {
         data-cursor-label={cursorNode?.label}
       >
         <MeshCanvas quality={quality}>
-          <CameraRig home={graph.cameraHome} focus={focus} />
-          <ParallaxGroup>
+          <CameraRig home={graph.cameraHome} focus={focus} still={still} />
+          <ParallaxGroup still={still}>
             <MeshScene
               graph={graph}
               hoveredId={hoveredId}
               selectedId={selectedId}
               onHover={setHoveredId}
               onSelect={handleSelect}
+              still={still}
             />
           </ParallaxGroup>
           <Effects quality={quality} />

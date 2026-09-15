@@ -45,6 +45,13 @@ responsive across devices.
    Dated 2025, distinct from Theo Personal AI Workspace. Described in the
    user's own
    [LinkedIn article](https://www.linkedin.com/pulse/agenticrag-i-trained-my-ai-specific-knowledgebase-without-vetla-vsdgc/).
+   The same scrape also confirmed public verification links for 10 of the 25
+   certifications (Microsoft Orleans/Udemy, Zscaler ZTCA, Wipro TalentNext,
+   Zscaler Cybersecurity Fundamentals, Google Data Analytics/Coursera, Unstop
+   E-Commerce, Coding Ninjas Pointers, Google Cloud Engineer Path, and two
+   further Coursera ML certificates); the remaining certifications did not
+   render a link in the saved page (LinkedIn virtualizes the list) and will
+   be listed without an outbound link.
 
 All content is merged: current professional role leads the narrative;
 earlier internships, ML-era projects, and the full certification list are
@@ -86,28 +93,38 @@ appears near the hero/contact section, reflecting current job-search status.
    CTA buttons (Resume, Contact, GitHub).
 2. **About** — professional summary, SWE-first framing.
 3. **Experience timeline** — vertical timeline (alternating sides on
-   desktop, stacked on mobile). Kovalty Technologies (SWE, current; SWE
-   Intern) as primary entries. Scora Labs, GDSC GVP (ML Team Lead), Sparks
-   Foundation, AICTE (AI-ML Intern, Zero Trust Cloud Security) as earlier
-   entries.
+   desktop, stacked on mobile), weighted by relevance rather than uniform
+   detail for every entry. Kovalty Technologies (SWE, current; SWE Intern)
+   render as full detailed cards — this is the current, most relevant work.
+   Scora Labs, GDSC GVP (ML Team Lead), Sparks Foundation, and AICTE (AI-ML
+   Intern, Zero Trust Cloud Security) collapse into a compact "Earlier
+   Experience" cluster within the same chronological timeline — present for
+   completeness and growth history, without competing visually with the
+   current role.
 4. **Projects timeline** — single chronological timeline combining Theo
    Personal AI Workspace, AgenticRAG, Game Intelligence Platform, News
-   Summarization Archive, and the five older student projects. Each entry
-   has a **custom-built SVG illustration/icon**
-   representing its theme — not a sourced screenshot or AI-generated raster
-   image — so the whole timeline is visually cohesive regardless of whether
-   the underlying project is public, private, or long offline.
-5. **Education timeline** — same visual timeline style: B.Tech (CGPA 9.19,
-   GVP College of Engineering), Intermediate (CGPA 9.94/9.96, Sri Chaitanya),
-   secondary schooling entries.
+   Summarization Archive, and the five older student projects, also
+   weighted by significance: the four substantial/current projects get full
+   detail cards; the five older clone/student projects render as a compact
+   row of smaller cards. Each entry has a **custom-built SVG
+   illustration/icon** representing its theme — not a sourced screenshot or
+   AI-generated raster image — so the whole timeline is visually cohesive
+   regardless of whether the underlying project is public, private, or long
+   offline.
+5. **Education timeline** — same visual timeline style, scoped to what's on
+   the resume: B.Tech (CGPA 9.19, GVP College of Engineering) and
+   Intermediate (CGPA 9.94, Sri Chaitanya). Earlier schooling (grades 1–10,
+   surfaced only via the LinkedIn scrape) is intentionally excluded from the
+   visual timeline as not relevant to a professional portfolio.
 6. **Skills** — grouped by category (Languages; AI & Agentic Systems;
    Backend; Frontend; Databases; Cloud & DevOps; Design Patterns; Tools).
    Every skill gets a **fully custom-illustrated icon** (not a stock brand
    logo), displayed as icon+label cards with a hover/tilt micro-interaction.
-7. **Certifications** — full list (30+ entries) in a collapsible/scrollable
+7. **Certifications** — full list (25 entries) in a collapsible/scrollable
    panel, grouped by issuer or year. Each entry gets a **custom-illustrated
    issuer icon**, reused across that issuer's certificates, so the section
-   reads as a visual badge wall rather than a plain text list.
+   reads as a visual badge wall rather than a plain text list. 10 entries
+   link out to a public verification page; the rest display without a link.
 8. **Socials & Competitive Profiles** — GitHub, LinkedIn, Twitter, LeetCode,
    GeeksforGeeks, CodingNinjas, Google Cloud Skills Boost — icon row or card
    grid.

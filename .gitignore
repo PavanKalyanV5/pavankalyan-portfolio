@@ -10,3 +10,4 @@ research/
 *.tsbuildinfo
 coverage/
 .claude/
+.env*

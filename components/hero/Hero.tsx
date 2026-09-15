@@ -35,7 +35,7 @@ export function Hero() {
           <Button variant="contained" size="large" href="/resume.pdf" target="_blank" rel="noopener">
             Resume
           </Button>
-          <Button variant="outlined" size="large" href="#contact">
+          <Button variant="outlined" size="large" href="#connect">
             Contact
           </Button>
           {github && (

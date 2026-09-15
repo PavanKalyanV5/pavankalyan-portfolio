@@ -1,14 +1,14 @@
 import { Container, Typography, Box } from "@mui/material";
-import { Timeline, type TimelineItemData } from "@/components/timeline/Timeline";
+import { NodeGraph, type NodeGraphItem } from "@/components/graph/NodeGraph";
 import { education } from "@/content/education";
 
 export function EducationSection() {
-  const items: TimelineItemData[] = education.map((entry) => ({
+  const items: NodeGraphItem[] = education.map((entry) => ({
     id: entry.id,
     title: entry.credential,
     subtitle: entry.institution,
     dateLabel: entry.dateLabel,
-    tier: "compact",
+    glyph: "pattern",
     body: (
       <Typography variant="body2" color="text.secondary">
         {entry.grade}
@@ -17,12 +17,12 @@ export function EducationSection() {
   }));
 
   return (
-    <Box component="section" id="education" sx={{ py: 10 }}>
+    <Box component="section" id="education" sx={{ py: 6 }}>
       <Container maxWidth="md">
         <Typography variant="h3" component="h2" fontWeight={700} gutterBottom>
           Education
         </Typography>
-        <Timeline items={items} />
+        <NodeGraph items={items} />
       </Container>
     </Box>
   );

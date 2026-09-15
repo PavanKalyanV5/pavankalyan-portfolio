@@ -1,5 +1,5 @@
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { AppShell } from "@/components/layout/AppShell";
+import type { PanelId } from "@/components/layout/panels";
 import { Hero } from "@/components/hero/Hero";
 import { About } from "@/components/about/About";
 import { ExperienceSection } from "@/components/experience/ExperienceSection";
@@ -11,37 +11,31 @@ import { SocialsSection } from "@/components/socials/SocialsSection";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { FadeInSection } from "@/components/motion/FadeInSection";
 import { Container, Typography, Box, Link } from "@mui/material";
+import type { ReactNode } from "react";
 
 const CONTACT_EMAIL = "vetlapavankalyan5@gmail.com";
 
-export default function HomePage() {
-  return (
+const panels: Record<PanelId, ReactNode> = {
+  home: (
     <>
-      <Header />
       <Hero />
       <FadeInSection>
         <About />
       </FadeInSection>
-      <FadeInSection>
-        <ExperienceSection />
-      </FadeInSection>
-      <FadeInSection>
-        <ProjectsSection />
-      </FadeInSection>
-      <FadeInSection>
-        <EducationSection />
-      </FadeInSection>
-      <FadeInSection>
-        <SkillsSection />
-      </FadeInSection>
-      <FadeInSection>
-        <CertificationsSection />
-      </FadeInSection>
+    </>
+  ),
+  experience: <ExperienceSection />,
+  projects: <ProjectsSection />,
+  education: <EducationSection />,
+  skills: <SkillsSection />,
+  certifications: <CertificationsSection />,
+  connect: (
+    <>
       <FadeInSection>
         <SocialsSection />
       </FadeInSection>
       <FadeInSection>
-        <Box component="section" id="contact" sx={{ py: 10 }}>
+        <Box component="section" id="contact" sx={{ py: 6 }}>
           <Container maxWidth="md">
             <Typography variant="h3" component="h2" fontWeight={700} gutterBottom>
               Contact
@@ -54,7 +48,16 @@ export default function HomePage() {
           </Container>
         </Box>
       </FadeInSection>
-      <Footer />
+      <Box sx={{ py: 4, textAlign: "center" }}>
+        <Typography variant="body2" color="text.secondary">
+          © {new Date().getFullYear()} Pavan Kalyan Vetla. Built with Next.js, MUI, and React
+          Three Fiber.
+        </Typography>
+      </Box>
     </>
-  );
+  ),
+};
+
+export default function HomePage() {
+  return <AppShell panels={panels} />;
 }

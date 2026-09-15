@@ -1,14 +1,15 @@
 import { Container, Typography, Box, List, ListItem } from "@mui/material";
-import { Timeline, type TimelineItemData } from "@/components/timeline/Timeline";
+import { NodeGraph, type NodeGraphItem } from "@/components/graph/NodeGraph";
 import { experience } from "@/content/experience";
 
 export function ExperienceSection() {
-  const items: TimelineItemData[] = [...experience].reverse().map((entry) => ({
+  const items: NodeGraphItem[] = experience.map((entry) => ({
     id: entry.id,
     title: entry.role,
     subtitle: `${entry.organization} · ${entry.location}`,
     dateLabel: entry.dateLabel,
-    tier: entry.tier,
+    glyph: "backend",
+    isCurrent: entry.tier === "primary" && entry.dateLabel.includes("Present"),
     body: (
       <List dense disablePadding>
         {entry.bullets.map((bullet, index) => (
@@ -21,12 +22,12 @@ export function ExperienceSection() {
   }));
 
   return (
-    <Box component="section" id="experience" sx={{ py: 10 }}>
+    <Box component="section" id="experience" sx={{ py: 6 }}>
       <Container maxWidth="md">
         <Typography variant="h3" component="h2" fontWeight={700} gutterBottom>
           Experience
         </Typography>
-        <Timeline items={items} />
+        <NodeGraph items={items} />
       </Container>
     </Box>
   );

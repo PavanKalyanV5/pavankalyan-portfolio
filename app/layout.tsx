@@ -5,7 +5,7 @@ import { PersonSchema } from "@/components/seo/PersonSchema";
 import "@/styles/global.css";
 
 const SITE_URL =
-  (process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-chi-bay-95.vercel.app").replace(/\/$/, "");
+  (process.env.NEXT_PUBLIC_SITE_URL ?? "https://pavankalyanvetla.vercel.app").replace(/\/$/, "");
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

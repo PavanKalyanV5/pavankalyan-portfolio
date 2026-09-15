@@ -5,7 +5,7 @@ import { skillCategories } from "@/content/skills";
 import { certifications } from "@/content/certifications";
 
 const SITE_URL =
-  (process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-chi-bay-95.vercel.app").replace(/\/$/, "");
+  (process.env.NEXT_PUBLIC_SITE_URL ?? "https://pavankalyanvetla.vercel.app").replace(/\/$/, "");
 
 interface Person {
   "@context": string;

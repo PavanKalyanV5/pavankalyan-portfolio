@@ -111,6 +111,16 @@ appears near the hero/contact section, reflecting current job-search status.
    AI-generated raster image — so the whole timeline is visually cohesive
    regardless of whether the underlying project is public, private, or long
    offline.
+
+   Personal projects run **concurrently** with work/education, not
+   sequentially after them — the Projects timeline is a separate section
+   from Experience and Education (per the earlier three-timelines decision),
+   so that overlap isn't visually implicit. To surface it, each project card
+   carries a short "concurrent with" annotation naming the overlapping
+   experience or education period: Theo and AgenticRAG note they were built
+   alongside the current Kovalty SWE role; News Summarization Archive notes
+   it was the B.Tech final-year capstone project. Cards with no meaningful
+   overlap (e.g. Tic Tac Toe) omit the annotation.
 5. **Education timeline** — same visual timeline style, scoped to what's on
    the resume: B.Tech (CGPA 9.19, GVP College of Engineering) and
    Intermediate (CGPA 9.94, Sri Chaitanya). Earlier schooling (grades 1–10,

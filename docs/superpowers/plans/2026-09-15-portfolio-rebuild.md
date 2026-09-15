@@ -203,7 +203,23 @@ export default defineConfig({
 ```typescript
 // test/setup.ts
 import "@testing-library/jest-dom/vitest";
+
+if (!window.matchMedia) {
+  window.matchMedia = (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList;
+}
 ```
+
+jsdom (the test environment) does not implement `window.matchMedia`. Task 7's `Hero` component calls it to detect `prefers-reduced-motion`, and Task 16's smoke test renders `Hero` too — without this polyfill, both crash with "matchMedia is not a function".
 
 - [ ] **Step 11: Write a smoke test**
 
@@ -1738,6 +1754,7 @@ export function HeroScene() {
 ```tsx
 "use client";
 
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Box, Container, Typography, Chip, Button, Stack } from "@mui/material";
 import { HeroErrorBoundary } from "./HeroErrorBoundary";
@@ -1751,8 +1768,11 @@ const HeroScene = dynamic(() => import("./HeroScene").then((mod) => mod.HeroScen
 
 export function Hero() {
   const github = socials.find((s) => s.id === "github");
-  const prefersReducedMotion =
-    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    setPrefersReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
 
   return (
     <Box component="section" sx={{ position: "relative", minHeight: "90vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
@@ -2390,7 +2410,7 @@ export function CertificationsSection() {
         <Button variant="outlined" onClick={() => setExpanded((prev) => !prev)} sx={{ mb: 2 }}>
           {expanded ? "Hide certifications" : "Show all certifications"}
         </Button>
-        <Collapse in={expanded}>
+        <Collapse in={expanded} unmountOnExit>
           <Grid container spacing={2}>
             {certifications.map((cert) => (
               <Grid key={cert.id} size={{ xs: 12, sm: 6 }}>

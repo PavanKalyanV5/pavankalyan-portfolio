@@ -84,7 +84,10 @@ function detectLowPower(): boolean {
       return true;
     }
 
-    const deviceMemory = (navigator as any).deviceMemory;
+    // deviceMemory is a non-standard Chromium hint, so it is not on the
+    // Navigator type.
+    const deviceMemory = (navigator as Navigator & { deviceMemory?: number })
+      .deviceMemory;
     if (deviceMemory !== undefined && deviceMemory < 4) {
       return true;
     }
@@ -109,7 +112,12 @@ export function useCapabilities(): Capabilities {
   );
 
   useEffect(() => {
-    // Detect all capabilities on the client
+    // Probing the device is exactly the "synchronise with an external system on
+    // mount" case effects exist for: none of these values are knowable during
+    // SSR or the first client render, so the initial state is deliberately
+    // conservative and corrected here once. The lint rule below guards against
+    // cascading-render loops, which this cannot cause — it runs once, with no
+    // dependencies, and never re-triggers itself.
     const detected: Capabilities = {
       webgl: detectWebGL(),
       reducedMotion: detectReducedMotion(),
@@ -118,6 +126,7 @@ export function useCapabilities(): Capabilities {
       ready: true,
     };
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCapabilities(detected);
 
     // Subscribe to reduced motion changes

@@ -3,6 +3,7 @@
 import React from "react";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { OPEN_TO_WORK, OPEN_TO_WORK_LABEL } from "@/lib/config";
 import styles from "./TopBar.module.css";
 
 export function TopBar() {
@@ -18,7 +19,7 @@ export function TopBar() {
       </div>
 
       <div className={styles.rightCluster}>
-        <StatusPill label="open to work" tone="live" />
+        {OPEN_TO_WORK && <StatusPill label={OPEN_TO_WORK_LABEL} tone="live" />}
       </div>
     </GlassPanel>
   );

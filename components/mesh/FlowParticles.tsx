@@ -55,22 +55,25 @@ export function FlowParticles(props: FlowParticlesProps) {
   );
 
   useFrame(({ clock }) => {
-    if (!geometryRef.current || particleData.length === 0) return;
+    const geometry = geometryRef.current;
+    if (!geometry || particleData.length === 0) return;
+
+    // Write straight into the geometry's own attribute buffer rather than into a
+    // value captured from render scope — per-frame mutation is the point here,
+    // and this keeps it owned by three.js instead of by React.
+    const attribute = geometry.attributes.position;
+    const buffer = attribute.array as Float32Array;
 
     for (let i = 0; i < particleData.length; i++) {
       const { startPos, endPos, phase } = particleData[i];
       const t = (clock.elapsedTime * 0.18 + phase) % 1;
 
-      const x = startPos[0] + (endPos[0] - startPos[0]) * t;
-      const y = startPos[1] + (endPos[1] - startPos[1]) * t;
-      const z = startPos[2] + (endPos[2] - startPos[2]) * t;
-
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
+      buffer[i * 3] = startPos[0] + (endPos[0] - startPos[0]) * t;
+      buffer[i * 3 + 1] = startPos[1] + (endPos[1] - startPos[1]) * t;
+      buffer[i * 3 + 2] = startPos[2] + (endPos[2] - startPos[2]) * t;
     }
 
-    geometryRef.current.attributes.position.needsUpdate = true;
+    attribute.needsUpdate = true;
   });
 
   // Guard sits after every hook: a zero-length buffer would be invalid geometry,

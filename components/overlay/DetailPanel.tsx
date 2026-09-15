@@ -3,7 +3,6 @@
 import {
   useEffect,
   useRef,
-  useCallback,
 } from "react";
 import {
   motion,
@@ -14,7 +13,9 @@ import type { MeshNode } from "@/lib/mesh/types";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { MonoTag } from "@/components/ui/MonoTag";
 import { ActionButton } from "@/components/ui/ActionButton";
+import { NodeKindIcon, TechIcon } from "@/components/overlay/NodeIcons";
 import styles from "./DetailPanel.module.css";
+import nodeIconStyles from "./NodeIcons.module.css";
 
 export interface DetailPanelProps {
   /** The selected node, or null when nothing is selected. */
@@ -71,7 +72,32 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
   const transition = {
     duration: prefersReducedMotion ? 0.15 : 0.42,
     ease: [0.16, 1, 0.3, 1],
-  } as any;
+  } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  const contentVariants = prefersReducedMotion
+    ? { animate: { transition: { staggerChildren: 0 } } }
+    : {
+        animate: {
+          transition: {
+            staggerChildren: 0.05,
+            delayChildren: 0.08,
+          },
+        },
+      };
+
+  const itemVariants = prefersReducedMotion
+    ? {
+        initial: { opacity: 1, y: 0 },
+        animate: { opacity: 1, y: 0 },
+      }
+    : {
+        initial: { opacity: 0, y: 8 },
+        animate: { opacity: 1, y: 0 },
+      };
+
+  const itemTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.32, ease: [0.16, 1, 0.3, 1] } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   return (
     <AnimatePresence mode="wait">
@@ -90,10 +116,20 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
           aria-label={node.title}
           tabIndex={-1}
         >
-          <GlassPanel className={styles.panel}>
+          <motion.div
+            variants={contentVariants}
+            initial="initial"
+            animate="animate"
+          >
+            <GlassPanel className={styles.panel}>
             {/* Header row with close button */}
-            <div className={styles.header}>
+            <motion.div
+              className={styles.header}
+              variants={itemVariants}
+              transition={itemTransition}
+            >
               <div className={styles.identifier}>
+                <NodeKindIcon kind={node.kind} size={14} />
                 <span className={styles.nodeId}>{node.id}</span>
                 <span className={styles.nodeSeparator}>·</span>
                 <span className={styles.nodeKind}>{node.kind}</span>
@@ -106,63 +142,111 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
               >
                 ×
               </button>
-            </div>
+            </motion.div>
 
             {/* Title */}
             {node.title && (
-              <h2 className={styles.title}>{node.title}</h2>
+              <motion.div
+                variants={itemVariants}
+                transition={itemTransition}
+              >
+                <h2 className={styles.title}>{node.title}</h2>
+              </motion.div>
             )}
 
             {/* Subtitle */}
             {node.subtitle && (
-              <div className={styles.subtitle}>{node.subtitle}</div>
+              <motion.div
+                className={styles.subtitle}
+                variants={itemVariants}
+                transition={itemTransition}
+              >
+                {node.subtitle}
+              </motion.div>
             )}
 
             {/* Meta */}
             {node.meta && (
-              <div className={styles.meta}>{node.meta}</div>
+              <motion.div
+                className={styles.meta}
+                variants={itemVariants}
+                transition={itemTransition}
+              >
+                {node.meta}
+              </motion.div>
             )}
 
             {/* Hairline divider */}
-            <div className={styles.divider} />
+            <motion.div
+              className={styles.divider}
+              variants={itemVariants}
+              transition={itemTransition}
+            />
 
             {/* Note (inset callout) */}
             {node.detail.note && (
-              <div className={styles.note}>
+              <motion.div
+                className={styles.note}
+                variants={itemVariants}
+                transition={itemTransition}
+              >
                 {node.detail.note}
-              </div>
+              </motion.div>
             )}
 
             {/* Body paragraph */}
             {node.detail.body && (
-              <p className={styles.body}>
-                {node.detail.body}
-              </p>
+              <motion.div
+                variants={itemVariants}
+                transition={itemTransition}
+              >
+                <p className={styles.body}>
+                  {node.detail.body}
+                </p>
+              </motion.div>
             )}
 
             {/* Bullets list */}
             {node.detail.bullets && node.detail.bullets.length > 0 && (
-              <ul className={styles.bulletsList}>
-                {node.detail.bullets.map((bullet, index) => (
-                  <li key={index} className={styles.bulletItem}>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
+              <motion.div
+                variants={itemVariants}
+                transition={itemTransition}
+              >
+                <ul className={styles.bulletsList}>
+                  {node.detail.bullets.map((bullet, index) => (
+                    <li key={index} className={styles.bulletItem}>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
             )}
 
             {/* Tags */}
             {node.detail.tags && node.detail.tags.length > 0 && (
-              <div className={styles.tagsContainer}>
+              <motion.div
+                className={styles.tagsContainer}
+                variants={itemVariants}
+                transition={itemTransition}
+              >
                 {node.detail.tags.map((tag, index) => (
-                  <MonoTag key={index}>{tag}</MonoTag>
+                  <MonoTag key={index}>
+                    <span className={nodeIconStyles.tagIconWrapper}>
+                      <TechIcon name={tag} size={11} />
+                      {tag}
+                    </span>
+                  </MonoTag>
                 ))}
-              </div>
+              </motion.div>
             )}
 
             {/* Links */}
             {node.detail.links && node.detail.links.length > 0 && (
-              <div className={styles.linksContainer}>
+              <motion.div
+                className={styles.linksContainer}
+                variants={itemVariants}
+                transition={itemTransition}
+              >
                 {node.detail.links.map((link, index) => (
                   <ActionButton
                     key={index}
@@ -173,9 +257,10 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
                     {link.label}
                   </ActionButton>
                 ))}
-              </div>
+              </motion.div>
             )}
           </GlassPanel>
+            </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

@@ -1,10 +1,16 @@
 .container {
   position: fixed;
-  right: var(--s-7);
-  top: 50%;
-  transform: translateY(-50%);
+  left: var(--s-5);
+  right: auto;
+  top: calc(56px + var(--s-4));
+  bottom: var(--s-5);
   width: min(400px, 34vw);
+  height: auto;
   z-index: var(--z-panel);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--structure) transparent;
 }
 
 .content {
@@ -152,10 +158,10 @@
     right: var(--s-3);
     width: auto;
     top: auto;
-    bottom: 96px;
-    transform: none;
-    max-height: 62vh;
+    bottom: 88px;
+    max-height: 55dvh;
     overflow-y: auto;
+    transform: none;
   }
 
   .content {

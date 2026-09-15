@@ -109,6 +109,68 @@ function buildOverviewLayer(): LayerGraph {
     });
   }
 
+  // Add two social profile shortcut nodes
+  const github = socials.find((s) => s.id === "github");
+  const linkedin = socials.find((s) => s.id === "linkedin");
+
+  if (github) {
+    const githubHostname = getHostname(github.url);
+    nodes.push({
+      id: "link-github",
+      layer: "overview",
+      kind: "contact",
+      emphasis: "normal",
+      label: github.label,
+      title: github.label,
+      subtitle: githubHostname,
+      meta: "profile",
+      position: [-3.1, -3.4, 1.2],
+      detail: {
+        links: [
+          {
+            label: "Open profile",
+            url: github.url,
+          },
+        ],
+      },
+    });
+
+    edges.push({
+      from: "me",
+      to: "link-github",
+      kind: "membership",
+    });
+  }
+
+  if (linkedin) {
+    const linkedinHostname = getHostname(linkedin.url);
+    nodes.push({
+      id: "link-linkedin",
+      layer: "overview",
+      kind: "contact",
+      emphasis: "normal",
+      label: linkedin.label,
+      title: linkedin.label,
+      subtitle: linkedinHostname,
+      meta: "profile",
+      position: [3.1, -3.4, 1.2],
+      detail: {
+        links: [
+          {
+            label: "Open profile",
+            url: linkedin.url,
+          },
+        ],
+      },
+    });
+
+    edges.push({
+      from: "me",
+      to: "link-linkedin",
+      kind: "membership",
+    });
+  }
+
   return {
     id: "overview",
     label: "Overview",
@@ -378,7 +440,7 @@ function buildCredentialsLayer(): LayerGraph {
 
   return {
     id: "credentials",
-    label: "Credentials",
+    label: "Certifications & Licenses",
     caption: "Degrees, and certifications grouped by the body that issued them.",
     nodes,
     edges,

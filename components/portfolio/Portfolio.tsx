@@ -142,8 +142,12 @@ export function Portfolio() {
       </div>
 
       {/* Mounted only after the boot trace clears, so the name reveal lands on an
-          empty stage rather than animating unseen behind the overlay. */}
-      {booted && <LayerIntro graph={graph} dimmed={selectedNode !== null} />}
+          empty stage rather than animating unseen behind the overlay. Suppressed
+          on the contact layer, where the contact form occupies the same left
+          slot and carries its own heading. */}
+      {booted && layer !== "contact" && (
+        <LayerIntro graph={graph} dimmed={selectedNode !== null} />
+      )}
       <NavRail active={layer} onSelect={changeLayer} />
       <DetailPanel node={selectedNode} onClose={closePanel} />
       {layer === "contact" && <ContactPanel hidden={selectedNode !== null} />}

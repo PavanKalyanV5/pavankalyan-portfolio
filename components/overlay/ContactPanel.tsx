@@ -104,7 +104,7 @@ export function ContactPanel({ hidden }: ContactPanelProps) {
           <h2 className={styles.heading}>Get in touch</h2>
 
           <p className={styles.copy}>
-            Have a question or want to collaborate? Reach out and let's talk.
+            Have a question or want to collaborate? Reach out and let&apos;s talk.
           </p>
 
           {sent ? (

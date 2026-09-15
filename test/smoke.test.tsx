@@ -12,7 +12,7 @@ describe("Static Portfolio Fallback", () => {
     // Assert the five content layer headings
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Projects" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Credentials" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Certifications & Licenses" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Skills" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
 

@@ -1,18 +1,20 @@
 .root {
   position: fixed;
+  top: auto;
   left: var(--s-7);
   bottom: var(--s-7);
   z-index: var(--z-overlay);
-  max-width: min(46ch, 42vw);
+  max-width: min(54ch, 48vw);
+  max-height: calc(100dvh - 56px - var(--s-8));
 }
 
 .heroName {
   margin: 0 0 var(--s-4);
   font-family: var(--font-sans);
-  font-size: var(--t-hero);
+  font-size: clamp(1.9rem, 5.2vw, 4.5rem);
   font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 0.92;
+  line-height: 0.95;
   color: var(--text-high);
 }
 
@@ -66,12 +68,30 @@
   }
 }
 
+@media (max-height: 760px) {
+  .root {
+    bottom: var(--s-5);
+  }
+
+  .heroName {
+    font-size: clamp(1.7rem, 4vw, 3rem);
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
 @media (max-width: 720px) {
   .root {
     left: var(--s-4);
     right: var(--s-4);
     bottom: 96px;
     max-width: none;
+  }
+
+  .heroName {
+    font-size: clamp(1.75rem, 8vw, 2.6rem);
   }
 
   .heroTagline {

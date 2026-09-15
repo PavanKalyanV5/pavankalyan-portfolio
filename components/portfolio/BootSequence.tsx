@@ -25,11 +25,19 @@ function computeStats() {
   return { totalNodes, totalEdges };
 }
 
+/**
+ * Derived from static content at module load: the counts never change, so they
+ * belong here rather than in a ref that would have to be read during render.
+ */
+const STATS = computeStats();
+
+/** Cubic-bezier control points matching the design system's --ease-out. */
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
 export function BootSequence({ onComplete }: BootSequenceProps) {
   const prefersReducedMotion = useReducedMotion();
   const [visible, setVisible] = useState(true);
   const onCompleteRef = useRef(false);
-  const stats = useRef(computeStats());
 
   // If reduced motion, render null immediately and call onComplete
   useEffect(() => {
@@ -75,19 +83,18 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
 
   const traces = [
     "init topology",
-    `resolve nodes … ${stats.current.totalNodes}`,
-    `link edges … ${stats.current.totalEdges}`,
+    `resolve nodes … ${STATS.totalNodes}`,
+    `link edges … ${STATS.totalEdges}`,
     "start message flow",
     "ready",
   ];
 
-  const easeCustom = [0.16, 1, 0.3, 1];
 
   const containerVariants: Variants = {
     initial: { opacity: 1 },
     exit: {
       opacity: 0,
-      transition: { duration: 0.5, ease: easeCustom as any }
+      transition: { duration: 0.5, ease: EASE_OUT }
     },
   };
 
@@ -96,7 +103,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     animate: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.28, ease: easeCustom as any }
+      transition: { duration: 0.28, ease: EASE_OUT }
     },
   };
 

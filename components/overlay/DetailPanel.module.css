@@ -1,18 +1,21 @@
 .panelContainer {
   position: fixed;
   left: var(--s-5);
-  top: 50%;
-  transform: translateY(-50%);
+  top: calc(56px + var(--s-4));
+  bottom: var(--s-5);
   width: min(420px, 34vw);
-  max-height: 72vh;
+  height: auto;
   z-index: var(--z-panel);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--structure) transparent;
 }
 
 .panel {
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   padding: var(--s-5);
   gap: var(--s-3);
 }
@@ -162,8 +165,9 @@
     right: var(--s-3);
     width: auto;
     top: auto;
-    bottom: 96px;
+    bottom: 88px;
+    max-height: 55dvh;
+    overflow-y: auto;
     transform: none;
-    max-height: 62vh;
   }
 }

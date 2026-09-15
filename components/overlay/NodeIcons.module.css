@@ -1,0 +1,18 @@
+.kindIcon {
+  color: var(--signal-cool);
+  flex-shrink: 0;
+}
+
+.techIcon {
+  color: var(--signal-cool);
+  margin-right: 4px;
+  flex-shrink: 0;
+  display: inline;
+  vertical-align: -0.125em;
+}
+
+.tagIconWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

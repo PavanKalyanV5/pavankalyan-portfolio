@@ -88,10 +88,15 @@ export function Portfolio() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [graph, selectedId]);
 
-  // Before detection finishes, hold a bare void screen rather than flashing either
-  // version of the site.
+  // Server render and the first client render land here, before capability
+  // detection has run. Emitting the full static portfolio rather than a blank
+  // screen is what puts real, indexable content in the initial HTML — a crawler
+  // that never runs our effects still receives the whole site, and so does a
+  // visitor with JavaScript disabled. Once detection completes, this is replaced
+  // by the 3D experience. Progressive enhancement, not a separate page: it is
+  // the same content either way.
   if (!capabilities.ready) {
-    return <div className={styles.holding} aria-hidden />;
+    return <StaticPortfolio />;
   }
 
   if (!shouldRender3D(capabilities)) {

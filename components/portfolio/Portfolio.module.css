@@ -1,9 +1,3 @@
-.holding {
-  position: fixed;
-  inset: 0;
-  background: var(--void);
-}
-
 /*
  * Wraps the WebGL canvas so the custom cursor can react to 3D node hover:
  * the scene sets data-cursor on this element, which the cursor component reads.

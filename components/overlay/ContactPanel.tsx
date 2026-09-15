@@ -52,7 +52,14 @@ export function ContactPanel() {
       });
 
       if (!response.ok) {
-        setError("Something went wrong sending your message. Please try again.");
+        // 503 is the API's specific "no mail provider configured" signal. Telling
+        // the visitor to retry would be a lie — retrying cannot help — so point
+        // them at the address instead.
+        setError(
+          response.status === 503
+            ? "The form isn't connected yet. Please email vetlapavankalyan5@gmail.com directly."
+            : "Something went wrong sending your message. Please try again."
+        );
         setIsSubmitting(false);
         return;
       }

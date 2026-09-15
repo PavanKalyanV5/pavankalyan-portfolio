@@ -28,12 +28,23 @@ responsive across devices.
    Development Intern), Zero Trust Cloud Security Virtual Internship (AICTE),
    GDSC GVP (Machine Learning Team Lead), The Sparks Foundation (Data
    Science & Business Analyst Intern), AICTE AI-ML Intern — and an extended
-   certifications list (30+ entries). Also includes a final-year college
-   project not on the resume: **News Summarization Archive** (Nov 2023 – Apr
-   2024, GVP College of Engineering) — a full-stack news summarizer using
-   React.js frontend, Python/MongoDB backend, and a T5 model for article
-   summarization
+   certifications list (25 licenses total, confirmed via LinkedIn's
+   certifications detail page). Also includes a final-year college project
+   not on the resume: **News Summarization Archive** (Nov 2023 – Apr 2024,
+   GVP College of Engineering) — a full-stack news summarizer using React.js
+   frontend, Python/MongoDB backend, and a T5 model for article summarization
    ([repo](https://github.com/PavanKalyanV5/news-archive)).
+4. **LinkedIn profile scrape** (saved profile/detail pages, credential and
+   project links extracted directly from the HTML) — surfaced **AgenticRAG**,
+   a separate personal project not on the resume: a fully self-hosted
+   document-intelligence platform (drop in PDFs/DOCX/Markdown, ask questions
+   grounded in the actual text, background processing with live progress,
+   powered by a local LLM, full stack — API, worker, React UI — running as
+   five Docker containers via one command). Built with event-driven
+   architecture, message queues (RabbitMQ), CQRS, projections, and caching.
+   Dated 2025, distinct from Theo Personal AI Workspace. Described in the
+   user's own
+   [LinkedIn article](https://www.linkedin.com/pulse/agenticrag-i-trained-my-ai-specific-knowledgebase-without-vetla-vsdgc/).
 
 All content is merged: current professional role leads the narrative;
 earlier internships, ML-era projects, and the full certification list are
@@ -42,9 +53,11 @@ retained further down the page as growth history, not deleted.
 ## Narrative framing
 
 Hero and About lead with: **"Software Engineer — AI-Powered Backend Systems
-& Full-Stack Developer."** The site tells one continuous story from
-education through early internships/projects to the current professional
-role, rather than treating the old content as replaced.
+& .NET Full-Stack Developer"** (matching current LinkedIn headline wording).
+The site tells one continuous story from education through early
+internships/projects to the current professional role, rather than treating
+the old content as replaced. A visible **"Open to opportunities"** badge
+appears near the hero/contact section, reflecting current job-search status.
 
 ## Tech stack
 
@@ -69,8 +82,8 @@ role, rather than treating the old content as replaced.
 
 ## Page structure (in order)
 
-1. **Hero** — 3D centerpiece, name, tagline, CTA buttons (Resume, Contact,
-   GitHub).
+1. **Hero** — 3D centerpiece, name, tagline, "Open to opportunities" badge,
+   CTA buttons (Resume, Contact, GitHub).
 2. **About** — professional summary, SWE-first framing.
 3. **Experience timeline** — vertical timeline (alternating sides on
    desktop, stacked on mobile). Kovalty Technologies (SWE, current; SWE
@@ -78,9 +91,9 @@ role, rather than treating the old content as replaced.
    Foundation, AICTE (AI-ML Intern, Zero Trust Cloud Security) as earlier
    entries.
 4. **Projects timeline** — single chronological timeline combining Theo
-   Personal AI Workspace, Game Intelligence Platform, News Summarization
-   Archive, and the five older student projects. Each entry has a
-   **custom-built SVG illustration/icon**
+   Personal AI Workspace, AgenticRAG, Game Intelligence Platform, News
+   Summarization Archive, and the five older student projects. Each entry
+   has a **custom-built SVG illustration/icon**
    representing its theme — not a sourced screenshot or AI-generated raster
    image — so the whole timeline is visually cohesive regardless of whether
    the underlying project is public, private, or long offline.

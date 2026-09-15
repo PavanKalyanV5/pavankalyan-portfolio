@@ -1,0 +1,66 @@
+:root {
+  /* Colors */
+  --void: #05070E;
+  --surface: #0B1020;
+  --structure: #1B2540;
+  --signal-cool: #5EE7D6;
+  --signal-warm: #FFB35C;
+  --text-high: #E8ECF5;
+  --text-muted: #8B98B5;
+
+  /* Derived colors - glass and glow effects */
+  --glass-bg: rgb(11 16 32 / 0.72);
+  --glass-border: rgb(94 231 214 / 0.18);
+  --glow-cool: rgb(94 231 214 / 0.35);
+  --glow-warm: rgb(255 179 92 / 0.40);
+
+  /* Type scale (rem, 1rem = 16px), modular ~1.333 */
+  --t-xs: 0.75rem;
+  --t-sm: 0.875rem;
+  --t-base: 1rem;
+  --t-md: 1.333rem;
+  --t-lg: 1.777rem;
+  --t-xl: 2.369rem;
+  --t-2xl: 3.157rem;
+  --t-3xl: 4.209rem;
+  --t-hero: clamp(2.5rem, 9vw, 7rem);
+
+  /* Spacing scale (px) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+
+  /* Border radii - differentiated by hierarchy */
+  --r-panel: 14px;
+  --r-pill: 999px;
+  --r-input: 8px;
+  --r-tooltip: 6px;
+
+  /* Easing functions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Motion durations */
+  --d-fast: 180ms;
+  --d-base: 320ms;
+  --d-slow: 620ms;
+  --d-cine: 1200ms;
+
+  /* Z-index layers */
+  --z-canvas: 0;
+  --z-overlay: 10;
+  --z-panel: 20;
+  --z-bar: 30;
+  --z-cursor: 100;
+
+  /* Font family aliases */
+  --font-sans: var(--font-display), system-ui, sans-serif;
+  --font-code: var(--font-mono), ui-monospace, monospace;
+}

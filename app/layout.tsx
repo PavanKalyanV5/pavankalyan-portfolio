@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
-import { ThemeRegistry } from "@/theme/ThemeRegistry";
-import "./globals.css";
+import { sora, jetbrainsMono } from "@/app/fonts";
+import "@/styles/global.css";
 
 export const metadata: Metadata = {
   title: "Pavan Kalyan Vetla — Software Engineer",
@@ -15,11 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sora.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body>
-        <AppRouterCacheProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
-        </AppRouterCacheProvider>
+        {children}
       </body>
     </html>
   );

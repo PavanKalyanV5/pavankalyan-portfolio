@@ -1,0 +1,33 @@
+.dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--signal-cool);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+}
+
+.ring {
+  position: fixed;
+  border: 1px solid rgb(94 231 214 / 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  transition: border-color var(--d-fast) var(--ease-out),
+    width var(--d-fast) var(--ease-out), height var(--d-fast) var(--ease-out);
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-code);
+  font-size: var(--t-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+}

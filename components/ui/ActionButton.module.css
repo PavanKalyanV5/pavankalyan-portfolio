@@ -1,0 +1,34 @@
+.button {
+  border-radius: var(--r-pill);
+  padding: 12px 22px;
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  letter-spacing: 0.01em;
+  transition: all var(--d-fast) var(--ease-out);
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+}
+
+.primary {
+  background: var(--signal-warm);
+  color: var(--void);
+  font-weight: 600;
+}
+
+.primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 0 1px var(--signal-warm),
+    0 8px 30px -8px var(--glow-warm);
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid var(--structure);
+  color: var(--text-high);
+}
+
+.ghost:hover {
+  border-color: var(--signal-cool);
+  box-shadow: 0 8px 30px -12px var(--glow-cool);
+}

@@ -1,0 +1,91 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--void);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.traces {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 260px;
+}
+
+.traceLine {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-code);
+  font-size: var(--t-sm);
+  color: var(--text-muted);
+}
+
+.marker {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  color: var(--signal-cool);
+  flex-shrink: 0;
+}
+
+.marker[data-is-last="true"] {
+  color: var(--signal-warm);
+}
+
+.text {
+  letter-spacing: normal;
+  font-weight: normal;
+  text-transform: none;
+}
+
+.text[data-is-ready="true"] {
+  color: var(--text-high);
+}
+
+.progressRail {
+  width: 260px;
+  height: 1px;
+  background: var(--structure);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--signal-cool);
+  width: 0%;
+}
+
+.skipButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  font-family: var(--font-code);
+  font-size: var(--t-xs);
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease-out;
+}
+
+.skipButton:hover {
+  color: var(--text-high);
+}
+
+.skipButton:active {
+  opacity: 0.8;
+}

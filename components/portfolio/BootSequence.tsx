@@ -1,0 +1,192 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
+import { LAYER_GRAPHS } from "@/lib/mesh/layers";
+import styles from "./BootSequence.module.css";
+
+interface BootSequenceProps {
+  /** Called exactly once when the sequence finishes or is skipped. */
+  onComplete: () => void;
+}
+
+/**
+ * Calculate total nodes and edges from LAYER_GRAPHS
+ */
+function computeStats() {
+  let totalNodes = 0;
+  let totalEdges = 0;
+
+  Object.values(LAYER_GRAPHS).forEach((layer) => {
+    totalNodes += layer.nodes.length;
+    totalEdges += layer.edges.length;
+  });
+
+  return { totalNodes, totalEdges };
+}
+
+export function BootSequence({ onComplete }: BootSequenceProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const [visible, setVisible] = useState(true);
+  const onCompleteRef = useRef(false);
+  const stats = useRef(computeStats());
+
+  // If reduced motion, render null immediately and call onComplete
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      if (!onCompleteRef.current) {
+        onCompleteRef.current = true;
+        onComplete();
+      }
+    }
+  }, [prefersReducedMotion, onComplete]);
+
+  if (prefersReducedMotion) {
+    return null;
+  }
+
+  const handleSkip = () => {
+    setVisible(false);
+  };
+
+  const handleKeyDown = () => {
+    handleSkip();
+  };
+
+  const handleExitComplete = () => {
+    if (!onCompleteRef.current) {
+      onCompleteRef.current = true;
+      onComplete();
+    }
+  };
+
+  const handleClick = () => {
+    handleSkip();
+  };
+
+  useEffect(() => {
+    // Add keyboard and click listeners
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
+
+  const traces = [
+    "init topology",
+    `resolve nodes … ${stats.current.totalNodes}`,
+    `link edges … ${stats.current.totalEdges}`,
+    "start message flow",
+    "ready",
+  ];
+
+  const easeCustom = [0.16, 1, 0.3, 1];
+
+  const containerVariants: Variants = {
+    initial: { opacity: 1 },
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.5, ease: easeCustom as any }
+    },
+  };
+
+  const lineVariants: Variants = {
+    initial: { opacity: 0, y: 6 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.28, ease: easeCustom as any }
+    },
+  };
+
+  const progressVariants: Variants = {
+    initial: { width: "0%" },
+    animate: {
+      width: "100%",
+      transition: { duration: 2.2, ease: "linear" }
+    },
+  };
+
+  // Stagger offset in ms
+  const staggerMs = 340;
+
+  // Time for all traces to appear (4 intervals + first trace = 4*340 + 0)
+  const tracesCompleteTime = staggerMs * 4;
+  // Add animation duration of last trace
+  const sequenceCompleteTime = tracesCompleteTime + 280 + 100;
+
+  // Auto-trigger skip after sequence completes
+  useEffect(() => {
+    if (!visible) return;
+
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, sequenceCompleteTime);
+
+    return () => clearTimeout(timer);
+  }, [visible]);
+
+  return (
+    <AnimatePresence onExitComplete={handleExitComplete}>
+      {visible && (
+        <motion.div
+          className={styles.overlay}
+          variants={containerVariants}
+          initial="initial"
+          exit="exit"
+          role="status"
+          aria-live="polite"
+        >
+          <div className={styles.content}>
+            {/* Trace lines */}
+            <div className={styles.traces}>
+              {traces.map((text, index) => {
+                const isLast = index === traces.length - 1;
+                return (
+                  <motion.div
+                    key={index}
+                    className={styles.traceLine}
+                    variants={lineVariants}
+                    initial="initial"
+                    animate="animate"
+                    transition={{ delay: (index * staggerMs) / 1000 }}
+                  >
+                    <span className={styles.marker} data-is-last={isLast}>
+                      {isLast ? "+" : "·"}
+                    </span>
+                    <span className={styles.text} data-is-ready={isLast}>
+                      {text}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Progress rail */}
+            <div className={styles.progressRail}>
+              <motion.div
+                className={styles.progressFill}
+                variants={progressVariants}
+                initial="initial"
+                animate="animate"
+              />
+            </div>
+          </div>
+
+          {/* Skip button */}
+          <button
+            className={styles.skipButton}
+            onClick={handleSkip}
+            aria-label="Skip intro"
+            data-cursor="link"
+          >
+            skip
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

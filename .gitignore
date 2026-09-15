@@ -2,6 +2,7 @@ node_modules/
 .next/
 out/
 research/
+.research/
 *.pdf
 !public/resume.pdf
 .env

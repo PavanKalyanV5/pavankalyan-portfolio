@@ -28,7 +28,12 @@ responsive across devices.
    Development Intern), Zero Trust Cloud Security Virtual Internship (AICTE),
    GDSC GVP (Machine Learning Team Lead), The Sparks Foundation (Data
    Science & Business Analyst Intern), AICTE AI-ML Intern — and an extended
-   certifications list (30+ entries).
+   certifications list (30+ entries). Also includes a final-year college
+   project not on the resume: **News Summarization Archive** (Nov 2023 – Apr
+   2024, GVP College of Engineering) — a full-stack news summarizer using
+   React.js frontend, Python/MongoDB backend, and a T5 model for article
+   summarization
+   ([repo](https://github.com/PavanKalyanV5/news-archive)).
 
 All content is merged: current professional role leads the narrative;
 earlier internships, ML-era projects, and the full certification list are
@@ -73,8 +78,9 @@ role, rather than treating the old content as replaced.
    Foundation, AICTE (AI-ML Intern, Zero Trust Cloud Security) as earlier
    entries.
 4. **Projects timeline** — single chronological timeline combining Theo
-   Personal AI Workspace, Game Intelligence Platform, and the five older
-   projects. Each entry has a **custom-built SVG illustration/icon**
+   Personal AI Workspace, Game Intelligence Platform, News Summarization
+   Archive, and the five older student projects. Each entry has a
+   **custom-built SVG illustration/icon**
    representing its theme — not a sourced screenshot or AI-generated raster
    image — so the whole timeline is visually cohesive regardless of whether
    the underlying project is public, private, or long offline.

@@ -54,10 +54,10 @@ export function ContactForm() {
         value={website}
         onChange={(e) => setWebsite(e.target.value)}
         name="website"
-        tabIndex={-1}
         autoComplete="off"
         sx={{ position: "absolute", left: "-9999px" }}
         aria-hidden="true"
+        slotProps={{ htmlInput: { tabIndex: -1 } }}
       />
       <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} />
       <TextField label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />

@@ -15,11 +15,6 @@ export interface FlowParticlesProps {
 export function FlowParticles(props: FlowParticlesProps) {
   const { graph } = props;
   const geometryRef = useRef<THREE.BufferGeometry>(null);
-  const positionsRef = useRef<Float32Array | null>(null);
-
-  if (graph.edges.length === 0) {
-    return null;
-  }
 
   // Precompute particle data
   const { particleData, totalCount } = useMemo(() => {
@@ -53,15 +48,14 @@ export function FlowParticles(props: FlowParticlesProps) {
     };
   }, [graph.edges, graph.nodes]);
 
-  // Initialize positions buffer
-  if (!positionsRef.current) {
-    positionsRef.current = new Float32Array(totalCount * 3);
-  }
+  // One buffer per particle set, rebuilt only when the particle count changes.
+  const positions = useMemo(
+    () => new Float32Array(totalCount * 3),
+    [totalCount]
+  );
 
   useFrame(({ clock }) => {
-    if (!geometryRef.current || !positionsRef.current) return;
-
-    const positions = positionsRef.current;
+    if (!geometryRef.current || particleData.length === 0) return;
 
     for (let i = 0; i < particleData.length; i++) {
       const { startPos, endPos, phase } = particleData[i];
@@ -79,13 +73,15 @@ export function FlowParticles(props: FlowParticlesProps) {
     geometryRef.current.attributes.position.needsUpdate = true;
   });
 
+  // Guard sits after every hook: a zero-length buffer would be invalid geometry,
+  // but bailing out before the hooks above would change this component's hook
+  // order between renders.
+  if (totalCount === 0) return null;
+
   return (
     <points raycast={() => null}>
       <bufferGeometry ref={geometryRef}>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positionsRef.current || new Float32Array(), 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         color={PARTICLE_COLOR}

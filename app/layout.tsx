@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { sora, jetbrainsMono } from "@/app/fonts";
 import "@/styles/global.css";
 
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en" className={`${sora.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body>
         {children}
+        <Analytics />
       </body>
     </html>
   );

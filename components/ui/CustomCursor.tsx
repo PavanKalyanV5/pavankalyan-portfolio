@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   motion,
   useMotionValue,
@@ -9,99 +9,85 @@ import {
 } from "framer-motion";
 import styles from "./CustomCursor.module.css";
 
+interface HoverTarget {
+  active: boolean;
+  kind: string | null;
+  label: string | null;
+}
+
+const IDLE: HoverTarget = { active: false, kind: null, label: null };
+
+const FINE_POINTER = "(pointer: fine)";
+
+function subscribeFinePointer(onChange: () => void) {
+  const query = window.matchMedia(FINE_POINTER);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+function getFinePointer() {
+  return window.matchMedia(FINE_POINTER).matches;
+}
+
+/** Server render has no pointer; assume coarse so nothing is emitted during SSR. */
+function getServerFinePointer() {
+  return false;
+}
+
 export function CustomCursor() {
-  const [mounted, setMounted] = useState(false);
+  // Every hook below runs on every render, unconditionally. Whether the cursor
+  // is shown is decided in the returned JSX — never by skipping hooks, which is
+  // what previously crashed this component with a hook-order error.
   const reducedMotion = useReducedMotion();
+  const finePointer = useSyncExternalStore(
+    subscribeFinePointer,
+    getFinePointer,
+    getServerFinePointer
+  );
+  const [hover, setHover] = useState<HoverTarget>(IDLE);
 
-  // Early return if SSR or if reduced motion is enabled
-  if (!mounted || reducedMotion) {
-    useEffect(() => {
-      setMounted(true);
-    }, []);
-    return null;
-  }
-
-  const dotX = useMotionValue(0);
-  const dotY = useMotionValue(0);
-
+  const dotX = useMotionValue(-100);
+  const dotY = useMotionValue(-100);
   const ringX = useSpring(dotX, { stiffness: 220, damping: 28, mass: 0.6 });
   const ringY = useSpring(dotY, { stiffness: 220, damping: 28, mass: 0.6 });
 
-  const [cursorState, setCursorState] = useState<{
-    isCoarse: boolean;
-    isHovering: boolean;
-    hoveredElement: HTMLElement | null;
-    cursorLabel: string | null;
-  }>({
-    isCoarse: false,
-    isHovering: false,
-    hoveredElement: null,
-    cursorLabel: null,
-  });
+  const enabled = finePointer && !reducedMotion;
 
   useEffect(() => {
-    setMounted(true);
+    if (!enabled) return;
 
-    // Check pointer type
-    const isCoarse = !window.matchMedia("(pointer: fine)").matches;
-    if (isCoarse) {
-      return;
-    }
+    const onPointerMove = (event: PointerEvent) => {
+      dotX.set(event.clientX);
+      dotY.set(event.clientY);
 
-    const handlePointerMove = (e: PointerEvent) => {
-      dotX.set(e.clientX);
-      dotY.set(e.clientY);
+      const target = event.target as Element | null;
+      const match = target?.closest?.("[data-cursor]") ?? null;
 
-      const target = e.target as HTMLElement;
-      const hoveredElement = target.closest("[data-cursor]");
-
-      if (hoveredElement) {
-        const label = hoveredElement.getAttribute("data-cursor-label");
-        setCursorState({
-          isCoarse: false,
-          isHovering: true,
-          hoveredElement: hoveredElement as HTMLElement,
-          cursorLabel: label,
-        });
-      } else {
-        setCursorState({
-          isCoarse: false,
-          isHovering: false,
-          hoveredElement: null,
-          cursorLabel: null,
-        });
-      }
+      setHover(
+        match
+          ? {
+              active: true,
+              kind: match.getAttribute("data-cursor"),
+              label: match.getAttribute("data-cursor-label"),
+            }
+          : IDLE
+      );
     };
 
-    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointermove", onPointerMove);
+    return () => window.removeEventListener("pointermove", onPointerMove);
+  }, [enabled, dotX, dotY]);
 
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-    };
-  }, [dotX, dotY]);
+  if (!enabled) return null;
 
-  // Return null if coarse pointer or reduced motion
-  if (cursorState.isCoarse || reducedMotion) {
-    return null;
-  }
-
-  const ringSize = cursorState.isHovering ? 44 : 28;
-  const ringBorderColor = cursorState.isHovering
+  const ringSize = hover.active ? 44 : 28;
+  const ringBorderColor = hover.active
     ? "var(--signal-warm)"
     : "rgb(94 231 214 / 0.5)";
 
   return (
     <>
-      {/* Dot */}
-      <motion.div
-        className={styles.dot}
-        style={{
-          x: dotX,
-          y: dotY,
-        }}
-      />
-
-      {/* Ring */}
+      <motion.div className={styles.dot} style={{ x: dotX, y: dotY }} />
       <motion.div
         className={styles.ring}
         style={{
@@ -112,20 +98,9 @@ export function CustomCursor() {
           borderColor: ringBorderColor,
         }}
       >
-        {/* Label when hovering over a node */}
-        {cursorState.isHovering &&
-          cursorState.hoveredElement?.getAttribute("data-cursor") ===
-            "node" &&
-          cursorState.cursorLabel && (
-            <span
-              className={styles.label}
-              style={{
-                left: `calc(100% + 26px)`,
-              }}
-            >
-              {cursorState.cursorLabel}
-            </span>
-          )}
+        {hover.active && hover.kind === "node" && hover.label && (
+          <span className={styles.label}>{hover.label}</span>
+        )}
       </motion.div>
     </>
   );

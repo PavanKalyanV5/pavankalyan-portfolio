@@ -41,10 +41,6 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     }
   }, [prefersReducedMotion, onComplete]);
 
-  if (prefersReducedMotion) {
-    return null;
-  }
-
   const handleSkip = () => {
     setVisible(false);
   };
@@ -65,6 +61,8 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
   };
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     // Add keyboard and click listeners
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("click", handleClick);
@@ -73,7 +71,7 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   const traces = [
     "init topology",
@@ -120,14 +118,21 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
 
   // Auto-trigger skip after sequence completes
   useEffect(() => {
-    if (!visible) return;
+    if (prefersReducedMotion || !visible) return;
 
     const timer = setTimeout(() => {
       setVisible(false);
     }, sequenceCompleteTime);
 
     return () => clearTimeout(timer);
-  }, [visible]);
+  }, [visible, prefersReducedMotion, sequenceCompleteTime]);
+
+  // Reduced motion gets no cinematic at all. The bail-out sits below every hook
+  // so this component's hook order never changes between renders; the effect
+  // above already reported completion.
+  if (prefersReducedMotion) {
+    return null;
+  }
 
   return (
     <AnimatePresence onExitComplete={handleExitComplete}>

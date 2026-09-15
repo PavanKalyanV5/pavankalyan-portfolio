@@ -23,18 +23,22 @@ export function ContactForm() {
       return;
     }
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message }),
-    });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        setError("Something went wrong sending your message. Please try again.");
+        return;
+      }
+
+      setSent(true);
+    } catch {
       setError("Something went wrong sending your message. Please try again.");
-      return;
     }
-
-    setSent(true);
   };
 
   if (sent) {

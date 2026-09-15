@@ -11,3 +11,4 @@ research/
 coverage/
 .claude/
 .env*
+!.env.local.example

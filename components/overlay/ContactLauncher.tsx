@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { GlassPanel } from "../ui/GlassPanel";
+import { LiquidGlassCard } from "../kokonutui/LiquidGlassCard";
 import { ContactPanel } from "./ContactPanel";
 import styles from "./ContactLauncher.module.css";
 
@@ -103,7 +103,7 @@ export function ContactLauncher(): React.JSX.Element {
             aria-label="Contact"
             tabIndex={-1}
           >
-            <GlassPanel>
+            <LiquidGlassCard glow="cool" highlightBorder>
               <div className={styles.popover}>
                 {/* Header */}
                 <div className={styles.header}>
@@ -129,7 +129,7 @@ export function ContactLauncher(): React.JSX.Element {
                 {/* Form content */}
                 <ContactPanel />
               </div>
-            </GlassPanel>
+            </LiquidGlassCard>
           </motion.div>
         )}
       </AnimatePresence>

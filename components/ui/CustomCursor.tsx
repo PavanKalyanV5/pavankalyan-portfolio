@@ -61,6 +61,16 @@ export function CustomCursor() {
       dotY.set(event.clientY);
 
       const target = event.target as Element | null;
+      const isTextInput =
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.closest?.("input, textarea, [role='dialog']") !== null;
+
+      if (isTextInput) {
+        setHover(IDLE);
+        return;
+      }
+
       const match = target?.closest?.("[data-cursor]") ?? null;
 
       setHover(

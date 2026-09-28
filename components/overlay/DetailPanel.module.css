@@ -1,9 +1,10 @@
 .panelContainer {
   position: fixed;
-  left: var(--s-5);
-  top: calc(56px + var(--s-4));
-  bottom: var(--s-5);
-  width: min(420px, 34vw);
+  right: var(--s-5);
+  left: auto;
+  top: calc(60px + var(--s-3));
+  bottom: 84px;
+  width: min(420px, 36vw);
   height: auto;
   z-index: var(--z-panel);
   overflow-y: auto;
@@ -34,6 +35,66 @@
   gap: var(--s-2);
   font-family: var(--font-code);
   font-size: var(--t-xs);
+}
+
+.projectBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--r-input);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: var(--s-2);
+}
+
+.bannerTag {
+  font-family: var(--font-code);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--signal-cool);
+  letter-spacing: 0.06em;
+}
+
+.portraitBanner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  background: rgba(94, 231, 214, 0.08);
+  border: 1px solid rgba(94, 231, 214, 0.25);
+  border-radius: var(--r-card);
+  margin-bottom: var(--s-3);
+}
+
+.portraitImg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--signal-cool);
+  box-shadow: 0 0 16px rgba(94, 231, 214, 0.35);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.portraitMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.portraitRole {
+  font-family: var(--font-code);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.portraitStatus {
+  font-family: var(--font-code);
+  font-size: 11px;
+  font-weight: 700;
+  color: #10B981;
+  letter-spacing: 0.06em;
 }
 
 .nodeId {

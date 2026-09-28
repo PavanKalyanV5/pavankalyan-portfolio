@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import { LAYER_GRAPHS } from "@/lib/mesh/layers";
 import styles from "./BootSequence.module.css";
@@ -49,13 +49,9 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     }
   }, [prefersReducedMotion, onComplete]);
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     setVisible(false);
-  };
-
-  const handleKeyDown = () => {
-    handleSkip();
-  };
+  }, []);
 
   const handleExitComplete = () => {
     if (!onCompleteRef.current) {
@@ -64,22 +60,17 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     }
   };
 
-  const handleClick = () => {
-    handleSkip();
-  };
-
   useEffect(() => {
     if (prefersReducedMotion) return;
 
-    // Add keyboard and click listeners
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("click", handleClick);
+    window.addEventListener("keydown", handleSkip);
+    window.addEventListener("click", handleSkip);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("click", handleClick);
+      window.removeEventListener("keydown", handleSkip);
+      window.removeEventListener("click", handleSkip);
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, handleSkip]);
 
   const traces = [
     "init topology",

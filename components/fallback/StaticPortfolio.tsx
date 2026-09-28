@@ -5,15 +5,27 @@ import { LAYER_GRAPHS } from "@/lib/mesh/layers";
 import { LAYER_ORDER } from "@/lib/mesh/types";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { MonoTag } from "@/components/ui/MonoTag";
+import { BrandIcon } from "@/components/ui/BrandIcon";
+import { LiquidGlassCard } from "@/components/kokonutui/LiquidGlassCard";
+import { ShimmerText } from "@/components/kokonutui/ShimmerText";
+import { BackgroundPaths } from "@/components/kokonutui/BackgroundPaths";
+import { BklitTelemetryRibbon } from "@/components/bklit/BklitTelemetryRibbon";
+import { BklitRadarChart } from "@/components/bklit/BklitRadarChart";
 import styles from "./StaticPortfolio.module.css";
 
 export function StaticPortfolio() {
   return (
     <div className={styles.container}>
+      <BackgroundPaths opacity={0.35} />
+
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.monogram}>PKV</div>
-        <h1 className={styles.title}>Pavan Kalyan Vetla</h1>
+        <h1 className={styles.title}>
+          <ShimmerText tone="cool" speed="normal">
+            Pavan Kalyan Vetla
+          </ShimmerText>
+        </h1>
         <p className={styles.tagline}>
           Software Engineer — AI-Powered Backend Systems & .NET Full-Stack Developer
         </p>
@@ -34,6 +46,16 @@ export function StaticPortfolio() {
         </div>
       </header>
 
+      {/* Bklit Telemetry & Radar Overview */}
+      <div className={styles.telemetrySection}>
+        <BklitTelemetryRibbon />
+        <div className={styles.radarWrap}>
+          <LiquidGlassCard glow="cool">
+            <BklitRadarChart size={340} />
+          </LiquidGlassCard>
+        </div>
+      </div>
+
       {/* Content Sections */}
       {LAYER_ORDER.map((layerId: LayerId) => {
         // Skip overview layer
@@ -49,8 +71,9 @@ export function StaticPortfolio() {
 
             <div className={styles.articlesContainer}>
               {layer.nodes.map((node: MeshNode) => (
-                <article
+                <LiquidGlassCard
                   key={node.id}
+                  glow={node.emphasis === "live" ? "cool" : "violet"}
                   className={`${styles.article} ${
                     node.emphasis === "live" ? styles.articleLive : ""
                   }`}
@@ -95,7 +118,12 @@ export function StaticPortfolio() {
                   {node.detail.tags && node.detail.tags.length > 0 && (
                     <div className={styles.tagsRow}>
                       {node.detail.tags.map((tag: string, idx: number) => (
-                        <MonoTag key={idx}>{tag}</MonoTag>
+                        <MonoTag key={idx}>
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                            <BrandIcon name={tag} size={12} />
+                            {tag}
+                          </span>
+                        </MonoTag>
                       ))}
                     </div>
                   )}
@@ -115,7 +143,7 @@ export function StaticPortfolio() {
                       ))}
                     </div>
                   )}
-                </article>
+                </LiquidGlassCard>
               ))}
             </div>
           </section>

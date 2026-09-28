@@ -24,6 +24,7 @@ export function LayerIntro({ graph, dimmed }: LayerIntroProps) {
       animate={{ opacity: dimmed ? 0 : 1, y: dimmed ? 12 : 0 }}
       transition={{ duration: reduced ? 0.12 : 0.4, ease: [0.16, 1, 0.3, 1] }}
       style={{ pointerEvents: dimmed ? "none" : "auto" }}
+      suppressHydrationWarning
     >
       {isOverview ? (
         <>
@@ -46,7 +47,7 @@ export function LayerIntro({ graph, dimmed }: LayerIntroProps) {
             </ActionButton>
           </div>
           <p className={styles.hint}>
-            Select a node to inspect it. Use the rail to change layer.
+            Select a 3D node to inspect. Use ◄ ► to traverse the graph.
           </p>
         </>
       ) : (

@@ -472,7 +472,7 @@ function buildCertificationsLayer(): LayerGraph {
         links: issuerCerts
           .filter((c) => c.verificationUrl)
           .map((c) => ({
-            label: "Link",
+            label: "View Certificate",
             url: c.verificationUrl!,
           })),
       },

@@ -39,6 +39,19 @@
   gap: var(--s-4);
 }
 
+.telemetrySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  margin-bottom: var(--s-9);
+}
+
+.radarWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 /* Sections */
 .section {
   margin-bottom: var(--s-8);

@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+  background: rgba(11, 16, 32, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-card);
+  backdrop-filter: blur(14px);
+  font-family: var(--font-code);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: var(--t-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.activeVal {
+  font-size: var(--t-sm);
+  color: var(--signal-cool);
+  font-weight: 700;
+}
+
+.activeLabel {
+  font-size: var(--t-xs);
+  color: var(--text-dim);
+}
+
+.svgWrap {
+  width: 100%;
+  height: 140px;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pointGroup {
+  cursor: pointer;
+}
+
+.pointHalo {
+  animation: pulse-halo 1.5s infinite ease-in-out;
+}
+
+.xLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 10px;
+}
+
+.xLabel {
+  font-size: 11px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.xLabel:hover,
+.activeX {
+  color: var(--signal-cool);
+  font-weight: 600;
+}

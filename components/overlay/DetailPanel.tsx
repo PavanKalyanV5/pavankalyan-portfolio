@@ -10,10 +10,13 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import type { MeshNode } from "@/lib/mesh/types";
-import { GlassPanel } from "@/components/ui/GlassPanel";
+import { LiquidGlassCard } from "@/components/kokonutui/LiquidGlassCard";
+import { ParticleButton } from "@/components/kokonutui/ParticleButton";
+import { ShimmerText } from "@/components/kokonutui/ShimmerText";
 import { MonoTag } from "@/components/ui/MonoTag";
-import { ActionButton } from "@/components/ui/ActionButton";
-import { NodeKindIcon, TechIcon } from "@/components/overlay/NodeIcons";
+import { BrandIcon } from "@/components/ui/BrandIcon";
+import { NodeKindIcon } from "@/components/overlay/NodeIcons";
+import { getProjectVisual } from "@/lib/assets/icons";
 import styles from "./DetailPanel.module.css";
 import nodeIconStyles from "./NodeIcons.module.css";
 
@@ -51,14 +54,13 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
     };
   }, [node, onClose]);
 
-  // Animation variants
+  // Animation variants: slides in from right side
   const desktopVariants = {
-    initial: { opacity: 0, x: -24 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -24 },
+    initial: { opacity: 0, x: 28, scale: 0.96 },
+    animate: { opacity: 1, x: 0, scale: 1 },
+    exit: { opacity: 0, x: 28, scale: 0.96 },
   };
 
-  // For reduced motion, animate opacity only
   const reducedMotionVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
@@ -70,7 +72,7 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
     : desktopVariants;
 
   const transition = {
-    duration: prefersReducedMotion ? 0.15 : 0.42,
+    duration: prefersReducedMotion ? 0.15 : 0.38,
     ease: [0.16, 1, 0.3, 1],
   } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -79,8 +81,8 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
     : {
         animate: {
           transition: {
-            staggerChildren: 0.05,
-            delayChildren: 0.08,
+            staggerChildren: 0.04,
+            delayChildren: 0.06,
           },
         },
       };
@@ -97,7 +99,9 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
 
   const itemTransition = prefersReducedMotion
     ? { duration: 0 }
-    : { duration: 0.32, ease: [0.16, 1, 0.3, 1] } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    : { duration: 0.28, ease: [0.16, 1, 0.3, 1] } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  const projectVisual = node && node.kind === "project" ? getProjectVisual(node.id.replace("proj-", "")) : null;
 
   return (
     <AnimatePresence mode="wait">
@@ -121,146 +125,184 @@ export function DetailPanel({ node, onClose }: DetailPanelProps) {
             initial="initial"
             animate="animate"
           >
-            <GlassPanel className={styles.panel}>
-            {/* Header row with close button */}
-            <motion.div
-              className={styles.header}
-              variants={itemVariants}
-              transition={itemTransition}
-            >
-              <div className={styles.identifier}>
-                <NodeKindIcon kind={node.kind} size={14} />
-                <span className={styles.nodeId}>{node.id}</span>
-                <span className={styles.nodeSeparator}>·</span>
-                <span className={styles.nodeKind}>{node.kind}</span>
-              </div>
-              <button
-                aria-label="Close details"
-                onClick={onClose}
-                className={styles.closeButton}
-                data-cursor="link"
-              >
-                ×
-              </button>
-            </motion.div>
-
-            {/* Title */}
-            {node.title && (
+            <LiquidGlassCard glow="cool" highlightBorder className={styles.panel}>
+              {/* Header row with close button */}
               <motion.div
+                className={styles.header}
                 variants={itemVariants}
                 transition={itemTransition}
               >
-                <h2 className={styles.title}>{node.title}</h2>
+                <div className={styles.identifier}>
+                  <NodeKindIcon kind={node.kind} size={14} />
+                  <span className={styles.nodeId}>{node.id}</span>
+                  <span className={styles.nodeSeparator}>·</span>
+                  <span className={styles.nodeKind}>{node.kind}</span>
+                </div>
+                <button
+                  aria-label="Close details"
+                  onClick={onClose}
+                  className={styles.closeButton}
+                  data-cursor="link"
+                >
+                  ×
+                </button>
               </motion.div>
-            )}
 
-            {/* Subtitle */}
-            {node.subtitle && (
+              {/* Project Visual Banner if applicable */}
+              {projectVisual && (
+                <motion.div
+                  className={styles.projectBanner}
+                  style={{ background: projectVisual.gradient }}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  <span className={styles.bannerTag}>{projectVisual.badge}</span>
+                  <BrandIcon name={projectVisual.iconSlug} size={28} />
+                </motion.div>
+              )}
+
+              {/* Portrait Banner for Central Core "me" Node */}
+              {node.id === "me" && (
+                <motion.div
+                  className={styles.portraitBanner}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/profile.jpg"
+                    alt="Pavan Kalyan Vetla"
+                    width={72}
+                    height={72}
+                    className={styles.portraitImg}
+                  />
+                  <div className={styles.portraitMeta}>
+                    <span className={styles.portraitRole}>HYDERABAD, INDIA</span>
+                    <span className={styles.portraitStatus}>✦ OPEN TO WORK</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Title with Shimmer */}
+              {node.title && (
+                <motion.div
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  <h2 className={styles.title}>
+                    <ShimmerText tone="cool" speed="normal">
+                      {node.title}
+                    </ShimmerText>
+                  </h2>
+                </motion.div>
+              )}
+
+              {/* Subtitle */}
+              {node.subtitle && (
+                <motion.div
+                  className={styles.subtitle}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  {node.subtitle}
+                </motion.div>
+              )}
+
+              {/* Meta */}
+              {node.meta && (
+                <motion.div
+                  className={styles.meta}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  {node.meta}
+                </motion.div>
+              )}
+
+              {/* Hairline divider */}
               <motion.div
-                className={styles.subtitle}
+                className={styles.divider}
                 variants={itemVariants}
                 transition={itemTransition}
-              >
-                {node.subtitle}
-              </motion.div>
-            )}
+              />
 
-            {/* Meta */}
-            {node.meta && (
-              <motion.div
-                className={styles.meta}
-                variants={itemVariants}
-                transition={itemTransition}
-              >
-                {node.meta}
-              </motion.div>
-            )}
+              {/* Note (inset callout) */}
+              {node.detail.note && (
+                <motion.div
+                  className={styles.note}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  {node.detail.note}
+                </motion.div>
+              )}
 
-            {/* Hairline divider */}
-            <motion.div
-              className={styles.divider}
-              variants={itemVariants}
-              transition={itemTransition}
-            />
+              {/* Body paragraph */}
+              {node.detail.body && (
+                <motion.div
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  <p className={styles.body}>{node.detail.body}</p>
+                </motion.div>
+              )}
 
-            {/* Note (inset callout) */}
-            {node.detail.note && (
-              <motion.div
-                className={styles.note}
-                variants={itemVariants}
-                transition={itemTransition}
-              >
-                {node.detail.note}
-              </motion.div>
-            )}
+              {/* Bullets list */}
+              {node.detail.bullets && node.detail.bullets.length > 0 && (
+                <motion.div
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  <ul className={styles.bulletsList}>
+                    {node.detail.bullets.map((bullet, index) => (
+                      <li key={index} className={styles.bulletItem}>
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
 
-            {/* Body paragraph */}
-            {node.detail.body && (
-              <motion.div
-                variants={itemVariants}
-                transition={itemTransition}
-              >
-                <p className={styles.body}>
-                  {node.detail.body}
-                </p>
-              </motion.div>
-            )}
-
-            {/* Bullets list */}
-            {node.detail.bullets && node.detail.bullets.length > 0 && (
-              <motion.div
-                variants={itemVariants}
-                transition={itemTransition}
-              >
-                <ul className={styles.bulletsList}>
-                  {node.detail.bullets.map((bullet, index) => (
-                    <li key={index} className={styles.bulletItem}>
-                      {bullet}
-                    </li>
+              {/* Tags with real SVG Brand Icons */}
+              {node.detail.tags && node.detail.tags.length > 0 && (
+                <motion.div
+                  className={styles.tagsContainer}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  {node.detail.tags.map((tag, index) => (
+                    <MonoTag key={index}>
+                      <span className={nodeIconStyles.tagIconWrapper}>
+                        <BrandIcon name={tag} size={12} />
+                        {tag}
+                      </span>
+                    </MonoTag>
                   ))}
-                </ul>
-              </motion.div>
-            )}
+                </motion.div>
+              )}
 
-            {/* Tags */}
-            {node.detail.tags && node.detail.tags.length > 0 && (
-              <motion.div
-                className={styles.tagsContainer}
-                variants={itemVariants}
-                transition={itemTransition}
-              >
-                {node.detail.tags.map((tag, index) => (
-                  <MonoTag key={index}>
-                    <span className={nodeIconStyles.tagIconWrapper}>
-                      <TechIcon name={tag} size={11} />
-                      {tag}
-                    </span>
-                  </MonoTag>
-                ))}
-              </motion.div>
-            )}
-
-            {/* Links */}
-            {node.detail.links && node.detail.links.length > 0 && (
-              <motion.div
-                className={styles.linksContainer}
-                variants={itemVariants}
-                transition={itemTransition}
-              >
-                {node.detail.links.map((link, index) => (
-                  <ActionButton
-                    key={index}
-                    href={link.url}
-                    variant="ghost"
-                    external
-                  >
-                    {link.label}
-                  </ActionButton>
-                ))}
-              </motion.div>
-            )}
-          </GlassPanel>
-            </motion.div>
+              {/* Links with ParticleButton */}
+              {node.detail.links && node.detail.links.length > 0 && (
+                <motion.div
+                  className={styles.linksContainer}
+                  variants={itemVariants}
+                  transition={itemTransition}
+                >
+                  {node.detail.links.map((link, index) => (
+                    <ParticleButton
+                      key={index}
+                      href={link.url}
+                      variant="cool"
+                      size="sm"
+                      external
+                    >
+                      {link.label} ↗
+                    </ParticleButton>
+                  ))}
+                </motion.div>
+              )}
+            </LiquidGlassCard>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

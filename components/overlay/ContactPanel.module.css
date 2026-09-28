@@ -5,6 +5,11 @@
   padding: var(--s-5);
 }
 
+.contentModal {
+  padding: 0 !important;
+  gap: 14px !important;
+}
+
 .heading {
   font-size: var(--t-md);
   font-weight: 800;
@@ -23,40 +28,43 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--s-4);
+  gap: 12px;
 }
 
 .fieldGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--s-2);
+  gap: 6px;
 }
 
 .label {
   font-family: var(--font-code);
-  font-size: var(--t-xs);
+  font-size: 11px;
   color: var(--text-muted);
   display: block;
 }
 
 .input,
 .textarea {
-  background: rgb(5 7 14 / 0.6);
-  border: 1px solid var(--structure);
+  background: rgba(16, 23, 48, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--r-input);
-  padding: 10px 12px;
+  padding: 10px 14px;
   color: var(--text-high);
   font-family: var(--font-sans);
   font-size: var(--t-sm);
   width: 100%;
   box-sizing: border-box;
-  transition: border-color var(--d-fast) var(--ease-out);
+  transition: border-color var(--d-fast) var(--ease-out), box-shadow var(--d-fast) var(--ease-out);
 }
 
+.input:focus,
 .input:focus-visible,
+.textarea:focus,
 .textarea:focus-visible {
   outline: none;
   border-color: var(--signal-cool);
+  box-shadow: 0 0 15px rgba(94, 231, 214, 0.25);
 }
 
 .textarea {

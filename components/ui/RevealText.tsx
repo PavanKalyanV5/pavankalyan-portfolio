@@ -26,20 +26,20 @@ export function RevealText({
 
   if (reducedMotion) {
     return (
-      <Component ref={ref} className={className}>
+      <Component ref={ref} className={className} suppressHydrationWarning>
         {text}
       </Component>
     );
   }
 
   return (
-    <Component ref={ref} className={className}>
+    <Component ref={ref} className={className} suppressHydrationWarning>
       {words.map((word, idx) => (
         // The separating space must sit OUTSIDE the mask container: the mask is
         // an overflow-hidden inline-block, and trailing whitespace inside such a
         // box is trimmed, which silently ran every word together.
         <React.Fragment key={idx}>
-          <span className={styles.wordContainer}>
+          <span className={styles.wordContainer} suppressHydrationWarning>
             <motion.span
               className={styles.word}
               initial={{ y: "110%" }}
@@ -50,6 +50,7 @@ export function RevealText({
                 delay: delay + idx * 0.055,
               }}
               style={{ display: "inline-block" }}
+              suppressHydrationWarning
             >
               {word}
             </motion.span>

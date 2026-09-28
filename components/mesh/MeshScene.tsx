@@ -5,6 +5,8 @@ import { MeshNodeObject } from "./MeshNodeObject";
 import { MeshEdges } from "./MeshEdges";
 import { FlowParticles } from "./FlowParticles";
 import { NodeLabel } from "./NodeLabel";
+import { QuantumField } from "./QuantumField";
+import { CyberGrid } from "./CyberGrid";
 
 export interface MeshSceneProps {
   graph: LayerGraph;
@@ -25,10 +27,17 @@ export function MeshScene(props: MeshSceneProps) {
   return (
     <group>
       {/* Lights */}
-      <ambientLight intensity={1.1} />
-      <pointLight position={[9, 7, 11]} intensity={140} distance={45} color="#5EE7D6" />
-      <pointLight position={[-9, -5, 6]} intensity={110} distance={45} color="#8A6BFF" />
-      <pointLight position={[0, -6, -6]} intensity={80} distance={40} color="#FFB35C" />
+      <ambientLight intensity={1.3} />
+      <pointLight position={[9, 7, 11]} intensity={180} distance={50} color="#5EE7D6" />
+      <pointLight position={[-9, -5, 6]} intensity={140} distance={50} color="#8A6BFF" />
+      <pointLight position={[0, -6, -6]} intensity={100} distance={45} color="#FFB35C" />
+      <directionalLight position={[0, 10, 5]} intensity={0.6} color="#FFFFFF" />
+
+      {/* Cosmic Quantum Particle Field */}
+      <QuantumField still={still} />
+
+      {/* Futuristic Receding Cyber Grid */}
+      <CyberGrid still={still} />
 
       {/* Edges and particles */}
       <MeshEdges graph={graph} activeId={hoveredId ?? selectedId} />
@@ -59,29 +68,16 @@ export function MeshScene(props: MeshSceneProps) {
         );
       })}
 
-      {/* Labels: navigation nodes always, hovered/selected with stronger emphasis */}
+      {/* Micro-Labels: for unselected nodes so the topology remains readable */}
       {graph.nodes.map((node) => {
-        // Hubs and the direct profile shortcuts are the navigable nodes, so they
-        // carry permanent labels — an unlabelled node looks inert and gives the
-        // visitor no reason to click it.
         const isHub = node.kind === "hub" || node.id.startsWith("link-");
-        const isHovered = hoveredId === node.id;
-        const isSelected = selectedId === node.id;
-
-        if (isHub) {
+        const isHovered = hoveredId === node.id && selectedId !== node.id;
+        if (isHub || isHovered) {
           return (
             <NodeLabel
               key={`label-${node.id}`}
               node={node}
-              emphasis="soft"
-            />
-          );
-        } else if (isHovered || isSelected) {
-          return (
-            <NodeLabel
-              key={`label-${node.id}`}
-              node={node}
-              emphasis="strong"
+              emphasis={isHovered ? "strong" : "soft"}
             />
           );
         }

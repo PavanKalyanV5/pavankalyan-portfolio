@@ -1,0 +1,71 @@
+.shimmer {
+  display: inline-block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 250% 100%;
+  animation: shimmer-sweep 5s infinite linear;
+}
+
+.cool {
+  background-image: linear-gradient(
+    110deg,
+    #5EE7D6 0%,
+    #A7F3D0 30%,
+    #FFFFFF 50%,
+    #5EE7D6 70%,
+    #38BDF8 100%
+  );
+}
+
+.warm {
+  background-image: linear-gradient(
+    110deg,
+    #FFB35C 0%,
+    #FDE047 30%,
+    #FFFFFF 50%,
+    #FFB35C 70%,
+    #F97316 100%
+  );
+}
+
+.violet {
+  background-image: linear-gradient(
+    110deg,
+    #8A6BFF 0%,
+    #C084FC 30%,
+    #FFFFFF 50%,
+    #8A6BFF 70%,
+    #6366F1 100%
+  );
+}
+
+.silver {
+  background-image: linear-gradient(
+    110deg,
+    #8B98B5 0%,
+    #CBD5E1 30%,
+    #FFFFFF 50%,
+    #CBD5E1 70%,
+    #8B98B5 100%
+  );
+}
+
+.fast {
+  animation-duration: 2.8s;
+}
+
+.normal {
+  animation-duration: 4.5s;
+}
+
+.slow {
+  animation-duration: 7s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+    background-position: 50% 0;
+  }
+}

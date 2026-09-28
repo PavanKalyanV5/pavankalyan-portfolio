@@ -7,3 +7,86 @@
   inset: 0;
   z-index: var(--z-canvas);
 }
+
+.bentoWrap {
+  min-height: 100vh;
+  background: var(--void);
+  color: var(--text-high);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Contact Modal in 3D Mode */
+.contactModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 14, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.contactModalDialog {
+  width: 100%;
+  max-width: 460px;
+  margin: auto;
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+}
+
+.contactModalInner {
+  padding: 20px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.contactModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contactHeaderTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--text-high);
+}
+
+.contactDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal-warm);
+  box-shadow: 0 0 6px var(--signal-warm);
+}
+
+.contactCloseBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color var(--d-fast) var(--ease-out);
+}
+
+.contactCloseBtn:hover {
+  color: var(--signal-cool);
+}

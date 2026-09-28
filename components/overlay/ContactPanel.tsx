@@ -12,11 +12,11 @@ import {
   SiGeeksforgeeks,
   SiGooglecloud,
 } from "react-icons/si";
-import { ActionButton } from "../ui/ActionButton";
+import { ParticleButton } from "@/components/kokonutui/ParticleButton";
 import { socials } from "@/content/socials";
 import styles from "./ContactPanel.module.css";
 
-export function ContactPanel() {
+export function ContactPanel({ showHeader = true }: { showHeader?: boolean }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -96,12 +96,15 @@ export function ContactPanel() {
   const successMessage = "Message sent — thanks for reaching out!";
 
   return (
-    <div className={styles.content}>
-      <h2 className={styles.heading}>Get in touch</h2>
-
-      <p className={styles.copy}>
-        Have a question or want to collaborate? Reach out and let&apos;s talk.
-      </p>
+    <div className={`${styles.content} ${!showHeader ? styles.contentModal : ""}`}>
+      {showHeader && (
+        <>
+          <h2 className={styles.heading}>Get in touch</h2>
+          <p className={styles.copy}>
+            Have a question or want to collaborate? Reach out and let&apos;s talk.
+          </p>
+        </>
+      )}
 
       {sent ? (
         <div
@@ -175,9 +178,9 @@ export function ContactPanel() {
             </div>
 
             <div className={styles.submitButton}>
-              <ActionButton type="submit" variant="primary">
+              <ParticleButton type="submit" variant="primary" disabled={isSubmitting}>
                 {isSubmitting ? "Sending…" : "Send message"}
-              </ActionButton>
+              </ParticleButton>
             </div>
           </form>
         </>

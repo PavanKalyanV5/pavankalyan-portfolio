@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -14,48 +14,80 @@ interface CameraRigProps {
 }
 
 // Frame-rate independent smooth constant
-const SMOOTH = 0.0015;
+const SMOOTH = 0.0018;
 
-/**
- * How far to push the graph right of centre, so it clears the hero copy and the
- * detail panel that both occupy the left side on wide screens. Implemented by
- * translating the camera left rather than moving the nodes, so the positions in
- * the layer data stay the single source of truth for the fly-to animation.
- */
 function centreShift(viewportWidth: number): number {
-  if (viewportWidth >= 1400) return 5;
-  if (viewportWidth >= 1100) return 3.5;
-  // Below this the hero becomes a full-width block at the bottom, so a centred
-  // graph is correct.
+  if (viewportWidth >= 1400) return 4.5;
+  if (viewportWidth >= 1100) return 3.2;
   return 0;
 }
 
 export function CameraRig(props: CameraRigProps) {
   const { home, focus, still = false } = props;
-  const { camera, pointer, clock, size } = useThree();
+  const { camera, pointer, clock, size, gl } = useThree();
 
   // Persistent refs for lerped camera position and look target
   const targetPos = useRef(new THREE.Vector3(...home));
   const targetLook = useRef(new THREE.Vector3(0, 0, 0));
   const currentLook = useRef(new THREE.Vector3(0, 0, 0));
 
-  useFrame((state, delta) => {
-    // Compute frame-rate-independent lerp factor
+  // Manual drag orbit offsets when inspecting
+  const isDragging = useRef(false);
+  const previousPointer = useRef({ x: 0, y: 0 });
+  const orbitOffset = useRef({ yaw: 0, pitch: 0 });
+
+  // Listen for canvas drag on 3D view to allow free rotation around focused node
+  useEffect(() => {
+    const canvas = gl.domElement;
+    if (!canvas) return;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      // Only drag with primary mouse button
+      if (e.button !== 0) return;
+      isDragging.current = true;
+      previousPointer.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!isDragging.current) return;
+      const deltaX = (e.clientX - previousPointer.current.x) * 0.004;
+      const deltaY = (e.clientY - previousPointer.current.y) * 0.004;
+
+      orbitOffset.current.yaw += deltaX;
+      orbitOffset.current.pitch = Math.max(-0.6, Math.min(0.6, orbitOffset.current.pitch - deltaY));
+
+      previousPointer.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handlePointerUp = () => {
+      isDragging.current = false;
+    };
+
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      canvas.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [gl]);
+
+  // Reset orbit offset when focus changes
+  useEffect(() => {
+    orbitOffset.current = { yaw: 0, pitch: 0 };
+  }, [focus]);
+
+  useFrame((_, delta) => {
     const k = 1 - Math.pow(SMOOTH, delta);
     const shift = centreShift(size.width);
 
     if (still) {
-      // Still mode: snap directly without lerping
       if (focus) {
-        // Focused offset position
-        camera.position.set(
-          focus[0] + 2.6,
-          focus[1] + 0.9,
-          focus[2] + 4.2
-        );
+        camera.position.set(focus[0] - 1.4, focus[1] + 0.3, focus[2] + 3.8);
         currentLook.current.set(focus[0], focus[1], focus[2]);
       } else {
-        // Home position, translated left so the graph reads right of centre
         camera.position.set(home[0] - shift, home[1], home[2]);
         currentLook.current.set(-shift, 0, 0);
       }
@@ -63,14 +95,12 @@ export function CameraRig(props: CameraRigProps) {
       return;
     }
 
-    // Normal mode: with drift and parallax
-
     if (focus === null) {
-      // Unfocused: home position + drift + parallax
-      const driftX = Math.sin(clock.elapsedTime * 0.14) * 0.9;
-      const driftY = Math.cos(clock.elapsedTime * 0.11) * 0.5;
-      const parallaxX = pointer.x * 1.4;
-      const parallaxY = pointer.y * 0.9;
+      // Unfocused home view: subtle ambient drift + slight cursor parallax
+      const driftX = Math.sin(clock.elapsedTime * 0.12) * 0.7;
+      const driftY = Math.cos(clock.elapsedTime * 0.1) * 0.4;
+      const parallaxX = pointer.x * 0.9;
+      const parallaxY = pointer.y * 0.6;
 
       targetPos.current.set(
         home[0] - shift + driftX + parallaxX,
@@ -79,25 +109,31 @@ export function CameraRig(props: CameraRigProps) {
       );
       targetLook.current.set(-shift, 0, 0);
     } else {
-      // Focused: position offset with reduced parallax, no drift
-      const parallaxX = pointer.x * 0.45;
-      const parallaxY = pointer.y * 0.3;
+      // FOCUSED NODE VIEW:
+      // ZERO cursor-following jitter! The camera locks stably on the node.
+      // Allows intentional user drag-orbiting without wobbling on mouse movement.
+      const isWide = size.width >= 1024;
+      const focusOffsetX = isWide ? -1.4 : 0; // Offset camera left so detail panel on right doesn't obscure node
+      const focusOffsetY = isWide ? 0.3 : 0.8;
+      const distance = isWide ? 3.8 : 4.4;
 
-      targetPos.current.set(
-        focus[0] + 2.6 + parallaxX,
-        focus[1] + 0.9 + parallaxY,
-        focus[2] + 4.2
-      );
+      // Apply intentional user drag-orbit around focus point
+      const yaw = orbitOffset.current.yaw;
+      const pitch = orbitOffset.current.pitch;
+
+      const camX = focus[0] + focusOffsetX + Math.sin(yaw) * distance;
+      const camY = focus[1] + focusOffsetY + Math.sin(pitch) * 2;
+      const camZ = focus[2] + Math.cos(yaw) * distance;
+
+      targetPos.current.set(camX, camY, camZ);
       targetLook.current.set(focus[0], focus[1], focus[2]);
     }
 
-    // Lerp camera position toward target
+    // Smooth lerp to target position
     camera.position.lerp(targetPos.current, k);
 
-    // Lerp look direction toward target
+    // Smooth lerp look target
     currentLook.current.lerp(targetLook.current, k);
-
-    // Apply look direction
     camera.lookAt(currentLook.current);
   });
 

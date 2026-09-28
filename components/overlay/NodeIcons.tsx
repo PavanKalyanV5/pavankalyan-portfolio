@@ -62,11 +62,13 @@ export function NodeKindIcon({
   const Icon = kindIconMap[kind];
 
   return (
-    <Icon
-      size={size}
-      className={styles.kindIcon}
-      aria-hidden="true"
-    />
+    <span suppressHydrationWarning style={{ display: "inline-flex", alignItems: "center" }}>
+      <Icon
+        size={size}
+        className={styles.kindIcon}
+        aria-hidden="true"
+      />
+    </span>
   );
 }
 
@@ -120,11 +122,13 @@ export function TechIcon({
   if (techIconMap[normalized]) {
     const Icon = techIconMap[normalized];
     return (
-      <Icon
-        size={size}
-        className={styles.techIcon}
-        aria-hidden="true"
-      />
+      <span suppressHydrationWarning style={{ display: "inline-flex", alignItems: "center" }}>
+        <Icon
+          size={size}
+          className={styles.techIcon}
+          aria-hidden="true"
+        />
+      </span>
     );
   }
 
@@ -132,11 +136,13 @@ export function TechIcon({
   for (const [key, Icon] of Object.entries(techIconMap)) {
     if (normalized.includes(key) || key.includes(normalized)) {
       return (
-        <Icon
-          size={size}
-          className={styles.techIcon}
-          aria-hidden="true"
-        />
+        <span suppressHydrationWarning style={{ display: "inline-flex", alignItems: "center" }}>
+          <Icon
+            size={size}
+            className={styles.techIcon}
+            aria-hidden="true"
+          />
+        </span>
       );
     }
   }

@@ -248,3 +248,318 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Experience Architecture Pillars */
+.expPillarsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .expPillarsRow {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.expPillarBtn {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 10px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  font-family: var(--font-code);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+.expPillarBtn:hover,
+.expPillarActive {
+  background: rgba(16, 23, 48, 0.95);
+  border-color: rgba(94, 231, 214, 0.35);
+  transform: translateY(-2px);
+}
+
+.pillarNum {
+  font-size: 9px;
+  color: var(--signal-cool);
+}
+
+.pillarTitle {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-high);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pillarMetric {
+  font-size: 9px;
+  color: var(--signal-warm);
+}
+
+.activePillarCard {
+  padding: 12px 14px;
+  background: rgba(16, 23, 48, 0.85);
+  border: 1px solid rgba(94, 231, 214, 0.25);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pillarCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pillarBadge {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--signal-cool);
+  letter-spacing: 0.06em;
+}
+
+.pillarMetricBadge {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--signal-warm);
+}
+
+.pillarDesc {
+  font-size: 11px;
+  color: var(--text-high);
+  line-height: 1.5;
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.pillarTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pillarTagPill {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: var(--r-pill);
+  background: rgba(94, 231, 214, 0.1);
+  color: var(--signal-cool);
+  border: 1px solid rgba(94, 231, 214, 0.2);
+}
+
+/* Skills Proficiency Matrix */
+.proficiencyGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .proficiencyGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.meterCard {
+  padding: 10px 12px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.meterHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meterName {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-high);
+}
+
+.meterScore {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--signal-cool);
+}
+
+.meterTrack {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.meterBar {
+  height: 100%;
+  background: linear-gradient(90deg, #5EE7D6, #8A6BFF);
+  border-radius: 2px;
+  transition: width var(--d-slow) var(--ease-out);
+}
+
+.meterDetail {
+  font-size: 9.5px;
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+}
+
+/* Certifications Hub */
+.certClustersGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .certClustersGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.certClusterCard {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  font-family: var(--font-code);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+.certClusterCard:hover,
+.certClusterActive {
+  background: rgba(16, 23, 48, 0.95);
+  transform: translateY(-2px);
+}
+
+.clusterTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clusterDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.clusterCount {
+  font-size: 9px;
+  color: var(--text-dim);
+}
+
+.clusterName {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-high);
+}
+
+.clusterIssuers {
+  font-size: 8.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activeClusterFoot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+}
+
+.clusterHighlightLbl {
+  color: var(--text-dim);
+}
+
+.clusterHighlightVal {
+  font-weight: 700;
+}
+
+/* Education Timeline Grid */
+.eduTimelineGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .eduTimelineGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.eduMilestoneCard {
+  padding: 14px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eduCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eduGradeBadge {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--signal-cool);
+}
+
+.eduYearBadge {
+  font-size: 9.5px;
+  color: var(--text-dim);
+}
+
+.eduDegree {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-high);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.eduCollege {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.eduHonorList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.eduHonorTag {
+  font-size: 9.5px;
+  color: var(--signal-warm);
+}

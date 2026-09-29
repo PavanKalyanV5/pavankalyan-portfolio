@@ -27,6 +27,10 @@ import { OrleansClusterVisual } from "@/components/bento/visuals/OrleansClusterV
 import { RagPipelineVisual } from "@/components/bento/visuals/RagPipelineVisual";
 import { ForecastingSeriesVisual } from "@/components/bento/visuals/ForecastingSeriesVisual";
 import { TheoNetworkVisual } from "@/components/bento/visuals/TheoNetworkVisual";
+import { ExperienceArchitectureVisual } from "@/components/bento/visuals/ExperienceArchitectureVisual";
+import { SkillsProficiencyMatrixVisual } from "@/components/bento/visuals/SkillsProficiencyMatrixVisual";
+import { CertificationsHubVisual } from "@/components/bento/visuals/CertificationsHubVisual";
+import { EducationMilestoneVisual } from "@/components/bento/visuals/EducationMilestoneVisual";
 import { getCyberAvatarUrl, getProjectVisual } from "@/lib/assets/icons";
 import styles from "./BentoPortfolio.module.css";
 import nodeIconStyles from "@/components/overlay/NodeIcons.module.css";
@@ -481,6 +485,9 @@ export function BentoPortfolio({
           </p>
         </div>
 
+        {/* Interactive Experience Architecture Visual */}
+        <ExperienceArchitectureVisual />
+
         <div className={styles.experienceGrid}>
           {experience.map((exp) => {
             const isPrimary = exp.tier === "primary";
@@ -540,6 +547,9 @@ export function BentoPortfolio({
           </div>
         </div>
 
+        {/* Interactive Skills Proficiency Matrix Visual */}
+        <SkillsProficiencyMatrixVisual />
+
         <div className={styles.skillsBento}>
           {filteredSkillCategories.map((category) => (
             <LiquidGlassCard
@@ -574,6 +584,9 @@ export function BentoPortfolio({
             Accredited credentials across Cloud Architecture, Database Systems, Security, and AI/ML.
           </p>
         </div>
+
+        {/* Interactive Certifications Hub Telemetry Visual */}
+        <CertificationsHubVisual />
 
         <div className={styles.certsGrid}>
           {displayedCerts.map((cert) => (
@@ -623,6 +636,21 @@ export function BentoPortfolio({
               : `+ View All ${certifications.length} Accredited Certifications ▾`}
           </button>
         </div>
+      </section>
+
+      {/* Education Section Bento */}
+      <section className={styles.sectionWrap} id="education">
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionEyebrow}>ACADEMIC FOUNDATION</div>
+          <h2 className={styles.sectionTitle}>
+            Higher Education & Honors
+          </h2>
+          <p className={styles.sectionSub}>
+            Computer Science engineering degree with academic distinction and machine learning leadership.
+          </p>
+        </div>
+
+        <EducationMilestoneVisual />
       </section>
 
       {/* Contact Section Bento */}

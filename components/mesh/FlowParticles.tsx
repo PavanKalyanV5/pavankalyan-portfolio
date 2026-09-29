@@ -59,19 +59,18 @@ export function FlowParticles(props: FlowParticlesProps) {
     [totalCount]
   );
 
-  useFrame(({ clock }) => {
+  useFrame(() => {
     const geometry = geometryRef.current;
     if (!geometry || particleData.length === 0) return;
 
-    // Write straight into the geometry's own attribute buffer rather than into a
-    // value captured from render scope — per-frame mutation is the point here,
-    // and this keeps it owned by three.js instead of by React.
+    // Use performance.now() to avoid deprecated THREE.Clock
+    const elapsedTime = performance.now() * 0.001;
     const attribute = geometry.attributes.position;
     const buffer = attribute.array as Float32Array;
 
     for (let i = 0; i < particleData.length; i++) {
       const { startPos, endPos, control, phase } = particleData[i];
-      const t = (clock.elapsedTime * 0.18 + phase) % 1;
+      const t = (elapsedTime * 0.18 + phase) % 1;
 
       const pos = pointOnEdge(startPos, control, endPos, t);
       buffer[i * 3] = pos[0];

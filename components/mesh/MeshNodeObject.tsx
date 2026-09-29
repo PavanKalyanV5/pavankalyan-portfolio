@@ -122,7 +122,7 @@ export function MeshNodeObject(props: MeshNodeObjectProps) {
     }
   }, [state, style.emissive]);
 
-  useFrame(({ clock, pointer }, delta) => {
+  useFrame(({ pointer }, delta) => {
     if (!groupRef.current || !coreMaterialRef.current || !shellMaterialRef.current) {
       return;
     }
@@ -136,6 +136,7 @@ export function MeshNodeObject(props: MeshNodeObjectProps) {
       return;
     }
 
+    const elapsedTime = performance.now() * 0.001;
     const lerpFactor = LERP_FACTOR(delta);
 
     // Lerp scale
@@ -162,7 +163,7 @@ export function MeshNodeObject(props: MeshNodeObjectProps) {
 
     // Ambient floating bob
     groupRef.current.position.y =
-      node.position[1] + Math.sin(clock.elapsedTime * 0.8 + phase) * 0.08;
+      node.position[1] + Math.sin(elapsedTime * 0.8 + phase) * 0.08;
 
     // Interactive rotation based on state
     groupRef.current.rotation.y += delta * targets.rotationSpeed;
@@ -189,7 +190,7 @@ export function MeshNodeObject(props: MeshNodeObjectProps) {
     // Orbiting Satellites Rotation
     if (satelliteGroupRef.current) {
       satelliteGroupRef.current.rotation.y += delta * (targets.ringSpeed * 0.8 + 0.5);
-      satelliteGroupRef.current.rotation.x = Math.sin(clock.elapsedTime * 1.2) * 0.25;
+      satelliteGroupRef.current.rotation.x = Math.sin(elapsedTime * 1.2) * 0.25;
     }
 
     // Expanding Shockwave Wave Animation on Selection

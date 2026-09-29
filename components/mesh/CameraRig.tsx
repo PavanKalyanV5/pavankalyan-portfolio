@@ -24,7 +24,7 @@ function centreShift(viewportWidth: number): number {
 
 export function CameraRig(props: CameraRigProps) {
   const { home, focus, still = false } = props;
-  const { camera, pointer, clock, size, gl } = useThree();
+  const { camera, pointer, size, gl } = useThree();
 
   // Persistent refs for lerped camera position and look target
   const targetPos = useRef(new THREE.Vector3(...home));
@@ -97,8 +97,9 @@ export function CameraRig(props: CameraRigProps) {
 
     if (focus === null) {
       // Unfocused home view: subtle ambient drift + slight cursor parallax
-      const driftX = Math.sin(clock.elapsedTime * 0.12) * 0.7;
-      const driftY = Math.cos(clock.elapsedTime * 0.1) * 0.4;
+      const elapsedTime = performance.now() * 0.001;
+      const driftX = Math.sin(elapsedTime * 0.12) * 0.7;
+      const driftY = Math.cos(elapsedTime * 0.1) * 0.4;
       const parallaxX = pointer.x * 0.9;
       const parallaxY = pointer.y * 0.6;
 

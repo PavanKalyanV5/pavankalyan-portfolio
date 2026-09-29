@@ -102,12 +102,15 @@ export function BklitRadarChart({
         </div>
       </div>
 
-      <div className={styles.chartContainer} style={{ width: size, height: size }} suppressHydrationWarning>
+      <div
+        className={styles.chartContainer}
+        style={{ width: "100%", maxWidth: size, aspectRatio: "1/1" }}
+        suppressHydrationWarning
+      >
         <svg
-          width={size}
-          height={size}
           viewBox={`0 0 ${size} ${size}`}
           className={styles.svg}
+          style={{ width: "100%", height: "auto" }}
           suppressHydrationWarning
         >
           <defs suppressHydrationWarning>

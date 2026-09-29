@@ -17,6 +17,7 @@ import { CommandPalette } from "@/components/ui/CommandPalette";
 import { StaticPortfolio } from "@/components/fallback/StaticPortfolio";
 import { BentoPortfolio } from "@/components/bento/BentoPortfolio";
 import { useCapabilities, shouldRender3D } from "@/lib/mesh/useCapabilities";
+import { useIsMobile } from "@/lib/useIsMobile";
 import { getLayerGraph } from "@/lib/mesh/layers";
 import { LAYER_ORDER, type LayerId } from "@/lib/mesh/types";
 import { LayerIntro } from "./LayerIntro";
@@ -33,13 +34,18 @@ function hubTarget(nodeId: string): LayerId | null {
 
 export function Portfolio() {
   const capabilities = useCapabilities();
+  const isMobile = useIsMobile();
   const [layer, setLayer] = useState<LayerId>("overview");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [booted, setBooted] = useState(false);
-  const [viewMode, setViewMode] = useState<"spatial" | "bento">("spatial");
+  const [userViewMode, setUserViewMode] = useState<"spatial" | "bento" | null>(null);
   const [commandOpen, setCommandOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [showMobileToast, setShowMobileToast] = useState(false);
+
+  // If user explicitly switched mode, respect their choice; otherwise mobile defaults to "bento"
+  const viewMode = userViewMode ?? (isMobile ? "bento" : "spatial");
 
   const graph = useMemo(() => getLayerGraph(layer), [layer]);
 
@@ -73,8 +79,26 @@ export function Portfolio() {
 
   const closePanel = useCallback(() => setSelectedId(null), []);
 
+  const switchToSpatial = useCallback(() => {
+    setUserViewMode("spatial");
+    if (typeof window !== "undefined" && window.innerWidth < 840) {
+      setShowMobileToast(true);
+      setTimeout(() => setShowMobileToast(false), 5000);
+    }
+  }, []);
+
   const toggleViewMode = useCallback(() => {
-    setViewMode((prev) => (prev === "spatial" ? "bento" : "spatial"));
+    const next = viewMode === "spatial" ? "bento" : "spatial";
+    setUserViewMode(next);
+    if (next === "spatial" && typeof window !== "undefined" && window.innerWidth < 840) {
+      setShowMobileToast(true);
+      setTimeout(() => setShowMobileToast(false), 5000);
+    }
+  }, [viewMode]);
+
+  const handleContextLost = useCallback(() => {
+    // If WebGL renderer loses context, gracefully auto-fallback to 3D Bento mode
+    setUserViewMode("bento");
   }, []);
 
   const openCommand = useCallback(() => setCommandOpen(true), []);
@@ -141,7 +165,7 @@ export function Portfolio() {
           onOpenContact={() => setIsContactOpen(true)}
         />
         <BentoPortfolio
-          onSwitchToSpatial={() => setViewMode("spatial")}
+          onSwitchToSpatial={switchToSpatial}
           onOpenCommandPalette={openCommand}
         />
         <CommandPalette
@@ -149,11 +173,11 @@ export function Portfolio() {
           onClose={closeCommand}
           onNavigateLayer={(l) => {
             changeLayer(l);
-            setViewMode("spatial");
+            setUserViewMode("spatial");
           }}
           onSelectNode={(id) => {
             handleSelect(id);
-            setViewMode("spatial");
+            setUserViewMode("spatial");
           }}
           onToggleViewMode={toggleViewMode}
           viewMode={viewMode}
@@ -226,7 +250,7 @@ export function Portfolio() {
         data-cursor={cursorNode ? "node" : undefined}
         data-cursor-label={cursorNode?.label}
       >
-        <MeshCanvas quality={quality}>
+        <MeshCanvas quality={quality} onContextLost={handleContextLost}>
           <CameraRig home={graph.cameraHome} focus={focus} still={still} />
           <ParallaxGroup still={still}>
             <MeshScene
@@ -242,6 +266,31 @@ export function Portfolio() {
         </MeshCanvas>
       </div>
 
+      {/* Mobile 3D Experience Toast */}
+      <AnimatePresence>
+        {showMobileToast && (
+          <motion.div
+            className={styles.mobileToast}
+            initial={{ opacity: 0, y: -20, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            transition={{ duration: 0.25 }}
+          >
+            <span className={styles.toastIcon}>✦</span>
+            <span className={styles.toastText}>
+              For the best 3D orbital experience, view on PC or laptop.
+            </span>
+            <button
+              className={styles.toastCloseBtn}
+              onClick={() => setShowMobileToast(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {booted && <LayerIntro graph={graph} dimmed={selectedNode !== null} />}
       <DetailPanel node={selectedNode} onClose={closePanel} />
 
@@ -252,7 +301,7 @@ export function Portfolio() {
         nodes={graph.nodes}
         selectedId={selectedId}
         onSelectNode={setSelectedId}
-        onSwitchToBento={() => setViewMode("bento")}
+        onSwitchToBento={() => setUserViewMode("bento")}
       />
 
       {!booted && <BootSequence onComplete={() => setBooted(true)} />}

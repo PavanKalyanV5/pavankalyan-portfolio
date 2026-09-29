@@ -14,6 +14,7 @@ interface MeshCanvasProps {
   children: React.ReactNode;
   /** Lower quality trims dpr and disables adaptive events; default "high". */
   quality?: "high" | "low";
+  onContextLost?: () => void;
 }
 
 /**
@@ -37,6 +38,7 @@ function PerformanceController({
 export function MeshCanvas({
   children,
   quality = "high",
+  onContextLost,
 }: MeshCanvasProps): React.ReactNode {
   const [degraded, setDegraded] = useState(false);
 
@@ -57,6 +59,7 @@ export function MeshCanvas({
           powerPreference: "high-performance",
           stencil: false,
           depth: true,
+          preserveDrawingBuffer: false,
         }}
         camera={{
           position: [0, 1.5, 16],
@@ -65,13 +68,22 @@ export function MeshCanvas({
           far: 200,
         }}
         frameloop="always"
+        onCreated={({ gl }) => {
+          const canvas = gl.domElement;
+          const handleContextLost = (event: Event) => {
+            // Prevent default behavior so WebGL can be restored or handled cleanly
+            event.preventDefault();
+            if (onContextLost) {
+              onContextLost();
+            }
+          };
+          canvas.addEventListener("webglcontextlost", handleContextLost, false);
+        }}
       >
         <color attach="background" args={["#05070E"]} />
         <fogExp2 attach="fog" args={["#05070E", 0.028]} />
         {children}
-        <PerformanceMonitor
-          onDecline={() => setDegraded(true)}
-        >
+        <PerformanceMonitor onDecline={() => setDegraded(true)}>
           <AdaptiveDpr pixelated={false} />
           {quality === "high" && <AdaptiveEvents />}
           <Preload all />

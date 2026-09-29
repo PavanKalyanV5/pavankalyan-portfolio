@@ -90,3 +90,50 @@
 .contactCloseBtn:hover {
   color: var(--signal-cool);
 }
+
+/* Mobile 3D Experience Toast */
+.mobileToast {
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(11, 16, 32, 0.94);
+  border: 1px solid rgba(94, 231, 214, 0.35);
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(94, 231, 214, 0.2);
+  width: max-content;
+  max-width: 90vw;
+  font-family: var(--font-code);
+}
+
+.toastIcon {
+  color: var(--signal-cool);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.toastText {
+  font-size: 11px;
+  color: var(--text-high);
+  line-height: 1.4;
+}
+
+.toastCloseBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.toastCloseBtn:hover {
+  color: var(--signal-cool);
+}

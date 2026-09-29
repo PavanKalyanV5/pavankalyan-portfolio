@@ -39,6 +39,7 @@ import {
   SiDotnet,
   SiGooglecloud,
 } from "react-icons/si";
+import { useIsMounted } from "@/lib/useIsMounted";
 import type { NodeKind } from "@/lib/mesh/types";
 import styles from "./NodeIcons.module.css";
 
@@ -49,6 +50,7 @@ export function NodeKindIcon({
   kind: NodeKind;
   size?: number;
 }) {
+  const mounted = useIsMounted();
   const kindIconMap: Record<NodeKind, IconType> = {
     hub: FaDiagramProject,
     role: FaBriefcase,
@@ -61,12 +63,22 @@ export function NodeKindIcon({
 
   const Icon = kindIconMap[kind];
 
+  if (!mounted) {
+    return (
+      <span
+        suppressHydrationWarning
+        style={{ display: "inline-flex", width: size, height: size }}
+      />
+    );
+  }
+
   return (
     <span suppressHydrationWarning style={{ display: "inline-flex", alignItems: "center" }}>
       <Icon
         size={size}
         className={styles.kindIcon}
         aria-hidden="true"
+        suppressHydrationWarning={true}
       />
     </span>
   );
@@ -79,6 +91,8 @@ export function TechIcon({
   name: string;
   size?: number;
 }) {
+  const mounted = useIsMounted();
+
   const techIconMap: Record<string, IconType> = {
     react: SiReact,
     typescript: SiTypescript,
@@ -115,6 +129,15 @@ export function TechIcon({
     google: SiGooglecloud,
   };
 
+  if (!mounted) {
+    return (
+      <span
+        suppressHydrationWarning
+        style={{ display: "inline-flex", width: size, height: size }}
+      />
+    );
+  }
+
   // Normalize the name: lowercase and strip non-alphanumerics
   const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
 
@@ -127,6 +150,7 @@ export function TechIcon({
           size={size}
           className={styles.techIcon}
           aria-hidden="true"
+          suppressHydrationWarning={true}
         />
       </span>
     );
@@ -141,6 +165,7 @@ export function TechIcon({
             size={size}
             className={styles.techIcon}
             aria-hidden="true"
+            suppressHydrationWarning={true}
           />
         </span>
       );

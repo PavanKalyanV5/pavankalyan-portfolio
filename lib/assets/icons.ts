@@ -20,22 +20,22 @@ const SIMPLE_ICONS_MAP: Record<string, string> = {
   css: "css3",
 
   // AI & Machine Learning
-  "semantic kernel": "microsoft",
+  "semantic kernel": "openai",
   rag: "openai",
   "retrieval-augmented generation (rag)": "openai",
   "vector search": "qdrant",
   "llm integration (gemini, gpt)": "googlegemini",
   "mcp server": "anthropic",
-  lightgbm: "python",
+  lightgbm: "scikitlearn",
   tensorflow: "tensorflow",
-  "time-series forecasting (ssa)": "statsmodels",
+  "time-series forecasting (ssa)": "scikitlearn",
   t5: "huggingface",
 
   // Backend & Distributed Systems
   webapi: "dotnet",
   fastapi: "fastapi",
   flask: "flask",
-  orleans: "microsoft",
+  orleans: "dotnet",
   swagger: "swagger",
   rabbitmq: "rabbitmq",
   graphql: "graphql",
@@ -49,7 +49,7 @@ const SIMPLE_ICONS_MAP: Record<string, string> = {
   "material ui (mui)": "mui",
   nextjs: "nextdotjs",
   "next.js": "nextdotjs",
-  zustand: "react",
+  zustand: "redux",
 
   // Databases
   "sql server": "microsoftsqlserver",

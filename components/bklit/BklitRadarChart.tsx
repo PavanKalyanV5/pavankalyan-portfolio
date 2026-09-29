@@ -44,7 +44,7 @@ export const ENGINEERING_PILLARS: RadarDimension[] = [
     key: "cloud_devops",
     label: "Cloud & Reliability",
     score: 92,
-    detail: "Microsoft Azure, Docker containerization, Azure Monitor, 99.99% uptime maintenance",
+    detail: "Microsoft Azure, Docker containerization, Azure Monitor, 99.9% uptime maintenance",
     tags: ["Azure", "Docker", "CI/CD", "Azure Monitor"],
   },
   {

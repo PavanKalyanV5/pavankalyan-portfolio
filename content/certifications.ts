@@ -7,6 +7,7 @@ export const certifications: CertificationEntry[] = [
     issuer: "Udemy",
     dateLabel: "Jan 2025",
     verificationUrl: "https://www.udemy.com/certificate/UC-b78fee6a-48a0-48a5-ab96-75937b574536/",
+    featured: true,
   },
   {
     id: "cert-zscaler-ztca",
@@ -15,6 +16,7 @@ export const certifications: CertificationEntry[] = [
     dateLabel: "Jan 2024 · Expires Jan 2027",
     credentialId: "9xxdrwm3j4gv",
     verificationUrl: "https://verify.skilljar.com/c/9xxdrwm3j4gv",
+    featured: true,
   },
   {
     id: "cert-wipro-talentnext",
@@ -60,6 +62,7 @@ export const certifications: CertificationEntry[] = [
     issuer: "Google Cloud",
     dateLabel: "Jan 2023",
     verificationUrl: "https://www.cloudskillsboost.google/public_profiles/e6fd3698-c0e3-4e0d-825b-3ccccd40465c",
+    featured: true,
   },
   {
     id: "cert-coursera-ml",
@@ -68,6 +71,7 @@ export const certifications: CertificationEntry[] = [
     dateLabel: "Jul 2023",
     credentialId: "TS98C9KSJJRC",
     verificationUrl: "https://www.coursera.org/account/accomplishments/specialization/certificate/TS98C9KSJJRC",
+    featured: true,
   },
   {
     id: "cert-coursera-unsupervised",
@@ -137,6 +141,7 @@ export const certifications: CertificationEntry[] = [
     title: "AWS Academy Graduate — AWS Academy Machine Learning Foundations",
     issuer: "AWS",
     dateLabel: "Sep 2022",
+    featured: true,
   },
   {
     id: "cert-aws-cloud-foundations",

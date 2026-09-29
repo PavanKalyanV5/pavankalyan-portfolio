@@ -5,6 +5,7 @@ import { projects } from "@/content/projects";
 import { experience } from "@/content/experience";
 import { skillCategories } from "@/content/skills";
 import { certifications } from "@/content/certifications";
+import type { ProjectEntry } from "@/content/types";
 import { Card3D } from "@/components/kokonutui/Card3D";
 import { LiquidGlassCard } from "@/components/kokonutui/LiquidGlassCard";
 import { ParticleButton } from "@/components/kokonutui/ParticleButton";
@@ -21,6 +22,11 @@ import { Badge } from "@/components/ui/Badge";
 import { MonoTag } from "@/components/ui/MonoTag";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { ContactPanel } from "@/components/overlay/ContactPanel";
+import { CaseStudyModal } from "@/components/case-studies/CaseStudyModal";
+import { OrleansGrainScene } from "@/components/mesh/flagships/OrleansGrainScene";
+import { RagPipelineScene } from "@/components/mesh/flagships/RagPipelineScene";
+import { ForecastingSeriesScene } from "@/components/mesh/flagships/ForecastingSeriesScene";
+import { TheoMemoryGraphScene } from "@/components/mesh/flagships/TheoMemoryGraphScene";
 import { getCyberAvatarUrl, getProjectVisual } from "@/lib/assets/icons";
 import styles from "./BentoPortfolio.module.css";
 import nodeIconStyles from "@/components/overlay/NodeIcons.module.css";
@@ -36,23 +42,35 @@ export function BentoPortfolio({
 }: BentoPortfolioProps) {
   const [projectFilter, setProjectFilter] = useState<string>("featured");
   const [skillSearch, setSkillSearch] = useState<string>("");
+  const [activeCaseStudy, setActiveCaseStudy] = useState<ProjectEntry | null>(null);
+  const [showArchive, setShowArchive] = useState<boolean>(false);
+  const [showAllCerts, setShowAllCerts] = useState<boolean>(false);
 
-  // Filter projects
+  // Split projects: Flagships vs Archive
+  const flagshipProjects = useMemo(() => {
+    return projects.filter((p) => p.tier === "featured");
+  }, []);
+
+  const archiveProjects = useMemo(() => {
+    return projects.filter((p) => p.tier === "compact");
+  }, []);
+
+  // Filter projects by tab
   const filteredProjects = useMemo(() => {
     if (projectFilter === "all") return projects;
-    if (projectFilter === "featured")
-      return projects.filter((p) => p.tier === "featured");
+    if (projectFilter === "featured") return flagshipProjects;
     if (projectFilter === "ai")
-      return projects.filter((p) =>
-        p.techStack.some((t) => ["Python", "TensorFlow", "T5", "Semantic Kernel"].includes(t)) ||
-        p.glyph === "ai"
+      return projects.filter(
+        (p) =>
+          p.techStack.some((t) => ["Python", "TensorFlow", "T5", "Semantic Kernel"].includes(t)) ||
+          p.glyph === "ai"
       );
     if (projectFilter === "dotnet")
       return projects.filter((p) =>
-        p.techStack.some((t) => [".NET", "Rust", "RabbitMQ"].includes(t))
+        p.techStack.some((t) => [".NET", ".NET 8", "Rust", "RabbitMQ"].includes(t))
       );
-    return projects;
-  }, [projectFilter]);
+    return flagshipProjects;
+  }, [projectFilter, flagshipProjects]);
 
   // Filter skills
   const filteredSkillCategories = useMemo(() => {
@@ -66,8 +84,14 @@ export function BentoPortfolio({
       .filter((cat) => cat.skills.length > 0);
   }, [skillSearch]);
 
+  // Certifications: Top 5 featured vs All
+  const displayedCerts = useMemo(() => {
+    if (showAllCerts) return certifications;
+    return certifications.filter((c) => c.featured);
+  }, [showAllCerts]);
+
   const projectTabs = [
-    { id: "featured", label: "Featured Systems", count: 4 },
+    { id: "featured", label: "Flagship Systems", count: flagshipProjects.length },
     { id: "all", label: "All Projects", count: projects.length },
     { id: "ai", label: "AI & RAG", count: 4 },
     { id: "dotnet", label: ".NET & Distributed", count: 2 },
@@ -172,7 +196,7 @@ export function BentoPortfolio({
             <div className={styles.statsGrid}>
               <div className={styles.statItem}>
                 <div className={styles.statNumber}>
-                  <AnimeCounter to={99.99} decimals={2} suffix="%" />
+                  <AnimeCounter to={99.9} decimals={1} suffix="%" />
                 </div>
                 <div className={styles.statLabel}>PROD UPTIME MAINTAINED</div>
               </div>
@@ -303,14 +327,32 @@ export function BentoPortfolio({
                 }`}
               >
                 <div className={styles.projectInner}>
-                  {/* Visual Preview Header */}
-                  <div
-                    className={styles.projectVisualBanner}
-                    style={{ background: visual.gradient }}
-                  >
-                    <span className={styles.visualBadge}>{visual.badge}</span>
-                    <BrandIcon name={visual.iconSlug} size={24} />
-                  </div>
+                  {/* Live 3D Architectural Scene or Visual Preview */}
+                  {project.id === "agentic-rag" ? (
+                    <div className={styles.sceneWrap}>
+                      <RagPipelineScene />
+                    </div>
+                  ) : project.id === "theo-ai-workspace" ? (
+                    <div className={styles.sceneWrap}>
+                      <TheoMemoryGraphScene />
+                    </div>
+                  ) : project.id === "production-ml-forecasting" ? (
+                    <div className={styles.sceneWrap}>
+                      <ForecastingSeriesScene />
+                    </div>
+                  ) : project.id === "game-intelligence-platform" ? (
+                    <div className={styles.sceneWrap}>
+                      <OrleansGrainScene />
+                    </div>
+                  ) : (
+                    <div
+                      className={styles.projectVisualBanner}
+                      style={{ background: visual.gradient }}
+                    >
+                      <span className={styles.visualBadge}>{visual.badge}</span>
+                      <BrandIcon name={visual.iconSlug} size={24} />
+                    </div>
+                  )}
 
                   <div className={styles.projectHeader}>
                     <Badge
@@ -361,10 +403,20 @@ export function BentoPortfolio({
                     ))}
                   </div>
 
-                  {/* Links */}
-                  {project.links && project.links.length > 0 && (
-                    <div className={styles.projectLinks}>
-                      {project.links.map((link, lIdx) => (
+                  {/* Actions & Case Study link */}
+                  <div className={styles.projectLinks}>
+                    {project.caseStudy && (
+                      <ParticleButton
+                        onClick={() => setActiveCaseStudy(project)}
+                        variant="primary"
+                        size="sm"
+                      >
+                        Case Study ↗
+                      </ParticleButton>
+                    )}
+
+                    {project.links &&
+                      project.links.map((link, lIdx) => (
                         <ParticleButton
                           key={lIdx}
                           href={link.url}
@@ -375,13 +427,54 @@ export function BentoPortfolio({
                           {link.label} ↗
                         </ParticleButton>
                       ))}
-                    </div>
-                  )}
+                  </div>
                 </div>
               </Card3D>
             );
           })}
         </div>
+
+        {/* Collapsed Archive Section */}
+        {archiveProjects.length > 0 && (
+          <div className={styles.archiveSection}>
+            <button
+              className={styles.archiveToggleBtn}
+              onClick={() => setShowArchive((prev) => !prev)}
+              data-cursor="link"
+            >
+              <span>✦</span>
+              <span>
+                {showArchive
+                  ? "Hide Archive"
+                  : `Show Archive (${archiveProjects.length} compact projects)`}
+              </span>
+              <span>{showArchive ? "▴" : "▾"}</span>
+            </button>
+
+            {showArchive && (
+              <div className={styles.archiveGrid}>
+                {archiveProjects.map((p) => (
+                  <LiquidGlassCard key={p.id} glow="violet" className={styles.archiveCard}>
+                    <div className={styles.projectHeader}>
+                      <h4 className={styles.archiveTitle}>{p.name}</h4>
+                      <Badge variant="outline" size="sm">
+                        {p.dateLabel}
+                      </Badge>
+                    </div>
+                    <p className={styles.archiveDesc}>{p.description}</p>
+                    <div className={styles.techRow}>
+                      {p.techStack.map((t, idx) => (
+                        <span key={idx} className={styles.archiveTechPill}>
+                          <BrandIcon name={t} size={11} /> {t}
+                        </span>
+                      ))}
+                    </div>
+                  </LiquidGlassCard>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Production Career Experience Bento */}
@@ -491,7 +584,7 @@ export function BentoPortfolio({
         </div>
 
         <div className={styles.certsGrid}>
-          {certifications.map((cert) => (
+          {displayedCerts.map((cert) => (
             <LiquidGlassCard
               key={cert.id}
               glow="violet"
@@ -525,6 +618,19 @@ export function BentoPortfolio({
             </LiquidGlassCard>
           ))}
         </div>
+
+        {/* Expand all 24 certificates */}
+        <div className={styles.seeAllWrap}>
+          <button
+            className={styles.seeAllCertsBtn}
+            onClick={() => setShowAllCerts((prev) => !prev)}
+            data-cursor="link"
+          >
+            {showAllCerts
+              ? "Show Featured 5 Only ▴"
+              : `+ View All ${certifications.length} Accredited Certifications ▾`}
+          </button>
+        </div>
       </section>
 
       {/* Contact Section Bento */}
@@ -541,6 +647,12 @@ export function BentoPortfolio({
           <ContactPanel />
         </Card3D>
       </section>
+
+      {/* Case Study Deep-Dive Modal */}
+      <CaseStudyModal
+        project={activeCaseStudy}
+        onClose={() => setActiveCaseStudy(null)}
+      />
     </div>
   );
 }

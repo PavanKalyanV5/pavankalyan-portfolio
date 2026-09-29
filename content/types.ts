@@ -29,6 +29,14 @@ export interface ProjectLink {
   url: string;
 }
 
+export interface CaseStudy {
+  problem: string;
+  architecture: string;
+  keyDecisions: string[];
+  results: string[];
+  metrics?: { label: string; value: string }[];
+}
+
 export interface ProjectEntry {
   id: string;
   name: string;
@@ -40,6 +48,7 @@ export interface ProjectEntry {
   links: ProjectLink[];
   glyph: IconGlyph;
   concurrentWith?: string;
+  caseStudy?: CaseStudy;
 }
 
 export interface EducationEntry {
@@ -64,6 +73,7 @@ export interface CertificationEntry {
   dateLabel: string;
   credentialId?: string;
   verificationUrl?: string;
+  featured?: boolean;
 }
 
 export interface SocialLink {

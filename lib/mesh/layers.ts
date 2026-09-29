@@ -79,7 +79,7 @@ function buildOverviewLayer(): LayerGraph {
   const hubSubtitles = [
     "7 roles",
     "9 projects",
-    "5 schools",
+    "2 institutions",
     "15 issuers",
     "8 domains",
     "7 profiles",

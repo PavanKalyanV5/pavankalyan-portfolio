@@ -414,6 +414,86 @@
   padding-top: 10px;
 }
 
+.sceneWrap {
+  border-radius: var(--r-input);
+  background: rgba(5, 7, 14, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.archiveSection {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.archiveToggleBtn,
+.seeAllCertsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-pill);
+  color: var(--text-high);
+  font-family: var(--font-code);
+  font-size: var(--t-xs);
+  cursor: pointer;
+  transition: all var(--d-fast) var(--ease-out);
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.archiveToggleBtn:hover,
+.seeAllCertsBtn:hover {
+  background: rgba(94, 231, 214, 0.12);
+  border-color: rgba(94, 231, 214, 0.35);
+  color: var(--signal-cool);
+}
+
+.archiveGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .archiveGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .archiveGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.archiveCard {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(16, 23, 48, 0.4);
+}
+
+.archiveTitle {
+  font-size: var(--t-sm);
+  font-weight: 700;
+  color: var(--text-high);
+  margin: 0;
+}
+
+.archiveDesc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
 /* Experience Grid */
 .experienceGrid {
   display: flex;

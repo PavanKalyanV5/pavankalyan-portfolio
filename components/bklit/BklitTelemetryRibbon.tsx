@@ -33,7 +33,7 @@ export function BklitTelemetryRibbon() {
     {
       id: "uptime",
       label: "PROD_UPTIME",
-      value: "99.99%",
+      value: "99.9%",
       sublabel: "Azure Monitor Verified",
       status: "live",
     },

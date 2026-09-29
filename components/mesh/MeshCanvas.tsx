@@ -10,6 +10,20 @@ import {
   PerformanceMonitor,
 } from "@react-three/drei";
 
+// Filter out upstream Three.js r186 deprecation warning caused by @react-three/fiber's internal default clock
+if (typeof window !== "undefined") {
+  const originalWarn = console.warn;
+  console.warn = (...args: unknown[]) => {
+    if (
+      typeof args[0] === "string" &&
+      args[0].includes("THREE.Clock: This module has been deprecated")
+    ) {
+      return;
+    }
+    originalWarn.apply(console, args);
+  };
+}
+
 interface MeshCanvasProps {
   children: React.ReactNode;
   /** Lower quality trims dpr and disables adaptive events; default "high". */

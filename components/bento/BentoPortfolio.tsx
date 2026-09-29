@@ -23,10 +23,10 @@ import { MonoTag } from "@/components/ui/MonoTag";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { ContactPanel } from "@/components/overlay/ContactPanel";
 import { CaseStudyModal } from "@/components/case-studies/CaseStudyModal";
-import { OrleansGrainScene } from "@/components/mesh/flagships/OrleansGrainScene";
-import { RagPipelineScene } from "@/components/mesh/flagships/RagPipelineScene";
-import { ForecastingSeriesScene } from "@/components/mesh/flagships/ForecastingSeriesScene";
-import { TheoMemoryGraphScene } from "@/components/mesh/flagships/TheoMemoryGraphScene";
+import { OrleansClusterVisual } from "@/components/bento/visuals/OrleansClusterVisual";
+import { RagPipelineVisual } from "@/components/bento/visuals/RagPipelineVisual";
+import { ForecastingSeriesVisual } from "@/components/bento/visuals/ForecastingSeriesVisual";
+import { TheoNetworkVisual } from "@/components/bento/visuals/TheoNetworkVisual";
 import { getCyberAvatarUrl, getProjectVisual } from "@/lib/assets/icons";
 import styles from "./BentoPortfolio.module.css";
 import nodeIconStyles from "@/components/overlay/NodeIcons.module.css";
@@ -327,23 +327,15 @@ export function BentoPortfolio({
                 }`}
               >
                 <div className={styles.projectInner}>
-                  {/* Live 3D Architectural Scene or Visual Preview */}
+                  {/* Interactive Architecture Visual */}
                   {project.id === "agentic-rag" ? (
-                    <div className={styles.sceneWrap}>
-                      <RagPipelineScene />
-                    </div>
+                    <RagPipelineVisual />
                   ) : project.id === "theo-ai-workspace" ? (
-                    <div className={styles.sceneWrap}>
-                      <TheoMemoryGraphScene />
-                    </div>
+                    <TheoNetworkVisual />
                   ) : project.id === "production-ml-forecasting" ? (
-                    <div className={styles.sceneWrap}>
-                      <ForecastingSeriesScene />
-                    </div>
+                    <ForecastingSeriesVisual />
                   ) : project.id === "game-intelligence-platform" ? (
-                    <div className={styles.sceneWrap}>
-                      <OrleansGrainScene />
-                    </div>
+                    <OrleansClusterVisual />
                   ) : (
                     <div
                       className={styles.projectVisualBanner}

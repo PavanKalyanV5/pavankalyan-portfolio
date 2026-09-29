@@ -23,7 +23,7 @@ interface Card3DProps {
 export function Card3D({
   children,
   className = "",
-  intensity = 18,
+  intensity = 4.5, // Subtle, rock-solid tilt that never flies away
   glowColor = "cool",
   onClick,
   style,
@@ -32,14 +32,20 @@ export function Card3D({
   const mounted = useIsMounted();
   const prefersReduced = useReducedMotion();
 
-  // Mouse coordinates normalized -0.5 to 0.5
+  // Mouse coordinates strictly clamped between -0.5 and 0.5
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Smooth springs for 3D rotation
-  const springConfig = { damping: 20, stiffness: 220, mass: 0.6 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [intensity, -intensity]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-intensity, intensity]), springConfig);
+  // Calibrated spring physics for smooth, non-oscillating tilt
+  const springConfig = { damping: 26, stiffness: 180, mass: 0.5 };
+  const rotateX = useSpring(
+    useTransform(mouseY, [-0.5, 0.5], [intensity, -intensity]),
+    springConfig
+  );
+  const rotateY = useSpring(
+    useTransform(mouseX, [-0.5, 0.5], [-intensity, intensity]),
+    springConfig
+  );
 
   // Specular sheen hotspot coordinates (0% to 100%)
   const glareX = useTransform(mouseX, [-0.5, 0.5], [0, 100]);
@@ -53,10 +59,16 @@ export function Card3D({
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReduced || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
+    if (rect.width === 0 || rect.height === 0) return;
+
+    // Strictly clamp normalized coordinates
+    const rawX = (event.clientX - rect.left) / rect.width - 0.5;
+    const rawY = (event.clientY - rect.top) / rect.height - 0.5;
+    const clampedX = Math.max(-0.5, Math.min(0.5, rawX));
+    const clampedY = Math.max(-0.5, Math.min(0.5, rawY));
+
+    mouseX.set(clampedX);
+    mouseY.set(clampedY);
   };
 
   const handleMouseLeave = () => {
@@ -93,9 +105,9 @@ export function Card3D({
         style={{
           rotateX,
           rotateY,
-          transformStyle: "preserve-3d",
+          transformPerspective: 1000,
         }}
-        whileHover={{ scale: 1.02 }}
+        whileHover={{ translateY: -3 }}
         whileTap={{ scale: 0.98 }}
         suppressHydrationWarning
       >
@@ -108,7 +120,7 @@ export function Card3D({
           />
         )}
 
-        {/* Card Content with 3D Depth */}
+        {/* Card Content */}
         <div className={styles.inner}>{children}</div>
       </motion.div>
     </div>

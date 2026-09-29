@@ -1,0 +1,250 @@
+.visualContainer {
+  padding: 14px 16px;
+  background: rgba(5, 7, 14, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--font-code);
+  margin-bottom: 4px;
+}
+
+.visualHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.visualTag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--signal-cool);
+  letter-spacing: 0.08em;
+}
+
+.visualMetric {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* Pipeline Track */
+.pipelineTrack {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 4px 0;
+  scrollbar-width: none;
+}
+
+.pipelineTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.pipelineStage {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  min-width: 90px;
+  flex-shrink: 0;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+.stageActive {
+  background: rgba(16, 23, 48, 0.95);
+  transform: translateY(-2px);
+}
+
+.stageDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+
+.stageName {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-high);
+}
+
+.stageSub {
+  font-size: 9px;
+  color: var(--text-dim);
+}
+
+.pipelineConnector {
+  width: 14px;
+  height: 2px;
+  flex-shrink: 0;
+}
+
+.connectorBeam {
+  width: 100%;
+  height: 100%;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+/* Grains Grid */
+.grainsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .grainsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.grainCard {
+  padding: 8px 10px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+.grainPulsing {
+  background: rgba(16, 23, 48, 0.95);
+  transform: translateY(-2px);
+}
+
+.grainTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.grainDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.grainId {
+  font-size: 8.5px;
+  color: var(--text-dim);
+}
+
+.grainName {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-high);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grainType {
+  font-size: 8.5px;
+  color: var(--text-dim);
+}
+
+/* Forecasting Chart */
+.tabToggles {
+  display: flex;
+  gap: 4px;
+}
+
+.miniTab {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-pill);
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 9px;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+.miniTabActive {
+  background: rgba(94, 231, 214, 0.15);
+  border-color: var(--signal-cool);
+  color: var(--signal-cool);
+}
+
+.chartWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 70px;
+}
+
+.chartFoot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--text-dim);
+}
+
+/* Theo Grid */
+.theoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .theoGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.theoNode {
+  padding: 8px 10px;
+  background: rgba(16, 23, 48, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--r-input);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: all var(--d-fast) var(--ease-out);
+}
+
+.theoNodeActive {
+  background: rgba(16, 23, 48, 0.95);
+  transform: translateY(-2px);
+}
+
+.theoTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theoDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.theoRole {
+  font-size: 9px;
+  color: var(--text-dim);
+}
+
+.theoName {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-high);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

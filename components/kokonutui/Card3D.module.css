@@ -48,6 +48,5 @@
 .inner {
   position: relative;
   z-index: 3;
-  transform-style: preserve-3d;
   height: 100%;
 }

@@ -12,5 +12,6 @@ research/
 *.tsbuildinfo
 coverage/
 .claude/
+*.log
 .env*
 !.env.local.example

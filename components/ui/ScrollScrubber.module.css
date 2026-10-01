@@ -1,0 +1,109 @@
+.scrubber {
+  display: flex;
+  height: 46px;
+  padding: 0 16px;
+  align-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+}
+
+.track {
+  --span: 280px;
+  position: relative;
+  width: var(--span);
+  height: 22px;
+}
+
+.ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.tick, .major {
+  width: 1px;
+  background: var(--chalk);
+  opacity: 0.35;
+}
+.tick { height: 7px; }
+.major { height: 12px; opacity: 0.6; }
+
+.head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 22px;
+  border-radius: 1px;
+  background: var(--sodium);
+  pointer-events: none;
+}
+
+/* Without scroll-driven animation support the playhead simply rests at the start. */
+@supports (animation-timeline: scroll()) {
+  .head {
+    animation: sweep linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes sweep {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(var(--span) - 2px)); }
+}
+
+/* A checkpoint: a ring on the ruler. The hit area is larger than the ring so it is easy to tap. */
+.cp {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border: 1.5px solid var(--chalk);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  transition: transform 0.2s var(--ease), background 0.2s, border-color 0.2s;
+}
+.cp::before {
+  content: "";
+  position: absolute;
+  inset: -9px;
+}
+.cp:hover, .cp:focus-visible { transform: scale(1.35); border-color: var(--sodium); }
+.cp:focus-visible { outline: 2px solid var(--sodium); outline-offset: 3px; }
+.cp[aria-current="location"] { background: var(--sodium); border-color: var(--sodium); transform: scale(1.2); }
+
+/* The name appears above the ruler on hover or focus. */
+.cp::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  translate: -50% 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--chalk);
+  font: 500 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, translate 0.2s var(--ease);
+}
+.cp:hover::after, .cp:focus-visible::after { opacity: 1; translate: -50% 0; }
+
+@media (max-width: 1179px) {
+  .track { --span: 220px; }
+}
+
+@media (max-width: 639px) {
+  .scrubber { padding: 0 12px; height: 42px; }
+  .track { --span: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp, .cp::after { transition: none; }
+}

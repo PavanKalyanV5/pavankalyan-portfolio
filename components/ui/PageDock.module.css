@@ -1,0 +1,10 @@
+.dock {
+  position: fixed;
+  /* Clears the theme switcher, which sits in the bottom-right corner. */
+  right: calc(max(16px, env(safe-area-inset-right)) + 140px);
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: var(--z-dock);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

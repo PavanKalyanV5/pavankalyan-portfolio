@@ -1,0 +1,51 @@
+.toggle {
+  position: relative;
+  display: flex;
+  height: 46px;
+  min-width: 46px;
+  padding: 0 13px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  color: var(--ink-soft);
+  font: 500 13px var(--font-head);
+  transition: color 0.2s, transform 0.15s;
+}
+
+.toggle:hover { color: var(--ink); }
+.toggle:active { transform: scale(0.94); }
+.toggle[aria-pressed="true"] { color: var(--sodium-text); }
+.toggle:focus-visible { outline: 2px solid var(--sodium); outline-offset: 3px; }
+
+.label { white-space: nowrap; }
+
+/* Until the visitor chooses, a ring pulses so the control cannot be missed. */
+.invite { border-color: var(--sodium); color: var(--ink); }
+.invite::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1.5px solid var(--sodium);
+  border-radius: 999px;
+  opacity: 0;
+  animation: invite 2.4s var(--ease) infinite;
+  pointer-events: none;
+}
+@keyframes invite {
+  0% { opacity: 0.7; transform: scale(0.94); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+/* On phones the dock is tight, so the sound switch gives way to the checkpoints. */
+@media (max-width: 639px) {
+  .toggle { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .invite::after { animation: none; opacity: 0.5; }
+}

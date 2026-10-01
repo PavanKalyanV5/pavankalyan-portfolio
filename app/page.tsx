@@ -2,6 +2,7 @@ import { SceneLayer } from "@/components/scene/SceneLayer";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { DepthStage } from "@/components/site/DepthStage";
 import { CursorReticle } from "@/components/ui/CursorReticle";
+import { PageDock } from "@/components/ui/PageDock";
 import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
 import { Recruiters } from "@/components/site/Recruiters";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <SmoothScroll />
       <DepthStage />
       <CursorReticle />
+      <PageDock />
       <Nav />
       <main id="main">
         <Hero />

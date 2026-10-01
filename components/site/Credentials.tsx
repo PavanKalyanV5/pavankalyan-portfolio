@@ -32,7 +32,7 @@ export function Credentials() {
   const rest = certifications.filter((c) => !c.featured);
 
   return (
-    <section id="credentials" className={layout.section} data-scene="3" aria-labelledby="cred-h">
+    <section id="credentials" className={layout.section} data-scene="4" aria-labelledby="cred-h">
       <div className={layout.column}>
         <SplitHeading id="cred-h" className={layout.heading}>
           Education and certifications

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { sceneState } from "@/lib/sceneState";
 import styles from "./SceneLayer.module.css";
 
-const ParticleField = dynamic(() => import("./ParticleField"), { ssr: false });
+const Scene = dynamic(() => import("./Scene"), { ssr: false });
 
 class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -17,20 +17,19 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
   }
 }
 
-let particleCount: number | null = null;
+let webglOk: boolean | null = null;
 
-/** Particle budget for this device, or 0 when WebGL is unavailable. Computed once. */
-function getParticleCount() {
-  if (particleCount === null) {
+/** Whether WebGL is available on this device. Computed once. */
+function getWebglSupport() {
+  if (webglOk === null) {
     try {
       const c = document.createElement("canvas");
-      const ok = !!(c.getContext("webgl2") || c.getContext("webgl"));
-      particleCount = ok ? (window.innerWidth < 900 ? 4800 : 11000) : 0;
+      webglOk = !!(c.getContext("webgl2") || c.getContext("webgl"));
     } catch {
-      particleCount = 0;
+      webglOk = false;
     }
   }
-  return particleCount;
+  return webglOk;
 }
 
 const noopSubscribe = () => () => {};
@@ -42,7 +41,7 @@ const smooth = (a: number, b: number, x: number) => {
 
 /** Fixed WebGL backdrop. The page is complete HTML without it. */
 export function SceneLayer() {
-  const supported = useSyncExternalStore(noopSubscribe, getParticleCount, () => 0);
+  const supported = useSyncExternalStore(noopSubscribe, getWebglSupport, () => false);
   // Build the scene once the page has painted and the browser is idle, so the text appears first.
   const [idle, setIdle] = useState(false);
   useEffect(() => {
@@ -54,7 +53,7 @@ export function SceneLayer() {
     const t = setTimeout(() => setIdle(true), 600);
     return () => clearTimeout(t);
   }, []);
-  const count = idle ? supported : 0;
+  const ready = idle && supported;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -111,11 +110,11 @@ export function SceneLayer() {
     };
   }, []);
 
-  if (count === 0) return null;
+  if (!ready) return null;
   return (
     <div className={styles.layer} aria-hidden>
       <SceneBoundary>
-        <ParticleField count={count} />
+        <Scene />
       </SceneBoundary>
     </div>
   );

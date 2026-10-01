@@ -25,7 +25,7 @@ export function Recruiters() {
   const degree = education[0];
 
   return (
-    <section id="recruiters" className={layout.section} data-scene="0" aria-labelledby="rec-h">
+    <section id="recruiters" className={layout.section} data-scene="1" aria-labelledby="rec-h">
       <div className={layout.column}>
         <SplitHeading id="rec-h" className={layout.heading}>
           For recruiters: the 30-second version

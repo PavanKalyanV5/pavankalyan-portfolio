@@ -60,7 +60,7 @@ export function Projects() {
   const archive = projects.filter((p) => p.tier === "compact");
 
   return (
-    <section id="projects" className={layout.section} data-scene="2" aria-labelledby="projects-h">
+    <section id="projects" className={layout.section} data-scene="3" aria-labelledby="projects-h">
       <div className={layout.column}>
         <SplitHeading id="projects-h" className={layout.heading}>
           Systems I built to see how they hold together

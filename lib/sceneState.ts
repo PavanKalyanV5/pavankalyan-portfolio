@@ -3,7 +3,7 @@
  * Kept outside React so per-frame updates never trigger a render.
  */
 export const sceneState = {
-  /** Morph target (0..4) derived from scroll position. */
+  /** Scene (0 = overview at the hero, then 1..5 for the five modules in page order), eased from scroll position. */
   target: 0,
   /** Pointer in normalised device coordinates (-1..1). */
   pointer: { x: 0, y: 0 },

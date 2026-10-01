@@ -24,7 +24,7 @@ export function Hero() {
           Software engineer building AI-powered backend systems: agentic RAG, ML forecasting, and event-driven .NET at scale.
         </p>
         <p className={styles.sub}>
-          Open to full-stack, backend and AI engineering roles. Based in {profile.location}.
+          Open to full-stack, backend and AI engineering roles. {profile.location}.
         </p>
         <div className={styles.actions}>
           <a className={styles.primary} href={profile.resume} target="_blank" rel="noopener noreferrer">
@@ -47,8 +47,8 @@ export function Hero() {
       </div>
 
       <p className={styles.hint}>
-        <span className={styles.forMouse}>Move your cursor. The dots closest to it light up, the way an AI search finds the best matches.</span>
-        <span className={styles.forTouch}>Touch the screen. The dots closest to your finger light up, the way an AI search finds the best matches.</span>
+        <span className={styles.forMouse}>Move your cursor to tilt the drawing. Scroll and each section gets its own.</span>
+        <span className={styles.forTouch}>Drag across the screen to tilt the drawing. Scroll and each section gets its own.</span>
       </p>
     </section>
   );

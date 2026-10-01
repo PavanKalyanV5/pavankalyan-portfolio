@@ -9,12 +9,12 @@ import { ContactForm } from "./ContactForm";
 export function Contact() {
   return (
     <>
-      <section id="contact" className={layout.section} data-scene="4" aria-labelledby="contact-h">
+      <section id="contact" className={layout.section} data-scene="5" aria-labelledby="contact-h">
         <div className={layout.column}>
           <SplitHeading id="contact-h" className={`${layout.heading} ${styles.heading}`}>
-            Have a hard backend problem? Write to me.
+            Have an AI or full-stack idea? Write to me.
           </SplitHeading>
-          <p className={layout.lede} data-depth>I reply to every message about engineering roles and collaborations.</p>
+          <p className={layout.lede} data-depth>I reply to every message about engineering roles, collaborations and ideas worth building.</p>
           <div className={styles.grid}>
             <div data-depth>
               <ContactForm />

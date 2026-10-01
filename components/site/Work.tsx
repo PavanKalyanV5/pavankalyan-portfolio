@@ -20,7 +20,7 @@ export function Work() {
   const earlier = experience.filter((e) => e.tier === "compact").reverse();
 
   return (
-    <section id="work" className={layout.section} data-scene="1" aria-labelledby="work-h">
+    <section id="work" className={layout.section} data-scene="2" aria-labelledby="work-h">
       <div className={layout.column}>
         <SplitHeading id="work-h" className={layout.heading}>
           AI-powered systems and .NET full-stack apps, built for production

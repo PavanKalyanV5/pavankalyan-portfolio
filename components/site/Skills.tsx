@@ -5,7 +5,7 @@ import { SkillsExplorer } from "./SkillsExplorer";
 
 export function Skills() {
   return (
-    <section id="skills" className={layout.section} data-scene="3" aria-labelledby="skills-h">
+    <section id="skills" className={layout.section} data-scene="4" aria-labelledby="skills-h">
       <div className={layout.column}>
         <SplitHeading id="skills-h" className={layout.heading}>
           What I work with

@@ -1,0 +1,13 @@
+.chart { margin: 0 0 clamp(44px, 7vh, 72px); }
+.cap { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; margin-bottom: 14px; }
+.plot { position: relative; }
+.row { display: grid; grid-template-columns: 7.6rem 1fr; align-items: center; gap: 12px; padding: 5px 0; }
+.name { font-family: var(--font-head); font-weight: 600; font-size: 0.84rem; color: var(--ink-soft); line-height: 1.15; text-align: right; }
+.track { position: relative; height: 12px; }
+.bar { position: absolute; top: 0; height: 100%; border-radius: 2px; background: var(--ink-faint); transform-origin: 0 50%; }
+.hot { background: var(--sodium); }
+.axis { display: grid; grid-template-columns: 7.6rem 1fr; gap: 12px; margin-top: 8px; }
+.ticks { position: relative; height: 22px; border-top: 1px solid var(--rule); }
+.tick { position: absolute; top: 4px; transform: translateX(-50%); font-family: var(--font-head); font-size: 0.78rem; color: var(--ink-faint); }
+.grid { position: absolute; inset: 0 0 26px 7.6rem; margin-left: 12px; pointer-events: none; }
+.gridline { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--rule); opacity: 0.6; }

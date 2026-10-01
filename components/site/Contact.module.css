@@ -1,0 +1,48 @@
+.heading { font-size: clamp(2.4rem, 6vw, 4.6rem); }
+.grid { display: grid; gap: 48px; }
+.form { display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; }
+.field label { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; }
+.hint { font-weight: 400; color: var(--ink-faint); }
+.input {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-bottom: 2px solid var(--ink);
+  border-radius: 3px 3px 0 0;
+  padding: 12px 14px;
+  width: 100%;
+  transition: border-color 0.2s, background 0.2s;
+}
+.input:hover { background: var(--paper-hi); }
+.input:focus-visible { outline: none; border-bottom-color: var(--sodium); background: var(--paper-hi); }
+.input[aria-invalid="true"] { border-bottom-color: var(--sodium); }
+textarea.input { min-height: 9rem; resize: vertical; }
+.error { color: var(--sodium-text); font-size: 0.95rem; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.send {
+  justify-self: start;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: 3px;
+  padding: 13px 26px;
+  font-family: var(--font-head);
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+}
+.send:hover:not(:disabled) { background: var(--sodium-text); color: var(--paper); }
+.send:active:not(:disabled) { transform: scale(0.98); }
+.send:disabled { opacity: 0.6; cursor: progress; }
+.status { font-size: 1rem; min-height: 1.6em; }
+.ok { color: var(--ink); border-left: 3px solid var(--sodium); padding-left: 12px; }
+
+.side { display: grid; gap: 28px; align-content: start; }
+.portrait { width: 96px; height: 96px; object-fit: cover; object-position: top; border-radius: 26px 6px 26px 6px; }
+.links { display: grid; gap: 4px; font-family: var(--font-head); font-weight: 500; }
+.links a { display: inline-block; padding: 5px 0; text-decoration: none; border-bottom: 1px solid var(--rule); transition: padding-left 0.25s var(--ease), border-color 0.2s; }
+.links a:hover { padding-left: 8px; border-color: var(--sodium); }
+
+.footer { position: relative; z-index: var(--z-content); padding: 0 var(--gutter) 40px; font-size: 0.92rem; color: var(--ink-soft); }
+
+@media (min-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.links button { justify-self: start; }

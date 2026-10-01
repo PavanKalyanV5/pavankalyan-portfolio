@@ -1,25 +1,32 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { StaticPortfolio } from "@/components/fallback/StaticPortfolio";
+import { Hero } from "@/components/site/Hero";
+import { Recruiters } from "@/components/site/Recruiters";
+import { Work } from "@/components/site/Work";
+import { Projects } from "@/components/site/Projects";
+import { Skills } from "@/components/site/Skills";
+import { Credentials } from "@/components/site/Credentials";
+import { profile } from "@/content/profile";
 
-describe("Static Portfolio Fallback", () => {
-  it("renders the fallback portfolio with all content layers", () => {
-    render(<StaticPortfolio />);
+describe("Portfolio sections render as plain HTML", () => {
+  it("renders the hero with name and contact links", () => {
+    render(<Hero />);
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Email me" })).toHaveAttribute("href", `mailto:${profile.email}`);
+  });
 
-    // Assert main heading
-    expect(screen.getByRole("heading", { name: "Pavan Kalyan Vetla" })).toBeInTheDocument();
-
-    // Assert the six content layer headings
-    expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Personal Projects" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Education" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Certifications & Licenses" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Skills" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Contact" })).toBeInTheDocument();
-
-    // Assert the email link
-    expect(
-      screen.getByRole("link", { name: "Email" })
-    ).toHaveAttribute("href", "mailto:vetlapavankalyan5@gmail.com");
+  it("renders every content section heading", () => {
+    render(
+      <>
+        <Recruiters />
+        <Work />
+        <Projects />
+        <Skills />
+        <Credentials />
+      </>,
+    );
+    for (const id of ["rec-h", "work-h", "projects-h", "skills-h", "cred-h"]) {
+      expect(document.getElementById(id)).toBeInTheDocument();
+    }
   });
 });

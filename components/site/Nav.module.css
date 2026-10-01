@@ -1,0 +1,88 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px var(--gutter);
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -18px 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--chalk) 0%, color-mix(in srgb, var(--chalk) 88%, transparent) 55%, transparent 100%);
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.glyph { width: 34px; height: 34px; flex: none; color: var(--ink); transition: transform 0.5s var(--ease); }
+.mark:hover .glyph { transform: rotate(-24deg) scale(1.08); }
+
+.links { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 32px); }
+
+.link {
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s var(--ease), color 0.2s;
+}
+.link:hover { border-color: var(--rule); color: var(--ink); }
+.active { border-color: var(--sodium); }
+
+.status {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--sodium);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  50% { box-shadow: 0 0 0 6px var(--sodium-wash); }
+}
+
+@media (min-width: 1000px) { .status { display: inline-flex; } }
+@media (max-width: 520px) { .links { gap: 12px; font-size: 0.88rem; } }
+
+@media (max-width: 560px) { .links { gap: 9px; font-size: 0.8rem; } .mark { font-size: 0.95rem; gap: 6px; } .glyph { width: 28px; height: 28px; } }
+@media (max-width: 420px) { .mark span { display: none; } }
+
+.cta {
+  background: var(--ink);
+  color: var(--chalk);
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.cta:hover { background: var(--sodium-text); color: var(--paper); }
+.cta:active { transform: scale(0.97); }
+.ctaActive { background: var(--sodium-text); color: var(--paper); }
+@media (max-width: 560px) { .cta { padding: 6px 11px; } }
+
+@media (max-width: 400px) {
+  .links { gap: 8px; font-size: 0.78rem; }
+  .cta { padding: 6px 10px; }
+}
+@media (max-width: 370px) { .forWord { display: none; } }
+@media (max-width: 350px) { .hideXs { display: none; } }

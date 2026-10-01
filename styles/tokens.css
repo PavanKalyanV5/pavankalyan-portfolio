@@ -1,96 +1,70 @@
 :root {
-  /* Colors */
-  --void: #05070E;
-  --surface: #0B1020;
-  --surface-hover: #121A33;
-  --structure: #1B2540;
-  --structure-light: #2A385E;
-  --signal-cool: #5EE7D6;
-  --signal-warm: #FFB35C;
-  --signal-violet: #8A6BFF;
-  --signal-emerald: #10B981;
-  --signal-blue: #38BDF8;
-  --signal-rose: #F43F5E;
-  --text-high: #E8ECF5;
-  --text-muted: #8B98B5;
-  --text-dim: #546282;
+  /* One cool-grey family, one accent. Themes swap the values, never the names. */
+  --chalk: #e6eaee;
+  --chalk-deep: #d8dee5;
+  --paper: #f1f4f7;
+  --paper-hi: #ffffff;
+  --ink: #101a2b;
+  --ink-soft: #3d4a5f;
+  --ink-faint: #56627a;
+  --rule: rgb(16 26 43 / 0.16);
+  --sodium: #d9480f;
+  --sodium-wash: rgb(217 72 15 / 0.12);
+  /* Text-safe orange: the brand orange is under 4.5:1 on chalk, so text uses this. */
+  --sodium-text: #b23807;
+  --particle: #101a2b;
+  --particle-boost: 1;
+  --grain: 0.35;
 
-  /* Derived colors - glass and glow effects */
-  --glass-bg: rgb(11 16 32 / 0.72);
-  --glass-bg-elevated: rgb(16 23 48 / 0.85);
-  --glass-border: rgb(94 231 214 / 0.18);
-  --glass-border-subtle: rgb(255 255 255 / 0.08);
-  --glass-specular: rgb(255 255 255 / 0.12);
-  --glow-cool: rgb(94 231 214 / 0.35);
-  --glow-warm: rgb(255 179 92 / 0.40);
-  --glow-violet: rgb(138 107 255 / 0.35);
-  --glow-emerald: rgb(16 185 129 / 0.35);
+  --font-head: var(--font-display), system-ui, sans-serif;
+  --font-body: var(--font-text), Georgia, serif;
 
-  /* Bklit Data Visualization Tokens */
-  --chart-grid: rgba(255, 255, 255, 0.06);
-  --chart-axis: rgba(139, 152, 181, 0.45);
-  --chart-radar-fill: rgba(94, 231, 214, 0.18);
-  --chart-radar-stroke: #5EE7D6;
-  --chart-violet-fill: rgba(138, 107, 255, 0.18);
-  --chart-violet-stroke: #8A6BFF;
-  --chart-glow: 0 0 20px rgba(94, 231, 214, 0.3);
+  --gutter: clamp(20px, 5vw, 72px);
+  --col: 41rem;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* 3D Perspective & Spatial Tokens */
-  --perspective-card: 1000px;
-  --perspective-deep: 1400px;
-  --card-3d-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px rgba(94, 231, 214, 0.08);
-  --card-3d-shadow-hover: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 0 0 35px rgba(94, 231, 214, 0.22);
+  --z-scene: 0;
+  --z-content: 1;
+  --z-nav: 10;
+  --z-dock: 20;
+  --z-cursor: 60;
 
-  /* Type scale (rem, 1rem = 16px), modular ~1.333 */
-  --t-xs: 0.75rem;
-  --t-sm: 0.875rem;
-  --t-base: 1rem;
-  --t-md: 1.333rem;
-  --t-lg: 1.777rem;
-  --t-xl: 2.369rem;
-  --t-2xl: 3.157rem;
-  --t-3xl: 4.209rem;
-  --t-hero: clamp(2.5rem, 9vw, 7rem);
+  color-scheme: light;
+}
 
-  /* Spacing scale (px) */
-  --s-1: 4px;
-  --s-2: 8px;
-  --s-3: 12px;
-  --s-4: 16px;
-  --s-5: 24px;
-  --s-6: 32px;
-  --s-7: 48px;
-  --s-8: 64px;
-  --s-9: 96px;
-  --s-10: 128px;
+:root[data-theme="dark"] {
+  --chalk: #0e151f;
+  --chalk-deep: #18222f;
+  --paper: #162030;
+  --paper-hi: #1d2a3d;
+  --ink: #e8edf4;
+  --ink-soft: #b3becf;
+  --ink-faint: #8995a9;
+  --rule: rgb(232 237 244 / 0.16);
+  --sodium: #ff7a3d;
+  --sodium-wash: rgb(255 122 61 / 0.16);
+  --sodium-text: #ff8a52;
+  --particle: #c9d5e6;
+  --particle-boost: 1.35;
+  --grain: 0;
+  color-scheme: dark;
+}
 
-  /* Border radii - differentiated by hierarchy */
-  --r-panel: 14px;
-  --r-card: 16px;
-  --r-pill: 999px;
-  --r-input: 8px;
-  --r-tooltip: 6px;
-
-  /* Easing functions */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-  /* Motion durations */
-  --d-fast: 180ms;
-  --d-base: 320ms;
-  --d-slow: 620ms;
-  --d-cine: 1200ms;
-
-  /* Z-index layers */
-  --z-canvas: 0;
-  --z-overlay: 10;
-  --z-panel: 20;
-  --z-bar: 30;
-  --z-modal: 50;
-  --z-cursor: 100;
-
-  /* Font family aliases */
-  --font-sans: var(--font-display), system-ui, sans-serif;
-  --font-code: var(--font-mono), ui-monospace, monospace;
+/* AMOLED: true black so the panel's pixels switch off. */
+:root[data-theme="amoled"] {
+  --chalk: #000000;
+  --chalk-deep: #0a0c10;
+  --paper: #0b0e13;
+  --paper-hi: #141922;
+  --ink: #f0f3f8;
+  --ink-soft: #b6c0cf;
+  --ink-faint: #8794a8;
+  --rule: rgb(240 243 248 / 0.18);
+  --sodium: #ff7a3d;
+  --sodium-wash: rgb(255 122 61 / 0.18);
+  --sodium-text: #ff8a52;
+  --particle: #d3deee;
+  --particle-boost: 1.45;
+  --grain: 0;
+  color-scheme: dark;
 }

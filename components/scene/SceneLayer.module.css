@@ -1,0 +1,13 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+  pointer-events: none;
+  animation: arrive 1.6s var(--ease) both;
+}
+
+/* The single orchestrated moment: the field resolves out of the chalk. */
+@keyframes arrive {
+  from { opacity: 0; transform: scale(1.06); }
+  to { opacity: 1; transform: none; }
+}

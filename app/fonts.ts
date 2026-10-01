@@ -1,15 +1,15 @@
-import { Sora, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Newsreader } from "next/font/google";
 
-export const sora = Sora({
-  weight: ["300", "400", "600", "800"],
+export const bricolage = Bricolage_Grotesque({
   variable: "--font-display",
   display: "swap",
   subsets: ["latin"],
+  axes: ["opsz", "wdth"],
 });
 
-export const jetbrainsMono = JetBrains_Mono({
-  weight: ["400", "500"],
-  variable: "--font-mono",
+export const newsreader = Newsreader({
+  variable: "--font-text",
   display: "swap",
   subsets: ["latin"],
+  style: ["normal", "italic"],
 });

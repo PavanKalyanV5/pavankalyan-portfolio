@@ -1,0 +1,24 @@
+.band {
+  position: relative;
+  z-index: var(--z-content);
+  overflow: hidden;
+  padding: clamp(8px, 2vh, 24px) 0;
+  pointer-events: none;
+}
+.track { display: flex; width: max-content; will-change: transform; }
+.text {
+  display: flex;
+  align-items: center;
+  flex: none;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-stretch: 78%;
+  font-size: clamp(3.2rem, 10vw, 8.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ink-faint);
+}
+.fill { color: var(--ink); -webkit-text-stroke: 0; }
+.dot { flex: none; width: 0.22em; height: 0.22em; border-radius: 50%; background: var(--sodium); margin: 0 0.55em; }

@@ -81,3 +81,11 @@ export interface SocialLink {
   label: string;
   url: string;
 }
+
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  credential: string;
+  grade: string;
+  dateLabel: string;
+}

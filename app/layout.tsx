@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { sora, jetbrainsMono } from "@/app/fonts";
+import { bricolage, newsreader } from "@/app/fonts";
+import { ThemeSwitcher } from "@/components/theme/ThemeSwitcher";
 import { PersonSchema } from "@/components/seo/PersonSchema";
 import "@/styles/global.css";
 
@@ -8,8 +9,8 @@ const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL ?? "https://pavankalyanvetla.vercel.app").replace(/\/$/, "");
 
 export const viewport: Viewport = {
-  themeColor: "#05070E",
-  colorScheme: "dark",
+  themeColor: "#E6EAEE",
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -103,9 +104,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sora.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${bricolage.variable} ${newsreader.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'&&t!=='amoled'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}",
+          }}
+        />
+      </head>
       <body suppressHydrationWarning>
+        <a className="skip-link" href="#main">Skip to content</a>
         {children}
+        <ThemeSwitcher />
         <Analytics />
         <PersonSchema />
       </body>

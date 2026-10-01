@@ -76,7 +76,7 @@ export const experience: ExperienceEntry[] = [
     role: "Software Engineer",
     organization: "Kovalty Technologies — Client: Location Services",
     location: "Hyderabad",
-    dateLabel: "Jun 2024 – Present",
+    dateLabel: "Jun 2024 – Jul 2026",
     tier: "primary",
     bullets: [
       "Built an agentic RAG chatbot on .NET 8 and Semantic Kernel that autonomously chains vector-search retrieval, exact data lookups, and ML-based forecasting to answer operational queries.",

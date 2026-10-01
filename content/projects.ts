@@ -1,7 +1,51 @@
 import type { ProjectEntry } from "./types";
 
+/** LinkedIn article for the privacy proxy. Set to an empty string to hide the link. */
+const PRIVACY_ARTICLE_URL = "https://www.linkedin.com/pulse/claude-code-privacy-protection-pavan-kalyan-vetla-bbpmf";
+
 export const projects: ProjectEntry[] = [
-  // 4 Flagship Engineering Systems
+  // Featured, weighted by public proof first, then depth and impact
+  {
+    id: "claude-code-privacy-proxy",
+    name: "Claude Code Privacy Proxy",
+    dateLabel: "Sep 2026",
+    tier: "featured",
+    techStack: ["Node.js", "JavaScript", "HTTP proxy", "Regex redaction", "Zero dependencies"],
+    description:
+      "An open-source local proxy that strips personal data, machine metadata and location fingerprints out of Claude Code's API requests, then puts the real values back before your tools see them, so nothing breaks.",
+    bullets: [
+      "Redaction is reversible: the model works with labels, while your tools receive the real paths and names.",
+      "No TLS interception and no CA to install. Runtime dependencies: none, only the Node standard library.",
+      "Fails closed, covers 20 secret patterns, and cleans up what already leaked into files on disk.",
+    ],
+    links: [
+      { label: "GitHub", url: "https://github.com/PavanKalyanV5/claude-code-privacy-proxy" },
+      ...(PRIVACY_ARTICLE_URL ? [{ label: "Read the article", url: PRIVACY_ARTICLE_URL }] : []),
+    ],
+    glyph: "backend",
+    concurrentWith: "Open source, built end to end on my own",
+    caseStudy: {
+      problem:
+        "AI coding assistants read whatever they need and assemble the request themselves, so names, client data, hostnames and credentials can leave a machine without anyone deciding to send them.",
+      architecture:
+        "A local HTTP proxy sits between Claude Code and the API. Outbound requests are scanned and redacted, then responses and tool calls are resolved back to the real values on the way in.",
+      keyDecisions: [
+        "Reversible labels over deletion: tools keep working because every label maps back to the real value.",
+        "No TLS interception: nothing to trust, no certificate authority to install, and a much smaller attack surface.",
+        "Fail closed: if the proxy cannot be sure a request is clean, the request does not go out.",
+        "Honest by design: it keeps personal and organisational data out of the payload, and does not claim to make you anonymous.",
+      ],
+      results: [
+        "41,906 personal values found on disk were reduced to 220 after one scrub pass.",
+        "490+ automated tests with zero runtime dependencies.",
+      ],
+      metrics: [
+        { label: "Tests", value: "490+" },
+        { label: "Runtime dependencies", value: "0" },
+        { label: "Values on disk, before and after", value: "41,906 to 220" },
+      ],
+    },
+  },
   {
     id: "agentic-rag",
     name: "AgenticRAG Platform",
@@ -46,6 +90,42 @@ export const projects: ProjectEntry[] = [
     },
   },
   {
+    id: "production-ml-forecasting",
+    name: "Production ML Forecasting Engine",
+    dateLabel: "2024 – 2026",
+    tier: "featured",
+    techStack: ["Python", "LightGBM", "SSA Time-Series", "FastAPI", "Azure Cosmos DB"],
+    description:
+      "An operational time-series forecasting engine combining gradient boosted trees (LightGBM) with Singular Spectrum Analysis (SSA) to project operational volumes with volatility modeling.",
+    bullets: [
+      "Models trend, seasonality, and leading business indicators to forecast operational volume swings across dynamic geographic regions.",
+      "Integrated into Python FastAPI MCP server, automating 82% of recurrent reporting workflows and analytics tasks.",
+      "Deployed with automated scheduled execution pipelines against Azure Cosmos DB and SQL Server.",
+    ],
+    links: [],
+    glyph: "chart",
+    concurrentWith: "Built for Location Services client at Kovalty Technologies",
+    caseStudy: {
+      problem:
+        "Manual operational forecasting for location verification services resulted in 3-day reporting lags and over-allocation of field resources during unpredicted demand surges.",
+      architecture:
+        "A dual-stage forecasting pipeline: SSA decomposes noisy signals into low-frequency trends and oscillatory harmonics, fed as dynamic features into LightGBM regression models.",
+      keyDecisions: [
+        "LightGBM + SSA over pure Deep Learning LSTM: 10x faster training cycles on tabular operational data with superior explainability for business analysts.",
+        "FastAPI MCP endpoints: Enables internal AI chatbots to query projected volumes directly via standardized tool definitions.",
+      ],
+      results: [
+        "82% reduction in manual analytical reporting intervention.",
+        "Maintained 99.9% service reliability on automated scheduled runs.",
+      ],
+      metrics: [
+        { label: "Ops Automation", value: "82%" },
+        { label: "Service Uptime", value: "99.9%" },
+        { label: "Architecture", value: "LightGBM + SSA" },
+      ],
+    },
+  },
+  {
     id: "theo-ai-workspace",
     name: "Theo Personal AI Workspace",
     dateLabel: "2024 – Present",
@@ -83,40 +163,21 @@ export const projects: ProjectEntry[] = [
     },
   },
   {
-    id: "production-ml-forecasting",
-    name: "Production ML Forecasting Engine",
-    dateLabel: "2024 – Present",
+    id: "interview-copilot",
+    name: "Interview Copilot",
+    dateLabel: "2026 – Present",
     tier: "featured",
-    techStack: ["Python", "LightGBM", "SSA Time-Series", "FastAPI", "Azure Cosmos DB"],
+    techStack: ["C#", "TypeScript", "SQLite FTS5", "WASAPI", "Anthropic", "Gemini"],
     description:
-      "An operational time-series forecasting engine combining gradient boosted trees (LightGBM) with Singular Spectrum Analysis (SSA) to project operational volumes with volatility modeling.",
+      "A local-first Windows desktop app that transcribes a conversation on two separate audio channels, detects questions, and streams grounded answers into a small always-on-top overlay. It also runs mock interviews with a scorecard and keeps a private knowledge base built from your own documents.",
     bullets: [
-      "Models trend, seasonality, and leading business indicators to forecast operational volume swings across dynamic geographic regions.",
-      "Integrated into Python FastAPI MCP server, automating 82% of recurrent reporting workflows and analytics tasks.",
-      "Deployed with automated scheduled execution pipelines against Azure Cosmos DB and SQL Server.",
+      "Captures the other speaker (WASAPI loopback) and your microphone as separate channels, with speech recognition running on your machine.",
+      "Hybrid vector and full-text search over your own documents, using local embeddings (bge-small-en-v1.5), with click-through citations.",
+      "API keys live in an encrypted vault (Argon2id and AES-GCM), with per-task model routing and fallbacks across providers.",
     ],
-    links: [],
-    glyph: "chart",
-    concurrentWith: "Built for Location Services client at Kovalty Technologies",
-    caseStudy: {
-      problem:
-        "Manual operational forecasting for location verification services resulted in 3-day reporting lags and over-allocation of field resources during unpredicted demand surges.",
-      architecture:
-        "A dual-stage forecasting pipeline: SSA decomposes noisy signals into low-frequency trends and oscillatory harmonics, fed as dynamic features into LightGBM regression models.",
-      keyDecisions: [
-        "LightGBM + SSA over pure Deep Learning LSTM: 10x faster training cycles on tabular operational data with superior explainability for business analysts.",
-        "FastAPI MCP endpoints: Enables internal AI chatbots to query projected volumes directly via standardized tool definitions.",
-      ],
-      results: [
-        "82% reduction in manual analytical reporting intervention.",
-        "Maintained 99.9% service reliability on automated scheduled runs.",
-      ],
-      metrics: [
-        { label: "Ops Automation", value: "82%" },
-        { label: "Service Uptime", value: "99.9%" },
-        { label: "Architecture", value: "LightGBM + SSA" },
-      ],
-    },
+    links: [{ label: "GitHub", url: "https://github.com/PavanKalyanV5/Interview-Copilot" }],
+    glyph: "ai",
+    concurrentWith: "Work in progress. Runs on Windows 10 and 11, with only the model calls leaving the machine.",
   },
   {
     id: "game-intelligence-platform",
@@ -153,8 +214,19 @@ export const projects: ProjectEntry[] = [
       ],
     },
   },
-
-  // Archive / Compact Projects (Clean understated list)
+  {
+    id: "universal-video-toolkit",
+    name: "Universal Video Toolkit",
+    dateLabel: "Jul 2026",
+    tier: "compact",
+    techStack: ["React 19", "TypeScript", "Vite", "Chrome Extension", "Web Audio API"],
+    description:
+      "A Chrome extension that upgrades video playback on any site: hover controls, an 8-band equalizer with up to 600% volume boost, A/B looping, frame stepping, recording, and a per-site CSS and JavaScript injector.",
+    bullets: [],
+    links: [{ label: "GitHub", url: "https://github.com/PavanKalyanV5/Multipurpose-Video-Toolkit" }],
+    glyph: "media",
+  },
+  // Archive
   {
     id: "news-summarization-archive",
     name: "News Summarization Archive",

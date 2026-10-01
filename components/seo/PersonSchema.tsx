@@ -113,10 +113,6 @@ export function PersonSchema(): React.ReactElement {
           addressCountry: "IN",
         },
         sameAs: socials.map((social) => social.url),
-        worksFor: {
-          "@type": "Organization",
-          name: "Kovalty Technologies",
-        },
         alumniOf,
         knowsAbout: allSkills,
         hasCredential,

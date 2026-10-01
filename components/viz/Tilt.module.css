@@ -1,0 +1,22 @@
+.tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+  border-radius: 8px;
+  padding: 18px 18px 6px;
+  margin: 0 -18px 28px;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  border: 1px solid var(--rule);
+}
+.tilt figure { margin-bottom: 8px; }
+.glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), var(--sodium-wash), transparent 60%);
+  transition: opacity 0.3s;
+}
+.tilt:hover .glare { opacity: 1; }
+@media (max-width: 899px) { .tilt { margin-inline: -8px; padding-inline: 10px; } }

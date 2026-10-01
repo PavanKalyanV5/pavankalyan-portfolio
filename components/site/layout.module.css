@@ -1,0 +1,60 @@
+.section {
+  position: relative;
+  z-index: var(--z-content);
+  padding: clamp(88px, 15vh, 168px) var(--gutter) clamp(104px, 17vh, 190px);
+}
+
+.column {
+  max-width: var(--col);
+}
+
+/* Over the field on narrow screens, text sits on a veil so it stays legible. */
+@media (max-width: 899px) {
+  .column {
+    background: color-mix(in srgb, var(--chalk) 88%, transparent);
+    margin-inline: calc(var(--gutter) * -0.5);
+    padding: 18px calc(var(--gutter) * 0.5);
+    border-radius: 6px;
+  }
+}
+
+.heading {
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-weight: 700;
+  font-stretch: 88%;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--ink-soft);
+  max-width: 34rem;
+  margin-bottom: clamp(40px, 7vh, 72px);
+}
+
+.more > summary {
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ink);
+  transition: color 0.2s, border-color 0.2s, transform 0.15s;
+}
+.more > summary::-webkit-details-marker { display: none; }
+.more > summary:hover { color: var(--sodium-text); border-color: var(--sodium); }
+.more > summary:active { transform: translateY(1px); }
+.more > summary::after {
+  content: "+";
+  font-weight: 500;
+  display: inline-block;
+  transition: transform 0.3s var(--ease);
+}
+.more[open] > summary::after { transform: rotate(45deg); }
+.more[open] > summary { margin-bottom: 20px; }

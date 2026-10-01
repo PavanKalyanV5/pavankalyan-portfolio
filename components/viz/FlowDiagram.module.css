@@ -1,0 +1,16 @@
+.figure { margin: 0 0 28px; }
+.svg { width: 100%; height: auto; display: block; overflow: visible; }
+.node { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.nodeAccent { fill: var(--ink); stroke: var(--ink); }
+.label { font-family: var(--font-head); font-weight: 600; font-size: 13.5px; fill: var(--ink); }
+.labelAccent { fill: var(--paper); }
+.sub { font-family: var(--font-body); font-style: italic; font-size: 11.5px; fill: var(--ink-faint); }
+.subAccent { fill: var(--chalk-deep); }
+.edge { fill: none; stroke: var(--ink-faint); stroke-width: 1.3; }
+.packet { fill: var(--sodium); }
+.caption { font-size: 0.9rem; font-style: italic; color: var(--ink-faint); margin-top: 8px; }
+
+@media (max-width: 600px) {
+  .label { font-size: 17px; }
+  .sub { font-size: 14px; }
+}

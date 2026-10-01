@@ -1,0 +1,30 @@
+.project { padding: 36px 0 40px; border-top: 2px solid var(--ink); }
+.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 20px; margin-bottom: 12px; }
+.name { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 700; font-stretch: 88%; letter-spacing: -0.015em; line-height: 1.1; }
+.date { font-family: var(--font-head); font-weight: 500; font-size: 0.92rem; color: var(--ink-soft); }
+.desc { margin-bottom: 14px; }
+.note { font-style: italic; font-size: 0.95rem; color: var(--ink-faint); margin-bottom: 16px; }
+.stack { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--font-head); font-size: 0.92rem; font-weight: 500; color: var(--ink-soft); margin-bottom: 20px; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 18px 36px; margin: 0 0 24px; }
+.stat dt { font-size: 0.88rem; color: var(--ink-soft); order: 2; }
+.stat { display: flex; flex-direction: column; margin: 0; }
+.stat dd { margin: 0; font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; }
+
+.links { display: flex; gap: 22px; margin-bottom: 20px; font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; }
+
+.study { display: grid; gap: 22px; }
+.study h4 { font-family: var(--font-head); font-size: 0.98rem; font-weight: 700; margin: 0 0 6px; }
+.study ul { display: grid; gap: 8px; }
+.study li { padding-left: 1.1em; position: relative; }
+.study li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 1px; background: var(--ink); }
+
+.archiveTitle { font-size: 1.25rem; font-weight: 700; margin: 64px 0 12px; }
+.archive li { display: grid; gap: 2px 24px; padding: 14px 0; border-top: 1px solid var(--rule); }
+.archive strong { font-family: var(--font-head); font-weight: 600; }
+.archive small { font-size: 0.92rem; color: var(--ink-soft); }
+@media (min-width: 700px) { .archive li { grid-template-columns: 13rem 1fr; } }
+
+.archiveStack { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 4px; }
+
+.private { font-family: var(--font-head); font-size: 0.88rem; font-weight: 500; color: var(--ink-faint); margin: 0 0 16px; }

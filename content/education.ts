@@ -1,4 +1,4 @@
-import type { EducationEntry } from "@/lib/mesh/types";
+import type { EducationEntry } from "./types";
 
 export const education: EducationEntry[] = [
   {
